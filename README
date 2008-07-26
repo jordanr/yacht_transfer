@@ -1,0 +1,52 @@
+YachtTransfer
+=============
+  http://github.com/jordanr/yacht_transfer/tree/master
+
+  As a Rails plugin, this library allows you to both download and upload 
+  yacht listings from/to yacht MLS sites (like yachtworld, yachtcouncil, 
+  bucnet, marinesource, ...).  With your own app, you can then centrally
+  manage the listings.  Instead of separately managing listings, you can
+  control them from a single source.  You will not have to upload a listing
+  multiple times or have disparities between listings.
+
+  It does not directly access an MLS server.
+
+Example
+=======
+  none
+
+Requirements
+============
+  * Hpricot
+  * Mechanize
+
+Use Case
+========
+  * Primary Actor: Secretary
+  * Goal: Upload a new yacht listing to all sites
+  * Preconditions:
+    1. Has account with application
+    2. Has entered information about MLS accounts
+  * Main Success Scenario:
+    1. Log on
+    2. Choose "create new listing"
+    3. Enter textual information
+    4. Save
+    5. Click upload
+    6. See success message
+  * Alternatives
+    1a. Log on fails
+    1b. Try again, go to 1
+    3a. Enter pictures
+    3b. Go to 4
+    6a. Failure message
+    6b. Try again, go to 5
+
+Features
+========
+  * Download text/images by yacht id number
+  * Upload text/images by yacht id number to given MLS accounts
+  * See remote listings for a given MLS account
+
+Copyright (c) 2008 [name of plugin creator], released under the MIT license
+
