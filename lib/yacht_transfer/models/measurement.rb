@@ -1,8 +1,8 @@
 module YachtTransfer
   module Models
-    class Field
-      attr_accessor :name
+    class Measurement
       attr_accessor :value
+      attr_accessor :units
     end
   end
 end

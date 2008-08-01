@@ -1,7 +1,7 @@
 module YachtTransfer
   module Models
-    class Picture
-      attr_accessor :label, :src
+    class Refit
+      attr_accessor :year, :type
     end
   end
 end
