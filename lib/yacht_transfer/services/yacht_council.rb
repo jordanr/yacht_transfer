@@ -22,10 +22,7 @@ module YachtTransfer
 	form['LPP']=MAX_LPP
 	form['onlymy']=1
 	page = form.submit
-	# , listings_get_params!(params))
-        names = (page.parser/"td.secinfoname").collect { |td| td.at("strong").inner_html if(td.at("strong")) }
-	names.compact! # some secinfoname's don't have a strong name
-	# lengths =
+	page.root.to_html
       end
 	
       private

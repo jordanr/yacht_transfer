@@ -1,0 +1,2 @@
+#LWP-Cookies-1.0
+Set-Cookie3: shared="IsSharedVessel=0"; path="/"; domain=www.yachtcouncil.org; path_spec; expires="2008-03-06 05:00:00Z"; version=0
