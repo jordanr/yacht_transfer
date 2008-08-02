@@ -1,4 +1,6 @@
 # YachtTransfer
+require 'rubygems'
+require 'mechanize'
 require 'yacht_transfer/model'
 require 'yacht_transfer/models/accommodation'
 require 'yacht_transfer/models/engine'

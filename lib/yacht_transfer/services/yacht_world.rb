@@ -1,7 +1,9 @@
-require 'yacht_transfer/adapters/adapter_base'
+require 'yacht_transfer/service' 
+
 module YachtTransfer
-  module Adapters
-    class YachtWorldAdapter < AdapterBase
+  module Services
+    class YachtWorld
+      include Service
     end
   end
 end

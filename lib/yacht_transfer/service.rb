@@ -1,6 +1,13 @@
 module YachtTransfer
   module Service    
-    def post(params)
-#      Parser.parse(params[:method], Net::HTTP.post_form(url, params))
+    def self.included(mls)
+      mls.extend(ClassMethods)
     end
+
+    module ClassMethods
+      def post(params)
+        self.send(params.delete(:method).gsub(/\./,'_'), params)
+      end
+    end
+  end
 end

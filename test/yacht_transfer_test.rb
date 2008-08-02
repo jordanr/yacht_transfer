@@ -1,8 +1,8 @@
 require 'test/unit'
+require 'yacht_transfer'
 
 class YachtTransferTest < Test::Unit::TestCase
-  # Replace this with your real tests.
-  def test_this_plugin
-    flunk
+  def test_on
+    assert true
   end
 end
