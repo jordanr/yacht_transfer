@@ -4,17 +4,17 @@ module YachtTransfer
     attr_accessor :service, :username, :password
 
     def initialize(host, uname, pass)
-      @service = host
+      @service = host.new
       @username = uname
       @password = pass
     end
 
     def secure!
-      @agent = service.post({:method=>'session.get', :username=>username, :password=>password})
+      @session_key = service.post({:method=>'session.get', :username=>username, :password=>password})
     end
 
     def secured?
-      !@agent.nil? # && !expired? 
+      @session_key # && !expired? 
     end
 
     def post(method, params = {})

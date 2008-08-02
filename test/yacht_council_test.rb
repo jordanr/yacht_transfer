@@ -2,7 +2,7 @@ class YachtCouncilLogonTest < Test::Unit::TestCase
 
   def test_should_secure
     @yc_session = YachtTransfer::Session.new(YachtTransfer::Services::YachtCouncil, 'jys', 'yacht')
-    @yc_session.secure!
+#    @yc_session.secure!
     assert @yc_session.secured?
   end
 
@@ -16,9 +16,10 @@ end
 class YachtCouncilListingsTest < Test::Unit::TestCase
   def setup
     @yc_session = YachtTransfer::Session.new(YachtTransfer::Services::YachtCouncil, 'jys', 'yacht')
+    @yc_session.secure!    
   end
 
-  def test_a
-    flunk
+  def test_listings_get
+    @yc_session.post('listings.get')
   end
 end

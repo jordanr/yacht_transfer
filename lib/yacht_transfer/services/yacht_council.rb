@@ -7,23 +7,46 @@ module YachtTransfer
     class YachtCouncil
       include Service
 
-      def self.session_get(params)
-	agent = WWW::Mechanize.new
-	page = agent.post(self.login_url, self.convert_to_yc!(params))
-	if(page.title=='Home')
-	  agent
-	else
-	  nil
-	end
+      def initialize
+	@agent = WWW::Mechanize.new
       end
 
+      def session_get(params)
+	page = @agent.post(session_get_url, session_get_params!(params))
+	return (page.title == 'Home')
+      end
+
+      def listings_get(params={})
+	page = @agent.get(listings_get_url)
+	form = page.forms[1]
+	form['LPP']=MAX_LPP
+	form['onlymy']=1
+	page = form.submit
+	# , listings_get_params!(params))
+        names = (page.parser/"td.secinfoname").collect { |td| td.at("strong").inner_html if(td.at("strong")) }
+	names.compact! # some secinfoname's don't have a strong name
+	# lengths =
+      end
+	
       private
-        def self.login_url
-          'http://www.yachtcouncil.org/login.asp'
+        MAX_LPP = 999
+
+	def base_url
+	 'http://www.yachtcouncil.org'
+        end
+        def session_get_url
+          "#{base_url}/login.asp"
+        end
+	def listings_get_url
+	  "#{base_url}/vessel_list.asp"
         end
 
-        def self.convert_to_yc!(params)
+        def session_get_params!(params)
 	  params.merge!({:login=>params.delete(:username)}) if params.has_key?(:username)
+        end
+
+        def listings_get_params!(params)
+	  params.merge!({:lpp=>MAX_LPP, :onlymy=>1})
         end
     end
   end

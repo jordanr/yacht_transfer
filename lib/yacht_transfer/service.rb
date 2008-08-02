@@ -1,13 +1,11 @@
 module YachtTransfer
   module Service    
-    def self.included(mls)
-      mls.extend(ClassMethods)
-    end
-
-    module ClassMethods
-      def post(params)
-        self.send(params.delete(:method).gsub(/\./,'_'), params)
-      end
+    [:session_get, :listings_get].each { |call|
+	define_method(call) { raise "not implemented yet" }
+    }
+	
+    def post(params)
+      send(params.delete(:method).gsub(/\./,'_'), params)
     end
   end
 end
