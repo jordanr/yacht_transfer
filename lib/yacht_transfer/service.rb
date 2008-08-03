@@ -2,10 +2,9 @@ require 'net/http'
 require 'yacht_transfer/parser'
 module YachtTransfer
   class Service
-    def initialize(api_base, api_path, api_key)
-      @api_base = api_base
-      @api_path = api_path
-      @api_key = api_key
+    def initialize(host, username)
+      @host = host
+      @username = username
     end
 
     # TODO: support ssl
@@ -19,7 +18,7 @@ module YachtTransfer
 
     private
     def url
-      URI.parse('http://'+ @api_base + @api_path)
+      URI.parse('http://'+ @host)
     end
   end
 end

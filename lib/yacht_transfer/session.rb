@@ -1,5 +1,8 @@
 module YachtTransfer
+  class NonSessionUser < StandardError;  end
   class Session
+    class UnknownError < StandardError; end
+
     attr_writer :auth_token
     attr_reader :session_key
 
@@ -24,16 +27,18 @@ module YachtTransfer
       @secret_from_session = secret_from_session   
     end
 
-    def secure!
-      response = post 'session.get'
-    end
-
     def secured?
-      @session_key # && !expired? 
+      !@session_key.nil?  && !expired? 
     end
 
     def post(method, params = {})
       service.post(params.merge!({:method=>method}))
     end
+
+    private
+      def service
+        @service ||= Service.new(@host, @username)
+      end
+
   end
 end
