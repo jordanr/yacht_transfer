@@ -1,11 +1,25 @@
+require 'net/http'
+require 'yacht_transfer/parser'
 module YachtTransfer
-  module Service    
-    [:session_get, :listings_get].each { |call|
-	define_method(call) { raise "not implemented yet" }
-    }
-	
+  class Service
+    def initialize(api_base, api_path, api_key)
+      @api_base = api_base
+      @api_path = api_path
+      @api_key = api_key
+    end
+
+    # TODO: support ssl
     def post(params)
-      send(params.delete(:method).gsub(/\./,'_'), params)
+      Parser.parse(params[:method], Net::HTTP.post_form(url, params))
+    end
+
+    def post_file(params)
+      Parser.parse(params[:method], Net::HTTP.post_multipart_form(url, params))
+    end
+
+    private
+    def url
+      URI.parse('http://'+ @api_base + @api_path)
     end
   end
 end
