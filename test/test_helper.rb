@@ -10,6 +10,34 @@ require 'yacht_transfer'
 
 class Test::Unit::TestCase
   private
+  def fixture(string)
+    File.open(File.dirname(__FILE__) + "/fixtures/#{string}").read
+  end
+
+  def sample_accommodation
+#    Accommodation.new("
+  end
+  def sample_engine
+  end
+  def sample_hull
+  end
+  def sample_listing
+  end
+  def sample_location
+  end
+  def sample_measurement
+  end
+  def sample_picture
+  end
+  def sample_refit
+  end
+  def sample_tank
+  end
+  def sample_user
+  end
+  def sample_yacht
+  end
+
   
   def expect_http_posts_with_responses(*responses_xml)
     mock_http = establish_session
