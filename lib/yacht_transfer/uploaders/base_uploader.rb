@@ -37,6 +37,14 @@ module Js2Fbjs
 	}
 	raise FormNotFoundError, "looking for #{codeword}"
       end
+
+      def fill_out_form!(form, hash)
+	inputs_to_fill = hash.delete_if { |k,v|
+				!form.has_field?(k.to_s)
+			 }
+	form.set_fields(inputs_to_fill)
+	form
+      end
     end
   end
 end

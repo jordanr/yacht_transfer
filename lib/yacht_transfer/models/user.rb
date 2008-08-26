@@ -10,7 +10,7 @@ module YachtTransfer
       # Can pass in these two forms:
       # id, session, (optional) attribute_hash
       # attribute_hash
-      def initialize(*args)
+#      def initialize(*args)
 #        if (args.first.kind_of?(String) || args.first.kind_of?(Integer)) && args.size==1
 #          @id=Integer(args.shift)
 #          @session = Session.current
@@ -21,7 +21,7 @@ module YachtTransfer
 #        if args.last.kind_of?(Hash)
 #          populate_from_hash!(args.pop)
 #        end
-      end
+#      end
 
 
       # only get minimum information
