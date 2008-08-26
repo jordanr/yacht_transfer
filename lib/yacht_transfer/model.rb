@@ -82,7 +82,28 @@ module YachtTransfer
           end)
         end
       end      
+
+      def type_checking_attr_writer(*symbols)
+	klass = symbols.pop
+	symbols.each do |symbol|
+          define_method("#{symbol}=") do |value|
+            raise TypeError, "'#{value}' should be #{klass.name}" unless value.is_a?(klass)
+            instance_variable_set("@#{symbol}", value)
+          end
+        end
+      end
+
+      def validating_attr_writer(*symbols)
+	list = symbols.pop
+	symbols.each do |symbol|
+          define_method("#{symbol}=") do |value|
+            raise RangeError, "'#{value}' should be one of #{list}" unless list.include?(value)
+            instance_variable_set("@#{symbol}", value)
+          end
+        end
+      end
     end
+
     
     ##
     # Centralized, error-checked place for a model to get the session to which it is bound.

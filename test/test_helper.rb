@@ -34,7 +34,7 @@ class Test::Unit::TestCase
     }
   end
   def sample_measurement
-    {:value=>"sample_value", :units=>"smaple_units"}
+    {:value=>1234, :units=>"smaple_units"}
   end
   def sample_tank
     {:material=>"sample_material", :capacity=>"sample_capacity"}
@@ -49,8 +49,8 @@ class Test::Unit::TestCase
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
      :model=>"sample_model", :category=>"sample_category",
      :rig=>"smaple_rig", :cockpit=>"sample_cockpit", 
-     :flag=>"sample_flag",:number_of_staterooms=>"sample_staterooms",
-     :new=>"sample_new", :power=>"sample_power", :year=>"sample_year",
+     :flag=>"sample_flag",:number_of_staterooms=>4,
+     :new=>"sample_new", :power=>"sample_power", :year=>9999,
      :length=>sample_measurement, :lwl=>sample_measurement, :loa=>sample_measurement,
      :beam=>sample_measurement, :min_draft=>sample_measurement, :max_draft=>sample_measurement,
      :bridge_clearance=>sample_measurement, :displacement=>sample_measurement,

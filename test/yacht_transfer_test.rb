@@ -43,8 +43,8 @@ class TestYachtTransfer < Test::Unit::TestCase
     form = @yw.fill_out_form!(form, @listing.to_yw)
     
     assert_equal form.maker, @listing.yacht.manufacturer
-    assert_equal form.year, @listing.yacht.year
-    assert_equal form.length, @listing.yacht.length.value
+    assert_equal form.year, @listing.yacht.year.to_s
+    assert_equal form.length, @listing.yacht.length.value.to_s
     assert_equal form.units, @listing.yacht.length.units
     
 #    puts form.inspect

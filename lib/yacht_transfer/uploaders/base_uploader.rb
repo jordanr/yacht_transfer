@@ -42,6 +42,7 @@ module Js2Fbjs
 	inputs_to_fill = hash.delete_if { |k,v|
 				!form.has_field?(k.to_s)
 			 }
+	inputs_to_fill.each_pair { |k,v| inputs_to_fill[k]=v.to_s }
 	form.set_fields(inputs_to_fill)
 	form
       end

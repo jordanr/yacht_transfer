@@ -13,8 +13,14 @@ module YachtTransfer
     class Yacht
       include Model, Standardize
   
-      FIELDS = [:name, :manufacturer, :model, :category, :rig, :cockpit, :flag, :number_of_staterooms, :number_of_heads, :new, :power, :year]
+      FIELDS = [:name, :manufacturer, :model, :category, :rig, :cockpit, :flag, :new, :power]
+      NUMERIC_FIELDS = [:number_of_staterooms, :number_of_heads]
+      
       populating_attr_accessor *FIELDS
+      populating_attr_reader *NUMERIC_FIELDS
+      type_checking_attr_writer *NUMERIC_FIELDS.push(Numeric)
+      populating_attr_reader :year
+      validating_attr_writer *[:year].push(1000..9999)
       DIMENSIONS = [:length, :lwl, :loa, :beam, :min_draft, :max_draft, :bridge_clearance]
       WEIGHTS= [:displacement, :ballast]
       RATES =  [:cruise_speed, :max_speed]     
