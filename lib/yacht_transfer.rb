@@ -1,6 +1,8 @@
 # YachtTransfer
 require 'yacht_transfer/model'
 require 'yacht_transfer/models/accommodation'
+require 'yacht_transfer/models/country'
+require 'yacht_transfer/models/state'
 require 'yacht_transfer/models/engine'
 require 'yacht_transfer/models/hull'
 require 'yacht_transfer/models/listing'

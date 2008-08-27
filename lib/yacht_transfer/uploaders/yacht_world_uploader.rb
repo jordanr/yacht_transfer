@@ -1,8 +1,8 @@
 module Js2Fbjs
   module Uploaders
     class YachtWorldUploader < BaseUploader
-      def initialize(u, p)
-	super(u, p)
+      def initialize(u, p, l)
+	super(u, p, l)
 	agent.auth(u, p)
       end
 

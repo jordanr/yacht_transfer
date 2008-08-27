@@ -1,21 +1,21 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 class TestYachtTransfer < Test::Unit::TestCase
   def setup
+    @listing= sample_listing
+
     @yc_username = "jys"
     @yc_password = "yacht"
-    @yc = Js2Fbjs::Uploaders::YachtCouncilUploader.new(@yc_username, @yc_password)
+    @yc = Js2Fbjs::Uploaders::YachtCouncilUploader.new(@yc_username, @yc_password,@listing)
 
     @yw_username = "jordanyacht"
     @yw_password = "swel4roj"
-    @yw = Js2Fbjs::Uploaders::YachtWorldUploader.new(@yw_username, @yw_password)
+    @yw = Js2Fbjs::Uploaders::YachtWorldUploader.new(@yw_username, @yw_password, @listing)
     @yw_start_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_start_page.html"))
     @yw_start_page_hash = {:maker=> "whatever", :year=>"1111", "length"=>"33", "units"=>"Meters", :dummy=>"nomatter" }
-   
-    @listing= sample_listing
   end
 
   def test_login_must_be_overridden
-    upper = Js2Fbjs::Uploaders::BaseUploader.new("a","b")
+    upper = Js2Fbjs::Uploaders::BaseUploader.new("a","b", nil)
     assert_raises(Js2Fbjs::Uploaders::BaseUploader::NotImplementedError) { upper.login }
   end
 
@@ -53,12 +53,19 @@ class TestYachtTransfer < Test::Unit::TestCase
 
 ################### 
 ##  Don't test bcuz they take too long.
+  def test_yw_submit_start_page
+    @yw.forage("maker")
+    @yw.basic
+    @yw.submit
+   puts  @yw.error("Select a Preferred Manufacturer", "maker", {"maker"=>true} ).inspect
+  end
+  
   def dont_test_yacht_council_logon
     assert @yc.login
   end
 
   def dont_test_yacht_council_logon_fails
-    yc = Js2Fbjs::Uploaders::YachtCouncilUploader.new("dkad", "dddd")
+    yc = Js2Fbjs::Uploaders::YachtCouncilUploader.new("dkad", "dddd", nil)
     assert_raises(Js2Fbjs::Uploaders::BaseUploader::LoginFailedError) { yc.login }
   end
 
@@ -69,7 +76,7 @@ class TestYachtTransfer < Test::Unit::TestCase
   end
 
   def dont_test_yacht_world_logon_fails
-    yw = Js2Fbjs::Uploaders::YachtWorldUploader.new("dkad", "dddd")
+    yw = Js2Fbjs::Uploaders::YachtWorldUploader.new("dkad", "dddd", nil)
     assert_raises(Js2Fbjs::Uploaders::BaseUploader::LoginFailedError) { yw.login }
   end
 ################

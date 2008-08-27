@@ -30,7 +30,7 @@ class Test::Unit::TestCase
   end
   def sample_location
     {:city=>"sample_city", :zip=>33315, :country=>"sample_country",
-     :state=>"sample_state", :region=>"sample_region"
+     :state=>"FL", :region=>"sample_region"
     }
   end
   def sample_measurement

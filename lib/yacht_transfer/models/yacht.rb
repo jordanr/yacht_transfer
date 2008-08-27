@@ -20,7 +20,7 @@ module YachtTransfer
       populating_attr_reader *NUMERIC_FIELDS
       type_checking_attr_writer *NUMERIC_FIELDS.push(Numeric)
       populating_attr_reader :year
-      option_checking_attr_writer *[:year].push(1000..9999)
+      option_checking_attr_writer :year, 1000..9999
       DIMENSIONS = [:length, :lwl, :loa, :beam, :min_draft, :max_draft, :bridge_clearance]
       WEIGHTS= [:displacement, :ballast]
       RATES =  [:cruise_speed, :max_speed]     
