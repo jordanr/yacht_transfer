@@ -11,6 +11,9 @@ class TestYachtTransfer < Test::Unit::TestCase
   class Thing
     include YachtTransfer::Model
     attr_accessor :name, :job
+    attr_reader :foo, :bar, :baz
+    option_checking_attr_writer *[:foo,:bar].push([8,9,90])
+    type_checking_attr_writer *[:baz].push(ComplexThing)
     hash_settable_accessor :complex_thing, ComplexThing
     hash_settable_list_accessor :list_of_complex_things, ComplexThing
   end
@@ -20,6 +23,29 @@ class TestYachtTransfer < Test::Unit::TestCase
     populating_attr_accessor :first_name
     populating_hash_settable_accessor :complex_thing, ComplexThing
     populating_hash_settable_accessor *[:yess, :noo, :maybeso].push(ComplexThing)
+  end
+
+  def test_type_checking_attr_writer_ok
+    t = Thing.new
+    ct = ComplexThing.new
+    ct.weight=10
+    t.baz = ct
+    assert_equal ct.weight, t.baz.weight
+  end
+  def test_type_checking_attr_writer_fails
+    t = Thing.new
+    assert_raises(TypeError) { t.baz= 999 }
+  end
+  def test_option_checking_attr_writer_ok
+    t = Thing.new
+    t.foo = 90
+    t.bar = 9
+    assert_equal t.foo, 90
+    assert_equal t.bar, 9
+  end
+  def test_option_checking_attr_writer_fails
+    t = Thing.new
+    assert_raises(RangeError) { t.foo= 999 }
   end
 
   def test_populating_hash_settable_accessor_populates_for_one_symbol
