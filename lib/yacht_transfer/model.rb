@@ -93,7 +93,7 @@ module YachtTransfer
         end
       end
 
-      def validating_attr_writer(*symbols)
+      def option_checking_attr_writer(*symbols)
 	list = symbols.pop
 	symbols.each do |symbol|
           define_method("#{symbol}=") do |value|

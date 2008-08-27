@@ -29,7 +29,7 @@ class Test::Unit::TestCase
     }
   end
   def sample_location
-    {:city=>"sample_city", :zip=>"sample_zip", :country=>"sample_country",
+    {:city=>"sample_city", :zip=>33315, :country=>"sample_country",
      :state=>"sample_state", :region=>"sample_region"
     }
   end
@@ -37,7 +37,7 @@ class Test::Unit::TestCase
     {:value=>1234, :units=>"smaple_units"}
   end
   def sample_tank
-    {:material=>"sample_material", :capacity=>"sample_capacity"}
+    {:material=>"sample_material", :capacity=>999}
   end
   def sample_picture
   end
