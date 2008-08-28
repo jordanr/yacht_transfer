@@ -12,6 +12,7 @@ class TestYachtTransfer < Test::Unit::TestCase
     @yw = Js2Fbjs::Uploaders::YachtWorldUploader.new(@yw_username, @yw_password, @listing)
     @yw_start_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_start_page.html"))
     @yw_start_page_hash = {:maker=> "whatever", :year=>"1111", "length"=>"33", "units"=>"Meters", :dummy=>"nomatter" }
+    @yw_basic_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_basic_page.html"))
   end
 
   def test_login_must_be_overridden
@@ -33,31 +34,36 @@ class TestYachtTransfer < Test::Unit::TestCase
     form.fields.each { |f|
 	assert_equal f.value, @yw_start_page_hash[f.name] if @yw_start_page_hash.has_key?(f.name)
     }
-#    puts form.inspect
   end
 
   def test_fill_out_yw_start_page_with_listing
     
     form = @yw_start_page.forms.first
     hashh = @listing.to_yw
-    form = @yw.fill_out_form!(form, @listing.to_yw)
+    form = @yw.fill_out_form!(form, hashh)
     
     assert_equal form.maker, @listing.yacht.manufacturer
     assert_equal form.year, @listing.yacht.year.to_s
     assert_equal form.length, @listing.yacht.length.value.to_s
     assert_equal form.units, @listing.yacht.length.units
-    
-#    puts form.inspect
+  end
+
+  def test_fill_out_yw_basic_page_with_listing
+    form = @yw.get_form(@yw_basic_page, "maker")
+    hashh = @listing.to_yw
+    form = @yw.fill_out_form!(form, hashh)
+    puts form.inspect
   end
 
 
 ################### 
 ##  Don't test bcuz they take too long.
-  def test_yw_submit_start_page
+  def dont_test_yw_submit_start_page
     @yw.forage("maker")
     @yw.basic
-    @yw.submit
-   puts  @yw.error("Select a Preferred Manufacturer", "maker", {"maker"=>true} ).inspect
+    assert @yw.submit
+  
+#    write_fixture("yw_basic_page.html", @yw.error("Select a Preferred Manufacturer", "maker", {"maker"=>true}).root.to_html)
   end
   
   def dont_test_yacht_council_logon
@@ -72,7 +78,7 @@ class TestYachtTransfer < Test::Unit::TestCase
   def dont_test_yacht_world_logon
     assert @yw.login
   #  p @yw_start_page.forms
-  #  File.open("yw_test", "w") << x
+  #  File.open(filename, "w") << x
   end
 
   def dont_test_yacht_world_logon_fails

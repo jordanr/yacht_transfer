@@ -4,10 +4,13 @@ module YachtTransfer
   module Models
     class Engine
       include Model, Standardize
-      attr_accessor :manufacturer, :model, :fuel, :horsepower, :year, :hours
-      attr_reader :horsepower, :year, :hours
+      YW_FUEL_TRANSFORM = {:diesel=>"Diesel", :gas=>"Gas", :other=>"Other"}
+
+      attr_accessor :manufacturer, :model
+      attr_reader :horsepower, :year, :hours, :fuel
       type_checking_attr_writer *[:horsepower, :hours].push(Numeric)
       option_checking_attr_writer :year, 1000..9999
+      option_checking_attr_writer :fuel, YW_FUEL_TRANSFORM.keys
 
       def to_yw
 	standardize(STD2YW)

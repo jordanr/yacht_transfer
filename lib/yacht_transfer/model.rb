@@ -97,7 +97,7 @@ module YachtTransfer
 	list = symbols.pop
 	symbols.each do |symbol|
           define_method("#{symbol}=") do |value|
-            raise RangeError, "'#{value}' should be one of #{list}" unless list.include?(value)
+            raise RangeError, "'#{value}' should be one of #{list.is_a?(Range) ? list : list.to_a.join(', ')}" unless list.include?(value) || list.include?(value.to_sym)
             instance_variable_set("@#{symbol}", value)
           end
         end

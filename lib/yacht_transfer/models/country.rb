@@ -5,6 +5,10 @@ module YachtTransfer
         countries_from_file = YAML::load(File.open(File.dirname(__FILE__) + "/countries.yml"))
       end
      
+      def self.names
+	self.hash.collect { |c| c[:name].to_sym }
+      end
+
       def self.options
 	self.hash.collect { |c| c.values }.flatten
       end

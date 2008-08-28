@@ -24,8 +24,10 @@ module YachtTransfer
       DIMENSIONS = [:length, :lwl, :loa, :beam, :min_draft, :max_draft, :bridge_clearance]
       WEIGHTS= [:displacement, :ballast]
       RATES =  [:cruise_speed, :max_speed]     
-      MEASUREMENTS = DIMENSIONS + WEIGHTS + RATES
-      populating_hash_settable_accessor *MEASUREMENTS.push(Measurement)
+#      MEASUREMENTS = DIMENSIONS + WEIGHTS + RATES
+      populating_hash_settable_accessor *DIMENSIONS.push(Distance)
+      populating_hash_settable_accessor *WEIGHTS.push(Weight)
+      populating_hash_settable_accessor *RATES.push(Speed)
 
       populating_hash_settable_accessor :hull, Hull
       populating_hash_settable_accessor :fuel_tank, Tank

@@ -13,10 +13,14 @@ class Test::Unit::TestCase
   def fixture(string)
     File.open(File.dirname(__FILE__) + "/fixtures/#{string}").read
   end
+  def write_fixture(filename, data)
+    File.open(File.dirname(__FILE__) + "/fixtures/#{filename}", "w") << data
+  end
 
   def sample_accommodation
     {:title=>"sample_title",:content=>"sample_content"}
   end
+
   def sample_engine
     {:manufacturer=>"smaple_manufacturer", :model=>"sample_model",
      :fuel=>"sample_fuel",:horsepower=>"sample_hp", :year=>"sample_year",
@@ -24,26 +28,36 @@ class Test::Unit::TestCase
     }
   end
   def sample_hull
-    {:configuration=>"sample_configuration", :material=>"sample_material",
+    {:configuration=>"sample_configuration", :material=>"wood",
      :color=>"sample_color", :designer=>"sample_designer"
     }
   end
   def sample_location
-    {:city=>"sample_city", :zip=>33315, :country=>"sample_country",
+    {:city=>"sample_city", :zip=>33315, :country=>"United States of America",
      :state=>"FL", :region=>"sample_region"
     }
   end
-  def sample_measurement
-    {:value=>1234, :units=>"smaple_units"}
+  def sample_price
+    {:value=>1234, :units=>"euros"}
+  end
+  def sample_speed
+    {:value=>12, :units=>"knots"}
+  end
+  def sample_distance
+    {:value=>200, :units=>"meters"}
+  end
+####
+  alias sample_measurement sample_distance
+
+  def sample_weight
+    {:value=>20, :units=>"tons"}
   end
   def sample_tank
-    {:material=>"sample_material", :capacity=>999}
+    {:material=>"sample_material", :capacity=> { :value=>999, :units=>"liters"} }
   end
   def sample_picture
   end
   def sample_refit
-  end
-  def sample_user
   end
   def sample_yacht
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
@@ -53,8 +67,8 @@ class Test::Unit::TestCase
      :new=>"sample_new", :power=>"sample_power", :year=>9999,
      :length=>sample_measurement, :lwl=>sample_measurement, :loa=>sample_measurement,
      :beam=>sample_measurement, :min_draft=>sample_measurement, :max_draft=>sample_measurement,
-     :bridge_clearance=>sample_measurement, :displacement=>sample_measurement,
-     :ballast=>sample_measurement,:cruise_speed=>sample_measurement,:max_speed=>sample_measurement,
+     :bridge_clearance=>sample_measurement, :displacement=>sample_weight,
+     :ballast=>sample_weight,:cruise_speed=>sample_speed,:max_speed=>sample_speed,
      :hull=>sample_hull,
      :fuel_tank=>sample_tank, :water_tank=>sample_tank, :holding_tank=>sample_tank,
      :location=>sample_location, 
@@ -64,44 +78,7 @@ class Test::Unit::TestCase
 
   end
   def sample_listing
-    YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_measurement})
+    YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price})
   end
 
-  
-  def expect_http_posts_with_responses(*responses_xml)
-    mock_http = establish_session
-    responses_xml.each do |xml_string|
-      mock_http.should_receive(:post_form).and_return(xml_string).once.ordered(:posts)
-    end   
-  end
-  
-  def establish_session(session = @session)
-    mock = flexmock(Net::HTTP).should_receive(:post_form).and_return(example_auth_token_xml).once.ordered(:posts)
-    mock.should_receive(:post_form).and_return(example_get_session_xml).once.ordered(:posts)
-    session.secure!    
-    mock
-  end
-  
-  def example_auth_token_xml
-    <<-XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <auth_createToken_response xmlns="http://api.facebook.com/1.0/" 
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:schemaLocation="http://api.facebook.com/1.0/ http://api.facebook.com/1.0/facebook.xsd">
-        3e4a22bb2f5ed75114b0fc9995ea85f1
-        </auth_createToken_response>    
-    XML
-  end
-  
-  def example_get_session_xml
-    <<-XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <auth_getSession_response xmlns="http://api.facebook.com/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://api.facebook.com/1.0/ http://api.facebook.com/1.0/facebook.xsd">
-      <session_key>5f34e11bfb97c762e439e6a5-8055</session_key>
-      <uid>8055</uid>
-      <expires>1173309298</expires>
-      <secret>ohairoflamao12345</secret>
-    </auth_getSession_response>    
-    XML
-  end  
 end

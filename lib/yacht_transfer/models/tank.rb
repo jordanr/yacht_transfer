@@ -4,8 +4,7 @@ module YachtTransfer
     class Tank
       include Model
       attr_accessor :material
-      attr_reader :capacity
-      type_checking_attr_writer :capacity, Numeric
+      populating_hash_settable_accessor :capacity, Volume
     end
   end
 end

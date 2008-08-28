@@ -2,11 +2,11 @@ module YachtTransfer
   module Models
      class State
 	def self.names
-	  NAMES.collect { |s| s.first }
+	  NAMES.collect { |s| s.first.to_sym }
 	end
 
 	def self.abbreviations
-	  NAMES.collect { |s| s.last }
+	  NAMES.collect { |s| s.last.to_sym }
 	end
 
 

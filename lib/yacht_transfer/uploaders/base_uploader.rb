@@ -32,7 +32,6 @@ module Js2Fbjs
 	if(agent.current_page.root.to_html.match(errorword))
 	  forage(codeword)
 	  fill_out_form!(@form, fix)
-	  p @form
 	  resp = submit(keyword)
           if(resp.root.to_html.match(errorword))
   	    raise ErrorFixFailed, "could not get rid of #{errorword}" 
