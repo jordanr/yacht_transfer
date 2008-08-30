@@ -7,15 +7,33 @@ module YachtTransfer
       type_checking_attr_writer :value, Numeric
       attr_reader :units
       # subclass defines attr_writer for units
+
+      def to_s
+	"#{value} #{units}"
+      end
     end
 
     class Price < Measurement
-      STD2YW = {:dollars=>"USD",:euros=>"EUR"}
-      option_checking_attr_writer :units, STD2YW.keys
+      UNITS_TRANSFORM = {:dollars=>{:yw=>"USD"},
+			 :euros=>{:yw=>"EUR"} 
+			}
+      option_checking_attr_writer :units, UNITS_TRANSFORM.keys
 
+      def yw
+	{ 
+	  "currency"=>UNITS_TRANSFORM[units.to_sym][:yw],
+	  "price"=>value
+        }
+      end      
+      def to_yw; yw ; end
     end
+
     class Distance < Measurement
-      option_checking_attr_writer :units, [:meters, :feet]
+      UNITS_TRANSFORM = {:meters=>{:yw=>"Meters"},
+			 :feet=>{:yw=>"Feet"}
+			}
+      option_checking_attr_writer :units, UNITS_TRANSFORM.keys
+
     end
 
     class Weight < Measurement

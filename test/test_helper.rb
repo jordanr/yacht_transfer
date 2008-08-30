@@ -23,8 +23,8 @@ class Test::Unit::TestCase
 
   def sample_engine
     {:manufacturer=>"smaple_manufacturer", :model=>"sample_model",
-     :fuel=>"sample_fuel",:horsepower=>"sample_hp", :year=>"sample_year",
-     :hours=>"sample_hourss"
+     :fuel=>"diesel",:horsepower=>1000, :year=>1111,
+     :hours=>100
     }
   end
   def sample_hull
@@ -64,7 +64,7 @@ class Test::Unit::TestCase
      :model=>"sample_model", :category=>"sample_category",
      :rig=>"smaple_rig", :cockpit=>"sample_cockpit", 
      :flag=>"sample_flag",:number_of_staterooms=>4,
-     :new=>"sample_new", :power=>"sample_power", :year=>9999,
+     :new=>"sample_new", :type=>"sail", :year=>9999,
      :length=>sample_measurement, :lwl=>sample_measurement, :loa=>sample_measurement,
      :beam=>sample_measurement, :min_draft=>sample_measurement, :max_draft=>sample_measurement,
      :bridge_clearance=>sample_measurement, :displacement=>sample_weight,
@@ -73,12 +73,13 @@ class Test::Unit::TestCase
      :fuel_tank=>sample_tank, :water_tank=>sample_tank, :holding_tank=>sample_tank,
      :location=>sample_location, 
      :accommodations=>[sample_accommodation, sample_accommodation],
-     :engines=>sample_engine
+     :engines=>[sample_engine, sample_engine]
     }
 
   end
   def sample_listing
-    YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price})
+    YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price, :broker=>"Dad",
+					:type=>"open", :status=>"in_progress", :co_op=>true})
   end
 
 end

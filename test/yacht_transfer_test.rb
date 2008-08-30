@@ -42,19 +42,32 @@ class TestYachtTransfer < Test::Unit::TestCase
     hashh = @listing.to_yw
     form = @yw.fill_out_form!(form, hashh)
     
-    assert_equal form.maker, @listing.yacht.manufacturer
-    assert_equal form.year, @listing.yacht.year.to_s
-    assert_equal form.length, @listing.yacht.length.value.to_s
-    assert_equal form.units, @listing.yacht.length.units
+    assert_equal @listing.yacht.manufacturer, form.maker
+    assert_equal @listing.yacht.year.to_s, form.year
+    assert_equal @listing.yacht.length.value.to_s, form.length
+    assert_equal @listing.yacht.length.units.capitalize, form.units
   end
 
   def test_fill_out_yw_basic_page_with_listing
     form = @yw.get_form(@yw_basic_page, "maker")
     hashh = @listing.to_yw
     form = @yw.fill_out_form!(form, hashh)
-    puts form.inspect
-  end
+#    puts form.inspect
+#    puts form.input("boat_type").options.collect { |o|
+#	 "\"#{o.value}\""
+ #   }.join(", ").gsub(/\n/,"")
 
+    y = @listing.yacht
+    assert_equal @listing.price.value.to_s, form.price
+    assert_equal "EUR", form.currency
+    assert form.input("hin_unavail").checked
+    assert_equal y.manufacturer, form.maker
+    assert_equal y.year.to_s, form.year
+    assert_equal y.length.value.to_s, form.length
+    assert_equal y.length.units.capitalize, form.units
+    assert_equal y.engines.first.fuel.capitalize, form.fuel
+    assert_equal "W", form.hull_material
+  end
 
 ################### 
 ##  Don't test bcuz they take too long.
