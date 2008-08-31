@@ -114,9 +114,10 @@ module WWW
       #  form.set_fields( :foo => { 1 => 'bar' } )
       def set_inputs(fields = {})
         fields.each do |k,v|
-	  f = input(k.to_s)
+	  f = input(k.to_s) || (add_field!(k.to_s, v) and next)
           case v
           when Hash
+	    # p v
             v.each do |index, value|
 	       set_input!(f[index], value)
 #              self.fields.name(k.to_s).[](index).value = value

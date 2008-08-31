@@ -1,6 +1,7 @@
 require 'yacht_transfer/model'
 require 'yacht_transfer/models/country'
 require 'yacht_transfer/models/state'
+require 'yacht_transfer/standards'
 module YachtTransfer
   module Models
     ##
@@ -13,15 +14,6 @@ module YachtTransfer
       option_checking_attr_writer :state, State.abbreviations
       option_checking_attr_writer :country, Country.names
 
-      def to_yw
-	yw
-      end
-      def yw
-	{ 
-          "boat_city"=>city,
-	  "boat_country"=>country,
-	}
-      end
     end
   end
 end

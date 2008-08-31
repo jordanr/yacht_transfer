@@ -52,6 +52,11 @@ module Js2Fbjs
 	@logged_on
       end
 
+      def page
+	raise NotReadyError, "you need to get first" if(!@agent)
+	@agent.current_page
+      end
+
       def agent
         @agent ||= WWW::Mechanize.new
       end
@@ -61,11 +66,11 @@ module Js2Fbjs
       end
 
       def fill_out_form!(form, hash)
-	inputs_to_fill = hash.delete_if { |k,v|
-				!form.has_input?(k.to_s)
-			 }
-	inputs_to_fill.each_pair { |k,v| inputs_to_fill[k]=v.to_s }
-	form.set_inputs(inputs_to_fill)
+#	inputs_to_fill = hash.delete_if { |k,v|
+#				!form.has_input?(k.to_s)
+#			 }
+#	inputs_to_fill.each_pair { |k,v| inputs_to_fill[k]=v }
+	form.set_inputs(hash)
 	form
       end
  

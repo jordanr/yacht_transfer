@@ -1,8 +1,9 @@
 require 'yacht_transfer/model'
+require 'yacht_transfer/standards'
 module YachtTransfer
   module Models
     class Measurement
-      include Model
+      include Model, Std
       attr_reader :value
       type_checking_attr_writer :value, Numeric
       attr_reader :units
@@ -14,26 +15,11 @@ module YachtTransfer
     end
 
     class Price < Measurement
-      UNITS_TRANSFORM = {:dollars=>{:yw=>"USD"},
-			 :euros=>{:yw=>"EUR"} 
-			}
-      option_checking_attr_writer :units, UNITS_TRANSFORM.keys
-
-      def yw
-	{ 
-	  "currency"=>UNITS_TRANSFORM[units.to_sym][:yw],
-	  "price"=>value
-        }
-      end      
-      def to_yw; yw ; end
+      option_checking_attr_writer :units, std::PRICE_UNITS_TRANSFORM.keys
     end
 
     class Distance < Measurement
-      UNITS_TRANSFORM = {:meters=>{:yw=>"Meters"},
-			 :feet=>{:yw=>"Feet"}
-			}
-      option_checking_attr_writer :units, UNITS_TRANSFORM.keys
-
+      option_checking_attr_writer :units, std::DISTANCE_UNITS_TRANSFORM.keys
     end
 
     class Weight < Measurement
