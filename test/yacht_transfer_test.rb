@@ -36,7 +36,7 @@ class TestYachtTransfer < Test::Unit::TestCase
     }
   end
 
-  def test_fill_out_yw_start_page_with_listing
+  def dont_test_fill_out_yw_start_page_with_listing
     
     form = @yw_start_page.forms.first
     hashh = @listing.to_yw
@@ -47,12 +47,12 @@ class TestYachtTransfer < Test::Unit::TestCase
     assert_equal @listing.yacht.length.units.capitalize, form.units
   end
 
-  def test_fill_out_yw_basic_page_with_listing
+  def dont_test_fill_out_yw_basic_page_with_listing
     form = @yw.get_form(@yw_basic_page, "maker")
-    hashh = @listing.to_yw
+#    hashh = @listing.to_yw
 #    puts hashh.inspect
-    form = @yw.fill_out_form!(form, hashh)
-#    puts form.inspect
+ #   form = @yw.fill_out_form!(form, hashh)
+    puts form.inspect
 #    puts form.input("boat_type").options.collect { |o|
 #	 "\"#{o.value}\""
  #   }.join(", ").gsub(/\n/,"")
@@ -73,9 +73,12 @@ class TestYachtTransfer < Test::Unit::TestCase
 ################### 
 ##  Don't test bcuz they take too long.
   def test_yw_submit_start_page
-    @yw.forage("maker")
-    @yw.basic
-    puts @yw.submit.inspect
+#     puts @yw.start.forms.first.inspect
+     puts @yw.basic.inspect
+    
+     #@yw.forage("maker")
+ #   @yw.basic
+#    puts @yw.submit.inspect
  #   write_fixture("yw_basic_page.html", @yw.error("Select a Preferred Manufacturer", "maker", {"maker"=>true}).root.to_html)
   end
 

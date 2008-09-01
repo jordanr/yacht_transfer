@@ -1,8 +1,10 @@
 require "rubygems"
 require "mechanize"
+require 'yacht_transfer/standards'
 module Js2Fbjs
   module Uploaders
     class BaseUploader
+	include YachtTransfer::Standards
       class LoginFailedError < StandardError;  end
       class FormNotFoundError < StandardError;  end
       class NoFormError < StandardError;  end
@@ -22,11 +24,11 @@ module Js2Fbjs
 	@form = get_form(url ? agent.get(url) : agent.current_page, codeword)
       end
 
-      def basic
-        raise NoFormError, "you must forage first" unless @form
-        fill_out_form!(@form, listing.to_yw)
-      end
-      
+#      def basic
+ #       raise NoFormError, "you must forage first" unless @form
+  #      fill_out_form!(@form, listing.to_yw)
+    #  end
+
       def error(errorword, codeword, fix, keyword=nil)
 	raise NotReadyError, "no page to error check" unless agent.current_page
 	if(agent.current_page.root.to_html.match(errorword))

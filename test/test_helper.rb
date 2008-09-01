@@ -23,7 +23,7 @@ class Test::Unit::TestCase
 
   def sample_engine
     {:manufacturer=>"smaple_manufacturer", :model=>"sample_model",
-     :fuel=>"diesel",:horsepower=>1000, :year=>1111,
+     :fuel=>"gas",:horsepower=>1000, :year=>1111,
      :hours=>100
     }
   end

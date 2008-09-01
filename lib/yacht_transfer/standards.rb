@@ -38,11 +38,14 @@ module YachtTransfer
                        false=>{:yw=>"Used"}
                         }
 
-      PRICE_UNITS_TRANSFORM = {:dollars=>{:yw=>"USD"},
-                         :euros=>{:yw=>"EUR"}
-      DISTANCE_UNITS_TRANSFORM = {:meters=>{:yw=>"Meters"},
-                         :feet=>{:yw=>"Feet"}
-                        }
+      PRICE_UNITS_TRANSFORM = {
+				:dollars=>{:yw=>"USD"},
+                         	:euros=>{:yw=>"EUR"}
+			}
+      DISTANCE_UNITS_TRANSFORM = {
+	 			:meters=>{:yw=>"Meters"},
+	                         :feet=>{:yw=>"Feet"}
+         	               }
       MATERIAL_TRANSFORM = {    :fiberglass=>{:yw=>"FG"},
                                 :composite=>{:yw=>"CP"},
                                 :wood=>{:yw=>"W"},
@@ -65,11 +68,73 @@ module YachtTransfer
                          :inactive=>{:yw=>nil},
                          :in_progress=>{:yw=>nil}
                         }
-      
-      def yw_start
+      def yacht
+	listing.yacht
+      end
+      def engine
+	yacht.engines.first
+      end
+
+      def yw_start_params
+	{
 	:url=>username,
 	:lang=>"en",
-	:
+	:revised_date=>Time.now.strftime("%Y%m%d"),
+	:action=>"Add",
+        :year=>yacht.year,
+	:length=>yacht.length.value,
+        :units=>DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yw],
+	:verify=>"1",
+	:new_maker_flag=>"0",
+	:pass_office_id=>"",
+	:pass_broker_id=>"",
+	:maker=>yacht.manufacturer
+	}
+      end
+
+      def yw_basic_params
+	{
+        :central=>LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yw],
+        :co_op =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw],
+	:boat_id=>"New",
+	:url=>username,
+	:old_price=>"",
+	:old_local_price=>"",
+	:old_currency=>"",
+	:first_price_change=>"1",
+	:maker=>yacht.manufacturer,
+	:pass_office_id=>"",
+	:pass_broker_id=>"",
+	:lang=>"en",
+	:revised_date=>Time.now.strftime("%Y%m%d"),
+	:action=>"Add",
+	:boats_clobs_id=>"New",
+	:model=>yacht.model,
+	:length=>yacht.length.value,
+	:year=>yacht.year,
+        :price=>listing.price.value,
+	:hin=>"",
+        :units=>DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yw], # converts length to feet
+        :currency=>PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yw],
+        :boat_type=>YACHT_TYPE_TRANSFORM[yacht.type.to_sym][:yw],
+        :hin_unavail=>"on",  
+        :tax=>"",     
+        :fuel=>FUEL_TRANSFORM[engine.fuel.to_sym][:yw],
+        :engine_num=>(1..3).include?(yacht.engines.length) ? yacht.engines.length : 3,
+	:hull_material=>MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yw],
+        :boat_new=>NEW_TRANSFORM[yacht.new ? true : false][:yw],
+        :boat_city=>yacht.location.city,
+	:boat_state=>yacht.location.state,
+        :boat_country=>"United States", #yacht.location.country,
+	:description=>"lala",#yacht.description,
+	:contact_info=>"dada",#listing.contact_info,
+#	:photo_sort_order_1=>"1", # disabled
+	:office_id=>"", # ids
+	:broker_id=>"", # ids
+	:full_specs=>"Full Specs" # submit
+	}
+      end
+
 	def yw
         {
           "name"=>name,
@@ -111,6 +176,7 @@ module YachtTransfer
           "central"=>TYPE_TRANSFORM[listing.type.to_sym][:yw],
           "co_op" =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw]
         }
+      end
 
   end
 
