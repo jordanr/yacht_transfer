@@ -12,7 +12,7 @@ module YachtTransfer
     class Yacht
       include Model, Std
 
-      FIELDS = [:name, :manufacturer, :model, :category, :rig, :cockpit, :flag, :new]
+      FIELDS = [:name, :manufacturer, :model, :category, :rig, :cockpit, :flag, :new, :description]
       NUMERIC_FIELDS = [:number_of_staterooms, :number_of_heads]
       
       populating_attr_accessor *FIELDS

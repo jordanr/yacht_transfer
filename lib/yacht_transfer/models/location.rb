@@ -11,7 +11,7 @@ module YachtTransfer
       attr_accessor :city, :region
       attr_reader :zip, :state, :country
       option_checking_attr_writer :zip, 10000..99999
-      option_checking_attr_writer :state, State.abbreviations
+      option_checking_attr_writer :state, State.options
       option_checking_attr_writer :country, Country.names
 
     end

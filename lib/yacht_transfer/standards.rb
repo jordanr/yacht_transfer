@@ -1,3 +1,4 @@
+require 'yacht_transfer/models/state'
 module YachtTransfer
   module Standards
       YACHT_TYPE_TRANSFORM = {:power=>{:yw=>[ "(Power) Motoryacht with cockpit\n", 
@@ -124,13 +125,13 @@ module YachtTransfer
 	:hull_material=>MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yw],
         :boat_new=>NEW_TRANSFORM[yacht.new ? true : false][:yw],
         :boat_city=>yacht.location.city,
-	:boat_state=>yacht.location.state,
-        :boat_country=>"United States", #yacht.location.country,
-	:description=>"lala",#yacht.description,
-	:contact_info=>"dada",#listing.contact_info,
+	:boat_state=>YachtTransfer::Models::State.abbreviation(yacht.location.state),
+        :boat_country=>yacht.location.country,
+	:description=>yacht.description,
+	:contact_info=>listing.contact_info,
 #	:photo_sort_order_1=>"1", # disabled
-	:office_id=>"", # ids
-	:broker_id=>"", # ids
+	:office_id=>"", # get ids?
+	:broker_id=>"", # get ids?
 	:full_specs=>"Full Specs" # submit
 	}
       end

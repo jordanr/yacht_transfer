@@ -10,13 +10,16 @@ module Js2Fbjs
         "https://www.boatwizard.com"
       end
 
+      def start_url; base_url+start_path; end
+      def basic_url; base_url+basic_path; end
+
       def start_path
         "/boatwizard/listings/edit_listing.cgi" 
-#        "action=Add&number=&url=#{username}&pass_office_id=&pass_broker_id=&lang=en"
       end
       def basic_path
         "/boatwizard/lib/edit_sql.cgi"
       end
+
       def login
         begin
           agent.get(base_url)
@@ -27,11 +30,11 @@ module Js2Fbjs
       end
 
       def start
-	agent.post(base_url+start_path, yw_start_params)	
+	agent.post(start_url, yw_start_params)	
       end
 
       def basic
-	agent.post(base_url+basic_path, yw_basic_params)	
+	agent.post(basic_url, yw_basic_params)	
       end
     end
   end

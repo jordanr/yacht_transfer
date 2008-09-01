@@ -7,9 +7,9 @@ module YachtTransfer
     class Listing
       include Model, Std
 
-      FIELDS = [:broker, :type, :status, :co_op]
+      FIELDS = [:broker, :type, :status, :co_op, :contact_info]
       populating_attr_reader *FIELDS
-      attr_writer :broker, :co_op
+      attr_writer :broker, :co_op, :contact_info
       option_checking_attr_writer :type, std::LISTING_TYPE_TRANSFORM.keys
       option_checking_attr_writer :status, std::STATUS_TRANSFORM.keys
 

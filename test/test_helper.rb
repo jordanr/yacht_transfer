@@ -62,6 +62,7 @@ class Test::Unit::TestCase
   def sample_yacht
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
      :model=>"sample_model", :category=>"sample_category",
+     :description=>"sample_description",
      :rig=>"smaple_rig", :cockpit=>"sample_cockpit", 
      :flag=>"sample_flag",:number_of_staterooms=>4,
      :new=>"sample_new", :type=>"sail", :year=>9999,
@@ -79,7 +80,8 @@ class Test::Unit::TestCase
   end
   def sample_listing
     YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price, :broker=>"Dad",
-					:type=>"open", :status=>"in_progress", :co_op=>true})
+					:type=>"open", :status=>"in_progress", :co_op=>true,
+					:contact_info=>"sample_contact_info"})
   end
 
 end

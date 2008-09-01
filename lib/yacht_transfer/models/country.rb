@@ -6,7 +6,7 @@ module YachtTransfer
       end
      
       def self.names
-	self.hash.collect { |c| c[:name].to_sym }
+	self.hash.collect { |c| c[:name] }
       end
 
       def self.options

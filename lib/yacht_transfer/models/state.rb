@@ -1,68 +1,37 @@
 module YachtTransfer
   module Models
-     class State
-	def self.names
-	  NAMES.collect { |s| s.first.to_sym }
-	end
+    class State
+      def self.load
+        @states_from_file = YAML::load(File.open(File.dirname(__FILE__) + "/states.yml"))
+      end
+   
+      def self.data
+	@states_from_file || self.load
+      end
 
-	def self.abbreviations
-	  NAMES.collect { |s| s.last.to_sym }
-	end
+      def self.abbreviation(name)
+	return name if self.abbreviations.include?(name)
+	state = self.data.find { |c| c[:name]==name }
+	state[:a]
+      end
 
+      def self.name(abbreviation)
+	return abbreviation if self.names.include?(name)
+	state = self.data.find { |c| c[:a]==abbreviation }
+	state[:name]
+      end
 
-       NAMES = [
-         [ "Alabama", "AL" ], 
-         [ "Alaska", "AK" ], 
-         [ "Arizona", "AZ" ], 
-         [ "Arkansas", "AR" ], 
-         [ "California", "CA" ], 
-         [ "Colorado", "CO" ], 
-        [ "Connecticut", "CT" ], 
-        [ "Delaware", "DE" ], 
-        [ "District Of Columbia", "DC" ], 
-        [ "Florida", "FL" ], 
-        [ "Georgia", "GA" ], 
-        [ "Hawaii", "HI" ], 
-        [ "Idaho", "ID" ], 
-        [ "Illinois", "IL" ], 
-        [ "Indiana", "IN" ], 
-        [ "Iowa", "IA" ], 
-        [ "Kansas", "KS" ], 
-        [ "Kentucky", "KY" ], 
-        [ "Louisiana", "LA" ], 
-        [ "Maine", "ME" ], 
-        [ "Maryland", "MD" ], 
-        [ "Massachusetts", "MA" ], 
-        [ "Michigan", "MI" ], 
-        [ "Minnesota", "MN" ], 
-        [ "Mississippi", "MS" ], 
-        [ "Missouri", "MO" ], 
-        [ "Montana", "MT" ], 
-        [ "Nebraska", "NE" ], 
-        [ "Nevada", "NV" ], 
-        [ "New Hampshire", "NH" ], 
-        [ "New Jersey", "NJ" ], 
-        [ "New Mexico", "NM" ], 
-        [ "New York", "NY" ], 
-        [ "North Carolina", "NC" ], 
-        [ "North Dakota", "ND" ], 
-        [ "Ohio", "OH" ], 
-        [ "Oklahoma", "OK" ], 
-        [ "Oregon", "OR" ], 
-        [ "Pennsylvania", "PA" ], 
-        [ "Rhode Island", "RI" ], 
-        [ "South Carolina", "SC" ], 
-        [ "South Dakota", "SD" ], 
-        [ "Tennessee", "TN" ], 
-        [ "Texas", "TX" ], 
-        [ "Utah", "UT" ], 
-        [ "Vermont", "VT" ], 
-        [ "Virginia", "VA" ], 
-        [ "Washington", "WA" ], 
-        [ "West Virginia", "WV" ], 
-        [ "Wisconsin", "WI" ], 
-        [ "Wyoming", "WY" ]
-      ]
+      def self.names
+        self.data.collect { |c| c[:name] }
+      end
+
+      def self.abbreviations
+        self.data.collect { |c| c[:a] }
+      end
+
+      def self.options
+        self.data.collect { |c| c.values }.flatten
+      end
     end
   end
 end
