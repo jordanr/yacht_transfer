@@ -10,10 +10,10 @@ end
 class TestYachtWorldTransfer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
-
+    @id = "1711800"
     @yw_username = "jordanyacht"
     @yw_password = "swel4roj"
-    @yw = Js2Fbjs::Uploaders::YachtWorldUploader.new(@yw_username, @yw_password, @listing)
+    @yw = Js2Fbjs::Uploaders::YachtWorldUploader.new(@yw_username, @yw_password, @listing, @id)
 
     @yw_start_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_start_page.html"))
     @yw_basic_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_basic_page.html"))
@@ -30,9 +30,23 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
      puts @yw.start.inspect
   end
 
-  def test_yw_submit_basic_page
-puts	@yw.yw_basic_params.inspect
-#    puts @yw.basic.inspect
+  def dont_test_yw_submit_basic_page
+    puts @yw.basic.inspect
+  end
+
+  def test_yw_submit_details_page
+    puts @yw.details(@yw_details_page).inspect	
+#	res = @yw_details_page.parser/"input"
+#	ans =res.collect { |i| if(i.to_html.match(/clob_id_/))
+#			 i['value']
+#		       else
+#			 nil
+#		       end 
+#		 }
+#	ans.compact!
+#	puts ans.length
+#	puts ans
+	
   end
 
   def dont_test_yacht_world_logon

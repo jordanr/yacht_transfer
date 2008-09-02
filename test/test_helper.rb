@@ -18,7 +18,7 @@ class Test::Unit::TestCase
   end
 
   def sample_accommodation
-    {:title=>"sample_title",:content=>"sample_content"}
+    {:title=>"sample_title",:content=>"sample_content", :left=>"sameple_left", :right=>"sampel_reight"}
   end
 
   def sample_engine

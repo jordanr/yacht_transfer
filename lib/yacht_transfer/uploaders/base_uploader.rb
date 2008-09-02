@@ -6,17 +6,17 @@ module Js2Fbjs
     class BaseUploader
 	include YachtTransfer::Standards
       class LoginFailedError < StandardError;  end
-      class FormNotFoundError < StandardError;  end
-      class NoFormError < StandardError;  end
+      class BadIdError < StandardError;  end
       class NotReadyError < StandardError;  end
       class NotImplementedError < StandardError;  end
 
-      attr_accessor :username, :password, :listing
+      attr_accessor :username, :password, :listing, :id
 
-      def initialize(username, password, listing)
+      def initialize(username, password, listing, id=nil)
         @username = username
         @password = password
         @listing = listing
+	@id = id
       end
 
       def logged_on?

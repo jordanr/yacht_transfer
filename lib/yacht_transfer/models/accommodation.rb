@@ -5,6 +5,8 @@ module YachtTransfer
       include Model
       attr_accessor :title
       attr_accessor :content
+      attr_accessor :left
+      attr_accessor :right
     end
   end
 end       

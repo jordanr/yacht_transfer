@@ -76,6 +76,16 @@ module YachtTransfer
 	yacht.engines.first
       end
 
+      def yw_params
+	{
+	:url=>username,
+	:lang=>"en",
+	:revised_date=>Time.now.strftime("%Y%m%d"),
+	:pass_office_id=>"",
+	:pass_broker_id=>""
+	}
+      end	
+
       def yw_start_params
 	{
 	:url=>username,
@@ -97,7 +107,7 @@ module YachtTransfer
 	{
         :central=>LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yw],
         :co_op =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw],
-	:boat_id=>"New",
+	:boat_id=>id ? id : "New",
 	:url=>username,
 	:old_price=>"",
 	:old_local_price=>"",
@@ -108,8 +118,8 @@ module YachtTransfer
 	:pass_broker_id=>"",
 	:lang=>"en",
 	:revised_date=>Time.now.strftime("%Y%m%d"),
-	:action=>"Add",
-	:boats_clobs_id=>"New",
+	:action=>id ? "Edit" : "Add",
+	:boats_clobs_id=>id ? id : "New",
 	:model=>yacht.model,
 	:length=>yacht.length.value,
 	:year=>yacht.year,
@@ -136,47 +146,49 @@ module YachtTransfer
 	}
       end
 
-	def yw
-        {
-          "name"=>name,
-          "maker"=>manufacturer,
-          "model"=>model,
-          "year"=>year,
-          "length"=>length.value,
-          "units"=>Distance::UNITS_TRANSFORM[length.units.to_sym][:yw],
-          "lwl"=>lwl.to_s,
-          "loa"=>loa.to_s,
-          "beam"=>beam.to_s,
-          "draft"=>min_draft.to_s,      
-          "clearance"=>bridge_clearance.to_s,
-          "displacement"=>displacement.to_s,
-          "ballast"=>ballast.to_s,
-          "cruising_speed"=>cruise_speed.to_s,        
-          "max_speed"=>max_speed.to_s,
-          "fuel_tank"=>fuel_tank.capacity.to_s,
-          "water_tank"=>water_tank.capacity.to_s,
-          "holding_tank"=>holding_tank.capacity.to_s,
-          "boat_new"=>NEW_TRANSFORM[new ? true : false][:yw],
-          "engine_num"=>(1..3).include?(engines.length) ? engines.length : 3,
-          "boat_type"=>TYPE_TRANSFORM[type.to_sym][:yw],
-          "currency"=>PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yw],
-          "price"=>value,
-          "boat_city"=>city,
-          "boat_country"=>country,
-          "designer"=>designer,
-          "hull_material"=>MATERIAL_TRANSFORM[material.to_sym][:yw],
-          "fuel"=>FUEL_TRANSFORM[fuel.to_sym][:yw],
-          "engines"=>manufacturer,
-          "engines_hp"=>horsepower,
-          "engine_model"=>model,
-          "engine_hours"=>hours,
-          "name_access"=>"Public", 
-	  "specs_access"=>"Public",
-          "hin_unavail"=>"on", 
-	  "tax"=>"",
-          "central"=>TYPE_TRANSFORM[listing.type.to_sym][:yw],
-          "co_op" =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw]
-        }
+      def yw_details_params(clob_ids=nil)
+	params = yw_params
+	params.merge!({
+          :boat_id=>id,
+    	  :action=>"Edit",
+	  :ops=>"",
+#	  :save_default_access=>"1", # never
+	  :name_access=>"PublicUsers",
+	  :name=>yacht.name,
+	  :specs_access=>"PublicUsers",
+          :builder=>yacht.manufacturer,
+	  :designer=>yacht.hull.designer,
+	  :loa=>yacht.loa.to_s,
+	  :lwl=>yacht.lwl.to_s,
+	  :beam=>yacht.beam.to_s,
+          :draft=>yacht.min_draft.to_s,
+          :clearance=>yacht.bridge_clearance.to_s,
+          :displacement=>yacht.displacement.to_s,
+          :ballast=>yacht.ballast.to_s,
+          :engines=>engine.manufacturer,
+          :engine_hp=>engine.horsepower.to_s,
+          :engine_model=>engine.model,
+          :cruising_speed=>yacht.cruise_speed.to_s,
+          :engine_hours=>engine.hours,
+          :max_speed=>yacht.max_speed.to_s,
+          :fuel_tank=>yacht.fuel_tank.capacity.to_s,
+          :water_tank=>yacht.water_tank.capacity.to_s,
+          :holding_tank=>yacht.holding_tank.capacity.to_s
+#	  :specs_default=>"1", # never
+        })
+	yacht.accommodations.each_with_index do |a, n|
+	  x = n+1
+	  params.merge!({
+#		"clob_id_#{x}"=> clob_ids[n], # get ids?
+		"desc_order_#{x}"=>x, # ?
+		"clob_title_#{x}"=>a.title,
+		"description_access_#{x}"=>"PublicUsers", # ?
+		"clob_paragraph_#{x}"=>a.content,
+		"clob_left_#{x}"=>a.left,
+		"clob_right_#{x}"=>a.right
+	  })
+	end
+	params
       end
 
   end

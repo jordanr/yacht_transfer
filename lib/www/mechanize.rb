@@ -488,7 +488,6 @@ module WWW
     end
   
     def post_form(url, form)
-	puts "URI: #{url}"
       cur_page = form.page || current_page ||
                       Page.new( nil, {'content-type'=>'text/html'})
   
@@ -751,15 +750,20 @@ module WWW
     def self.build_query_string(parameters)
       res =parameters.map { |k,v|
 	k &&
-#	[v].flatten.map { |subv|	
-            [WEBrick::HTTPUtils.escape_form(k.to_s),
-              WEBrick::HTTPUtils.escape_form(v.to_s)].join("=")
-#	}
+	[v].flatten.map { |subv|	
+            [escape_str(k.to_s),
+              escape_str(subv.to_s)].join("=")
+	}
       }.compact.join('&')
 	puts res
+#	raise StandardError
 	res
     end
   
+    def self.escape_str(str)
+      WEBrick::HTTPUtils.escape_form(str.to_s).gsub(/\(/,"%28").gsub(/\)/,"%29")
+    end
+
     def add_to_history(page)
       @history.push(page, to_absolute_uri(page.uri))
       history_added.call(page) if history_added
