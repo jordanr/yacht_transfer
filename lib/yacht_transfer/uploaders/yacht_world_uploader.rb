@@ -38,22 +38,29 @@ module Js2Fbjs
 	res
       end
 
-      def details(page)
-	res = page # agent.current_page # just called basic
-	if(res and res.form(:action=>details_path).boat_id)
-          inputs = res.parser/"input"
-          clob_ids =inputs.collect { |i| if(i.to_html.match(/clob_id_/))
-                         i['value']
-                       else
-                         nil
-                       end
-                 }
-          clob_ids.compact!
+      def details
+	raise BadIdError, "need an id" if(!id)
+	res = (res and res.form(:action=>details_path).boat_id) ? agent.current_page : add_accommodation # basic
+	clob_ids = get_clob_ids(res)
+	if(yacht.accommodations.length > clob_ids.length)
+	  add_accommodation
+	  details
 	else
-	  raise StandardError
+  	  agent.post(details_url, yw_details_params(clob_ids))
 	end
-	  
-	agent.post(details_url, yw_details_params(clob_ids))
+      end
+
+      def add_accommodation
+	agent.post(details_url, yw_add_accommodation_params)
+      end
+ 
+      # Pre : Parameter is response from calling basic()
+      def get_clob_ids(details_page)
+        inputs = details_page.parser/"input"
+        clob_ids = inputs.collect do |i|  
+	  (i.to_html.match(/clob_id_/)) ? i['value'] : nil
+	end
+        clob_ids.compact!
       end
     end
   end

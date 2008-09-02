@@ -68,7 +68,12 @@ module YachtTransfer
       STATUS_TRANSFORM ={:active=>{:yw=>nil},
                          :inactive=>{:yw=>nil},
                          :in_progress=>{:yw=>nil}
+#			 :sold=>{},
+#			 :sale_pending=>{}
                         }
+
+      COUNTRY_TRANSFORM = {:"United States of America"=>{:yw=>"United States"}
+			  }	
       def yacht
 	listing.yacht
       end
@@ -87,40 +92,33 @@ module YachtTransfer
       end	
 
       def yw_start_params
-	{
-	:url=>username,
-	:lang=>"en",
-	:revised_date=>Time.now.strftime("%Y%m%d"),
+	params = yw_params
+	params.merge!({
 	:action=>"Add",
         :year=>yacht.year,
 	:length=>yacht.length.value,
         :units=>DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yw],
 	:verify=>"1",
 	:new_maker_flag=>"0",
-	:pass_office_id=>"",
-	:pass_broker_id=>"",
 	:maker=>yacht.manufacturer
-	}
+	})
       end
 
       def yw_basic_params
-	{
-        :central=>LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yw],
-        :co_op =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw],
+	params = yw_params
+	params.merge!({
 	:boat_id=>id ? id : "New",
-	:url=>username,
 	:old_price=>"",
 	:old_local_price=>"",
 	:old_currency=>"",
 	:first_price_change=>"1",
-	:maker=>yacht.manufacturer,
-	:pass_office_id=>"",
-	:pass_broker_id=>"",
-	:lang=>"en",
-	:revised_date=>Time.now.strftime("%Y%m%d"),
 	:action=>id ? "Edit" : "Add",
-	:boats_clobs_id=>id ? id : "New",
+	:boats_clobs_id=>id ? nil : "New",
+
+	:maker=>yacht.manufacturer,
 	:model=>yacht.model,
+        :central=>LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yw],
+        :co_op =>CO_OP_TRANSFORM[listing.co_op? ? true : false][:yw],
 	:length=>yacht.length.value,
 	:year=>yacht.year,
         :price=>listing.price.value,
@@ -128,28 +126,38 @@ module YachtTransfer
         :units=>DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yw], # converts length to feet
         :currency=>PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yw],
         :boat_type=>YACHT_TYPE_TRANSFORM[yacht.type.to_sym][:yw],
-        :hin_unavail=>"on",  
-        :tax=>"",     
+        :hin_unavail=>"on",
+        :tax=>"",
         :fuel=>FUEL_TRANSFORM[engine.fuel.to_sym][:yw],
         :engine_num=>(1..3).include?(yacht.engines.length) ? yacht.engines.length : 3,
 	:hull_material=>MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yw],
         :boat_new=>NEW_TRANSFORM[yacht.new ? true : false][:yw],
         :boat_city=>yacht.location.city,
 	:boat_state=>YachtTransfer::Models::State.abbreviation(yacht.location.state),
-        :boat_country=>yacht.location.country,
+        :boat_country=>COUNTRY_TRANSFORM.keys.include?(yacht.location.country.to_sym) ? COUNTRY_TRANSFORM[yacht.location.country.to_sym][:yw] : yacht.location.country,
 	:description=>yacht.description,
 	:contact_info=>listing.contact_info,
 #	:photo_sort_order_1=>"1", # disabled
 	:office_id=>"", # get ids?
 	:broker_id=>"", # get ids?
 	:full_specs=>"Full Specs" # submit
-	}
+	})
+      end
+
+      def yw_add_accommodation_params
+	params = yw_params
+	params.merge!({
+          :boat_id=>id ? id : raise(StandardError, "need boat id"),
+    	  :action=>"Edit",
+	  :ops=>"",
+	  :add_desc=>"Add a Description"
+	})
       end
 
       def yw_details_params(clob_ids=nil)
 	params = yw_params
 	params.merge!({
-          :boat_id=>id,
+          :boat_id=>id ? id : raise(StandardError, "need boat id"),
     	  :action=>"Edit",
 	  :ops=>"",
 #	  :save_default_access=>"1", # never
@@ -173,24 +181,25 @@ module YachtTransfer
           :max_speed=>yacht.max_speed.to_s,
           :fuel_tank=>yacht.fuel_tank.capacity.to_s,
           :water_tank=>yacht.water_tank.capacity.to_s,
-          :holding_tank=>yacht.holding_tank.capacity.to_s
+          :holding_tank=>yacht.holding_tank.capacity.to_s,
 #	  :specs_default=>"1", # never
+	  :ad=>"Display Ad" # submit
         })
-	yacht.accommodations.each_with_index do |a, n|
+	a = yacht.accommodations
+	clob_ids.each_with_index do |i, n|
 	  x = n+1
 	  params.merge!({
-#		"clob_id_#{x}"=> clob_ids[n], # get ids?
+		"clob_id_#{x}"=> i, # get ids?
 		"desc_order_#{x}"=>x, # ?
-		"clob_title_#{x}"=>a.title,
+		"clob_title_#{x}"=>a[n]? a[n].title : "",
 		"description_access_#{x}"=>"PublicUsers", # ?
-		"clob_paragraph_#{x}"=>a.content,
-		"clob_left_#{x}"=>a.left,
-		"clob_right_#{x}"=>a.right
+		"clob_paragraph_#{x}"=>a[n] ? a[n].content : "",
+		"clob_left_#{x}"=>a[n] ? a[n].left : "",
+		"clob_right_#{x}"=>a[n] ? a[n].right : ""
 	  })
 	end
 	params
       end
-
   end
 
   module Std

@@ -31,22 +31,17 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
   end
 
   def dont_test_yw_submit_basic_page
-    puts @yw.basic.inspect
+    puts @yw.basic.inspect # edit
+    @yw.id=nil
+    puts @yw.basic.inspect # new
   end
 
   def test_yw_submit_details_page
-    puts @yw.details(@yw_details_page).inspect	
-#	res = @yw_details_page.parser/"input"
-#	ans =res.collect { |i| if(i.to_html.match(/clob_id_/))
-#			 i['value']
-#		       else
-#			 nil
-#		       end 
-#		 }
-#	ans.compact!
-#	puts ans.length
-#	puts ans
-	
+    puts @yw.details.inspect
+  end
+
+  def dont_test_yw_submit_add_accommodation_page
+    puts @yw.add_accommodation.inspect
   end
 
   def dont_test_yacht_world_logon
