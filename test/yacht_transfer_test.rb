@@ -28,7 +28,15 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
   ################### 
   ##  Don't test bcuz they take too long.
   def test_yw_photo_upload_page
-    puts @yw.photo(1).inspect
+#    puts @yw.photo(1).inspect
+  end
+
+  def test_yw_submit_details_page
+    puts @yw.details.inspect
+  end
+
+  def dont_test_yw_submit_add_accommodation_page
+    puts @yw.add_accommodation.inspect
   end
 
   def dont_test_yw_submit_start_page
@@ -41,13 +49,6 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
     puts @yw.basic.inspect # new
   end
 
-  def dont_test_yw_submit_details_page
-    puts @yw.details.inspect
-  end
-
-  def dont_test_yw_submit_add_accommodation_page
-    puts @yw.add_accommodation.inspect
-  end
 
   def dont_test_yacht_world_logon
     assert @yw.login

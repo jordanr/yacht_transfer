@@ -197,6 +197,7 @@ module YachtTransfer
 		"clob_left_#{x}"=>a[n] ? a[n].left : "",
 		"clob_right_#{x}"=>a[n] ? a[n].right : ""
 	  })
+	  params.merge!({"delete_#{x}"=> "1"}) if !a[n]
 	end
 	params
       end

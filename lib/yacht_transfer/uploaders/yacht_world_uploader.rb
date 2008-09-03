@@ -44,7 +44,7 @@ module Js2Fbjs
 
       def details
 	raise BadIdError, "need an id" if(!id)
-	res = (res and res.form(:action=>details_path).boat_id) ? agent.current_page : add_accommodation # basic
+	res = (res and res.form(:action=>details_path).boat_id) ? agent.current_page : add_accommodation
 	clob_ids = get_clob_ids(res)
 	if(yacht.accommodations.length > clob_ids.length)
 	  add_accommodation
