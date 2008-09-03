@@ -14,7 +14,7 @@ Picture
 =======
   This library acts like a hub instead of point to point.
   
-  * Hub
+  * Hub: n lines of communication
      0 
    0 | 0 
     \|/
@@ -23,7 +23,7 @@ Picture
    0 | 0
      0
   
-  * Point to Point
+  * Point to Point: n^2 lines of communication
       0
     / | \
    /  |  \
@@ -38,7 +38,7 @@ Example
 
 Requirements
 ============
-  * Mechanize (requires Hpricot)
+  * Mechanize (which requires Hpricot)
 
 Use Case
 ========

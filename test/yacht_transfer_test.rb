@@ -33,7 +33,7 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
     puts @yw.basic_with_photo.inspect
   end
 
-  def test_yw_photo_upload_page
+  def dont_test_yw_photo_upload_page
     (1..3).each { |p| @yw.delete_photo(p) }
 #    puts @yw.photo.inspect
   end
