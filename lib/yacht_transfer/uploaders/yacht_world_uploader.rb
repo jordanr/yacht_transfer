@@ -13,13 +13,18 @@ module Js2Fbjs
       def start_url; base_url+start_path; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
-      def photo_url(n); base_url+photo_path+"?"+photo_params(n); end
+      def photo_url(n); base_url+photo_path+"?"+photo_params(n, "Add"); end
+      def delete_photo_url(n); base_url+delete_photo_path+"?"+photo_params(n,"Delete"); end
 
       def start_path; "/boatwizard/listings/edit_listing.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
       def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
-      def photo_params(n);"boat_id=#{id}&photo=#{n}&url=#{username}&action=Add&pass_office_id=&pass_broker_id=&lang=en";end
+      def delete_photo_path; "/boatwizard/listings/photos.cgi"; end
+
+      def photo_params(n, action)
+	"boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"
+      end
 
       def login
         begin
@@ -54,24 +59,69 @@ module Js2Fbjs
 	end
       end
 
-      def photo(n)
+      def photo
 	raise BadIdError, "need an id" if(!id)
-  	agent.post_files(photo_url(n), yw_photo_params(n))
+	n = 1
+	# only can do some max photos at a time
+	yacht.pictures.each_slice(YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME) { |pics|
+   	  agent.post_files(photo_url(n), yw_photo_params(n))
+	  n+=YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME
+	}
+	pics_num = get_photo_num(agent.current_page)
+	((yacht.pictures.length+1)..pics_num).each { |p| delete_photo(p) } # delete extra pics
+	basic_with_photo
       end
 
-      private
+      def basic_with_photo
+	raise BadIdError, "need an id" if(!id)
+	puts yw_basic_with_photo_params
+	agent.post(basic_url, yw_basic_with_photo_params)
+      end	
+
+#      private
+	def delete_photo(n)
+	  agent.get(delete_photo_url(n))
+	end
+
         def add_accommodation
   	  agent.post(details_url, yw_add_accommodation_params)
         end 
 
         # Pre : Parameter is response from calling basic()
         def get_clob_ids(details_page)
-          inputs = details_page.parser/"input"
-          clob_ids = inputs.collect do |i|  
-  	    (i.to_html.match(/clob_id_/)) ? i['value'] : nil
-  	  end
-          clob_ids.compact!
+	  get_input_values(details_page, "clob_id_")
         end
+
+        def get_photo_num(basic_page)
+	  get_input_values(basic_page, "photo_sort_order_").length
+        end
+	
+	def get_input_values(page, input_name)
+          inputs = page.parser/"input"
+          values = inputs.collect do |i|  
+  	    (i.to_html.match(/#{input_name}/)) ? i['value'] : nil
+  	  end
+          values.compact!
+	end
+	
     end
   end
 end
+
+class Array
+  def each_slice(n, &block)
+    i = 0
+    while(i<length)
+      yield slice(i...i+n)
+      i +=n
+    end
+  end
+
+  def except(n)
+    slice(0...n)+slice((n+1)...length)
+  end
+end
+	
+# [232,333,1,94,85,3].each_slice(2) { |a| puts a }
+#[232,333,1,94,85,3].except(4)
+

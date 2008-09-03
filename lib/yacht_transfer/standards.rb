@@ -74,6 +74,9 @@ module YachtTransfer
 
       COUNTRY_TRANSFORM = {:"United States of America"=>{:yw=>"United States"}
 			  }	
+
+      YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5
+
       def yacht
 	listing.yacht
       end
@@ -203,13 +206,28 @@ module YachtTransfer
       end
 
       def yw_photo_params(s)
+        raise(StandardError, "need boat id") if !id
 	params = {:submit=>"Save Photo"}
 	p = yacht.pictures
-	t = s + 5
+	t = s + YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME
 	(s...t).each do |n|
-  	  params.merge!({"fileName_#{n}"=> p[n-1] ? p[n-1].src : ""})
+  	  params.merge!({"fileName_#{n}"=> p[n-1].src}) if (p[n-1])
 	end
 	params
+      end
+
+      # Pre : Pictures are uploaded
+      def yw_basic_with_photo_params
+        raise(StandardError, "need boat id") if !id
+	params = yw_basic_params
+	yacht.pictures.except(0).each_with_index { |p, n|
+	  real_index = n+2
+  	  params.merge!({
+			"photo_description_#{real_index}"=> p.label,
+			"photo_sort_order_#{real_index}"=>real_index
+			})
+	}
+        params
       end
   end
 
@@ -225,3 +243,4 @@ module YachtTransfer
       end
   end
 end
+

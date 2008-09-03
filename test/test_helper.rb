@@ -58,7 +58,7 @@ class Test::Unit::TestCase
     {:material=>"sample_material", :capacity=> { :value=>999, :units=>"liters"} }
   end
   def sample_picture
-    {:label=>"Rails Logo", :src=>picture_fixture("rails.png")}
+    {:label=>"sample picture", :src=>picture_fixture("rails.png")}
   end
 
   def sample_yacht
@@ -77,8 +77,7 @@ class Test::Unit::TestCase
      :location=>sample_location, 
      :accommodations=>[sample_accommodation, sample_accommodation],
      :engines=>[sample_engine, sample_engine],
-     :pictures=>[sample_picture,sample_picture,sample_picture,
-	 	 sample_picture,sample_picture,sample_picture]
+     :pictures=>[sample_picture ,sample_picture,sample_picture]
     }
   end
   def sample_listing

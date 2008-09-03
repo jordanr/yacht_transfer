@@ -519,7 +519,7 @@ module WWW
       request.add_field('Content-Length', request_data.size.to_s)
   
       log.debug("query: #{ request_data.inspect }") if log
-      puts "query: #{ request_data.inspect }"
+      #puts "query: #{ request_data.inspect }"
   	
       # fetch the page
       page = fetch_page(abs_url, request, cur_page, [request_data])
