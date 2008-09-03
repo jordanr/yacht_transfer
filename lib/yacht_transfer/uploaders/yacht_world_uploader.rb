@@ -13,9 +13,13 @@ module Js2Fbjs
       def start_url; base_url+start_path; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
+      def photo_url(n); base_url+photo_path+"?"+photo_params(n); end
+
       def start_path; "/boatwizard/listings/edit_listing.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
+      def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
+      def photo_params(n);"boat_id=#{id}&photo=#{n}&url=#{username}&action=Add&pass_office_id=&pass_broker_id=&lang=en";end
 
       def login
         begin
@@ -50,18 +54,24 @@ module Js2Fbjs
 	end
       end
 
-      def add_accommodation
-	agent.post(details_url, yw_add_accommodation_params)
+      def photo(n)
+	raise BadIdError, "need an id" if(!id)
+  	agent.post_files(photo_url(n), yw_photo_params(n))
       end
- 
-      # Pre : Parameter is response from calling basic()
-      def get_clob_ids(details_page)
-        inputs = details_page.parser/"input"
-        clob_ids = inputs.collect do |i|  
-	  (i.to_html.match(/clob_id_/)) ? i['value'] : nil
-	end
-        clob_ids.compact!
-      end
+
+      private
+        def add_accommodation
+  	  agent.post(details_url, yw_add_accommodation_params)
+        end 
+
+        # Pre : Parameter is response from calling basic()
+        def get_clob_ids(details_page)
+          inputs = details_page.parser/"input"
+          clob_ids = inputs.collect do |i|  
+  	    (i.to_html.match(/clob_id_/)) ? i['value'] : nil
+  	  end
+          clob_ids.compact!
+        end
     end
   end
 end

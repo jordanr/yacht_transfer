@@ -18,6 +18,7 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
     @yw_start_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_start_page.html"))
     @yw_basic_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_basic_page.html"))
     @yw_details_page=WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_details_page.html"))
+    @yw_photo_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_photo_page.html"))
   end
 
   def test_it
@@ -26,6 +27,10 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
 
   ################### 
   ##  Don't test bcuz they take too long.
+  def test_yw_photo_upload_page
+    puts @yw.photo(1).inspect
+  end
+
   def dont_test_yw_submit_start_page
      puts @yw.start.inspect
   end
@@ -36,7 +41,7 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
     puts @yw.basic.inspect # new
   end
 
-  def test_yw_submit_details_page
+  def dont_test_yw_submit_details_page
     puts @yw.details.inspect
   end
 

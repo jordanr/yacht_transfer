@@ -273,6 +273,26 @@ module WWW
       }
       post_form(url, form)
     end
+
+    def post_files(url, file_data={})
+      query = file_data
+      node = {}
+      # Create a fake form
+      class << node
+        def search(*args); []; end
+      end
+      node['method'] = 'POST'
+      node['enctype'] = 'application/x-www-form-urlencoded'
+  
+      form = Form.new(node)
+      form.enctype = 'multipart/form-data'
+      query.each { |k,v|
+        ul = Form::FileUpload.new(k.to_s, k.to_s)
+        ul.file_data = v.to_s
+        form.file_uploads << ul
+      }
+      post_form(url, form)
+    end
   
     # Submit a form with an optional button.
     # Without a button:
@@ -499,7 +519,8 @@ module WWW
       request.add_field('Content-Length', request_data.size.to_s)
   
       log.debug("query: #{ request_data.inspect }") if log
-  
+      puts "query: #{ request_data.inspect }"
+  	
       # fetch the page
       page = fetch_page(abs_url, request, cur_page, [request_data])
       add_to_history(page) 
@@ -657,7 +678,6 @@ module WWW
           else
             body.read
           end
-  	  # puts response_body
           # Find our pluggable parser
           page = @pluggable_parser.parser(content_type).new(
             uri,
@@ -679,7 +699,6 @@ module WWW
         http_obj.start
         retry
       end
-#      puts page.parser.root.to_html
   
       # If the server sends back keep alive options, save them
       if keep_alive_info = response['keep-alive']
@@ -748,20 +767,17 @@ module WWW
     end
   
     def self.build_query_string(parameters)
-      res =parameters.map { |k,v|
+      parameters.map { |k,v|
 	k &&
 	[v].flatten.map { |subv|	
             [escape_str(k.to_s),
               escape_str(subv.to_s)].join("=")
 	}
       }.compact.join('&')
-	puts res
-#	raise StandardError
-	res
     end
   
     def self.escape_str(str)
-      WEBrick::HTTPUtils.escape_form(str.to_s).gsub(/\(/,"%28").gsub(/\)/,"%29")
+      WEBrick::HTTPUtils.escape_form(str.to_s) #.gsub(/\(/,"%28").gsub(/\)/,"%29")
     end
 
     def add_to_history(page)

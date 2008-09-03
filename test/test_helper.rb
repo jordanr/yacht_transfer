@@ -10,6 +10,9 @@ require 'yacht_transfer'
 
 class Test::Unit::TestCase
   private
+  def picture_fixture(string)
+    ::File.open(File.dirname(__FILE__) + "/fixtures/#{string}", "rb") { |f| f.read }
+  end
   def fixture(string)
     File.open(File.dirname(__FILE__) + "/fixtures/#{string}").read
   end
@@ -20,7 +23,6 @@ class Test::Unit::TestCase
   def sample_accommodation
     {:title=>"sample_title",:content=>"sample_content", :left=>"sameple_left", :right=>"sampel_reight"}
   end
-
   def sample_engine
     {:manufacturer=>"smaple_manufacturer", :model=>"sample_model",
      :fuel=>"gas",:horsepower=>1000, :year=>1111,
@@ -56,9 +58,9 @@ class Test::Unit::TestCase
     {:material=>"sample_material", :capacity=> { :value=>999, :units=>"liters"} }
   end
   def sample_picture
+    {:label=>"Rails Logo", :src=>picture_fixture("rails.png")}
   end
-  def sample_refit
-  end
+
   def sample_yacht
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
      :model=>"sample_model", :category=>"sample_category",
@@ -74,9 +76,10 @@ class Test::Unit::TestCase
      :fuel_tank=>sample_tank, :water_tank=>sample_tank, :holding_tank=>sample_tank,
      :location=>sample_location, 
      :accommodations=>[sample_accommodation, sample_accommodation],
-     :engines=>[sample_engine, sample_engine]
+     :engines=>[sample_engine, sample_engine],
+     :pictures=>[sample_picture,sample_picture,sample_picture,
+	 	 sample_picture,sample_picture,sample_picture]
     }
-
   end
   def sample_listing
     YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price, :broker=>"Dad",

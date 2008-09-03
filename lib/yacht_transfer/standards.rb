@@ -200,6 +200,16 @@ module YachtTransfer
 	end
 	params
       end
+
+      def yw_photo_params(s)
+	params = {:submit=>"Save Photo"}
+	p = yacht.pictures
+	t = s + 5
+	(s...t).each do |n|
+  	  params.merge!({"fileName_#{n}"=> p[n-1] ? p[n-1].src : ""})
+	end
+	params
+      end
   end
 
   module Std
