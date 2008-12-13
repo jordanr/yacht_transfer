@@ -1,9 +1,20 @@
-module Js2Fbjs
+module YachtTransfer
   module Uploaders
     class YachtWorldUploader < BaseUploader
       def initialize(u, p, l, id=nil)
 	super(u, p, l, id)
 	agent.auth(u, p)
+      end
+
+      def create
+	basic
+	details
+	photo
+      end
+
+      def delete
+  	  raise BadIdError, "need an id" if(!id)	  
+	  agent.get(delete_url)
       end
 
       def base_url
@@ -15,15 +26,21 @@ module Js2Fbjs
       def details_url; base_url+details_path; end
       def photo_url(n); base_url+photo_path+"?"+photo_params(n, "Add"); end
       def delete_photo_url(n); base_url+delete_photo_path+"?"+photo_params(n,"Delete"); end
+      def delete_url; base_url+delete_path+"?"+delete_params; end
 
       def start_path; "/boatwizard/listings/edit_listing.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
       def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
       def delete_photo_path; "/boatwizard/listings/photos.cgi"; end
+      def delete_path; "/boatwizard/lib/delete_sql.cgi"; end
 
       def photo_params(n, action)
 	"boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"
+      end
+
+      def delete_params
+	"boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"
       end
 
       def login
@@ -72,13 +89,13 @@ module Js2Fbjs
 	basic_with_photo
       end
 
-      def basic_with_photo
-	raise BadIdError, "need an id" if(!id)
-	puts yw_basic_with_photo_params
-	agent.post(basic_url, yw_basic_with_photo_params)
-      end	
-
 #      private
+        def basic_with_photo
+  	  raise BadIdError, "need an id" if(!id)
+          # puts yw_basic_with_photo_params
+	  agent.post(basic_url, yw_basic_with_photo_params)
+        end	
+
 	def delete_photo(n)
 	  agent.get(delete_photo_url(n))
 	end

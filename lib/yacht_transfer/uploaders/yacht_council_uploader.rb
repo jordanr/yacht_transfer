@@ -1,4 +1,4 @@
-module Js2Fbjs
+module YachtTransfer
   module Uploaders
     class YachtCouncilUploader < BaseUploader
       def base_url

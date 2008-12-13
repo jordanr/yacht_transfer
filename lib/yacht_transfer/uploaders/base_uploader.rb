@@ -1,7 +1,7 @@
 require "rubygems"
 require "mechanize"
 require 'yacht_transfer/standards'
-module Js2Fbjs
+module YachtTransfer
   module Uploaders
     class BaseUploader
 	include YachtTransfer::Standards
@@ -28,6 +28,20 @@ module Js2Fbjs
       end
 
       def login
+        raise NotImplementedError, "subclass should have overriden"
+      end
+
+# CRUD
+      def create
+        raise NotImplementedError, "subclass should have overriden"
+      end
+      def read
+        raise NotImplementedError, "subclass should have overriden"
+      end
+      def update
+        raise NotImplementedError, "subclass should have overriden"
+      end
+      def delete
         raise NotImplementedError, "subclass should have overriden"
       end
 
