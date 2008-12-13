@@ -1,5 +1,6 @@
-require 'yacht_transfer'     
-module Facebooker
+require 'yacht_transfer/uploaders/yacht_council_uploader'     
+require 'yacht_transfer/uploaders/yacht_world_uploader'     
+module YachtTransfer
   module Rails
     module Controller
       def yacht_council_session(uname, pass, listing)

@@ -30,8 +30,12 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
   ################### 
   ##  Don't test bcuz they take too long.
 
-  def test_delete
+  def dont_test_delete
     puts @yw.delete.inspect
+  end
+
+  def dont_test_update
+    @yw.update
   end
 
   def dont_test_create

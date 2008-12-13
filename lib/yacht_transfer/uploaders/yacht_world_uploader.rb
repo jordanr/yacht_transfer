@@ -1,3 +1,4 @@
+require 'yacht_transfer/uploaders/base_uploader'
 module YachtTransfer
   module Uploaders
     class YachtWorldUploader < BaseUploader
@@ -6,15 +7,26 @@ module YachtTransfer
 	agent.auth(u, p)
       end
 
+
       def create
-	basic
-	details
-	photo
+  	  id = nil if(id)
+	  post_it_all
       end
 
+      def update
+  	  raise BadIdError, "need an id" if(!id)	  
+	  post_it_all
+      end
+      
       def delete
   	  raise BadIdError, "need an id" if(!id)	  
 	  agent.get(delete_url)
+      end
+
+      def post_it_all
+	basic
+	details
+	photo
       end
 
       def base_url

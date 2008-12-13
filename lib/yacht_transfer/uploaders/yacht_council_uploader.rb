@@ -1,3 +1,4 @@
+require 'yacht_transfer/uploaders/base_uploader'
 module YachtTransfer
   module Uploaders
     class YachtCouncilUploader < BaseUploader

@@ -1,9 +1,11 @@
 require 'yacht_transfer/models/state'
+require 'yacht_transfer/models/country'
 module YachtTransfer
   module Standards
       YACHT_TYPE_TRANSFORM = {:power=>{:yw=>[ "(Power) Motoryacht with cockpit\n", 
 					"(Power) Motoryacht without cockpit\n", 
                                         "(Power) Motoryacht with flybridge\n"]
+
 #                                       "(Power) Sedan/Convertible\n", 
 #                                       "(Power) Express\n", "(Power) High Performance\n",
 #                                       "(Power) Trawler\n", "(Power) Pilothouse\n", "(Power) Open Fisherman\n", 
@@ -33,7 +35,17 @@ module YachtTransfer
 #                                       "(Commercial) Tuna\n", "(Commercial) Troller\n", 
 #                                       "(Commercial) Tug\n", "(Commercial) Utility/Supply\n"]
                                  }
-                            }
+		}
+      WEIGHT_UNITS_TRANSFORM = {:kilograms =>{}, 
+				:pounds => {},
+				:tons => {}
+				}
+      VOLUME_UNITS_TRANSFORM = { :gallons => {}, 
+			:liters => {}
+			}
+      SPEED_UNITS_TRANSFORM = {:knots => {},
+			:mph => {}
+                   	}
 
       NEW_TRANSFORM = {true=>{:yw=>"New"},
                        false=>{:yw=>"Used"}
@@ -76,6 +88,19 @@ module YachtTransfer
 			  }	
 
       YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5
+
+      
+      STATES = YachtTransfer::Models::State.names.sort { |a,b| a.to_s <=> b.to_s }
+      COUNTRIES = YachtTransfer::Models::Country.names.sort { |a,b| a.to_s <=> b.to_s }
+      STATUSES = STATUS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      CURRENCIES = PRICE_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      YACHT_TYPES = YACHT_TYPE_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      HULL_MATERIALS = MATERIAL_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      LENGTH_UNITS = DISTANCE_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      WEIGHT_UNITS = WEIGHT_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      VOLUME_UNITS = VOLUME_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      SPEED_UNITS = SPEED_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      FUELS = FUEL_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
 
       def yacht
 	listing.yacht
