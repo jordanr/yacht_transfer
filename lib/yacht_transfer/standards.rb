@@ -89,7 +89,6 @@ module YachtTransfer
 
       YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5
 
-      
       STATES = YachtTransfer::Models::State.names.sort { |a,b| a.to_s <=> b.to_s }
       COUNTRIES = YachtTransfer::Models::Country.names.sort { |a,b| a.to_s <=> b.to_s }
       STATUSES = STATUS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
@@ -259,6 +258,10 @@ module YachtTransfer
   module Std
       def self.included(model)
         model.extend(ClassMethods)
+      end
+
+      def std
+        YachtTransfer::Standards
       end
 
       module ClassMethods

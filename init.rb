@@ -11,7 +11,7 @@ module ::ActionController
       inherited_without_yacht_transfer(subclass)
       if subclass.to_s == "ApplicationController"
         subclass.send(:include,YachtTransfer::Rails::Controller)
-        subclass.helper YachtTransfer::Rails::Helpers
+        subclass.helper YachtTransfer::Rails::Helper
       end
     end
     class << self
@@ -19,3 +19,5 @@ module ::ActionController
     end
   end
 end
+
+ActiveRecord::Base.send :include, YachtTransfer::Rails::Model

@@ -5,6 +5,7 @@ module YachtTransfer
       include Std
       def self.included(model)
         model.extend(ClassMethods)
+	model.send(:include, Std)
       end
 
       def state; std::STATES[state_id-1]; end
