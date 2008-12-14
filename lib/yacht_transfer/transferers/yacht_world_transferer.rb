@@ -1,12 +1,12 @@
-require 'yacht_transfer/uploaders/base_uploader'
+require 'yacht_transfer/transferers/abstract_transferer'
 module YachtTransfer
-  module Uploaders
-    class YachtWorldUploader < BaseUploader
+  module Transferers
+    class YachtWorldTransferer
+      include AbstractTransferer
       def initialize(u, p, l, id=nil)
 	super(u, p, l, id)
 	agent.auth(u, p)
       end
-
 
       def create
   	  id = nil if(id)

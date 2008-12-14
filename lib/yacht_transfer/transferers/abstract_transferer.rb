@@ -2,8 +2,15 @@ require "rubygems"
 require "mechanize"
 require 'yacht_transfer/standards'
 module YachtTransfer
-  module Uploaders
-    class BaseUploader
+  module Transferers
+    # An abstract transferer implements the functions:
+    #   * login - test a connection to remote host w/ the given 
+    #		  username + password
+    #   * create - remotely create a local listing
+    #   * read   - pull in a remote listing to this local client
+    #   * update - update an already created remote listing
+    #   * delete - permanantly delete a created remote listing
+    module AbstractTransferer
 	include YachtTransfer::Standards
       class LoginFailedError < StandardError;  end
       class BadIdError < StandardError;  end
@@ -23,15 +30,9 @@ module YachtTransfer
 	@logged_on
       end
 
-      def agent
-        @agent ||= WWW::Mechanize.new
-      end
-
       def login
         raise NotImplementedError, "subclass should have overriden"
       end
-
-# CRUD
       def create
         raise NotImplementedError, "subclass should have overriden"
       end
@@ -45,6 +46,9 @@ module YachtTransfer
         raise NotImplementedError, "subclass should have overriden"
       end
 
+      def agent
+        @agent ||= WWW::Mechanize.new
+      end
     end
   end
 end

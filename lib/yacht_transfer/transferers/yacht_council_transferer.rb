@@ -1,7 +1,8 @@
-require 'yacht_transfer/uploaders/base_uploader'
+require 'yacht_transfer/transferers/abstract_transferer'
 module YachtTransfer
-  module Uploaders
-    class YachtCouncilUploader < BaseUploader
+  module Transferers
+    class YachtCouncilTransferer
+      include AbstractTransferer
       def base_url
         "http://www.yachtcouncil.org"
       end

@@ -15,9 +15,9 @@ require 'yacht_transfer/models/yacht'
 require 'yacht_transfer/rails/controller.rb'
 require 'yacht_transfer/rails/helper.rb'
 require 'yacht_transfer/rails/model.rb'
-require 'yacht_transfer/uploaders/base_uploader'
-require 'yacht_transfer/uploaders/yacht_council_uploader'
-require 'yacht_transfer/uploaders/yacht_world_uploader'
+require 'yacht_transfer/transferers/abstract_transferer'
+require 'yacht_transfer/transferers/yacht_council_transferer'
+require 'yacht_transfer/transferers/yacht_world_transferer'
 require 'yacht_transfer/version'
 
 module YachtTransfer
