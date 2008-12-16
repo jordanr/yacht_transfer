@@ -17,13 +17,11 @@ module YachtTransfer
       class NotReadyError < StandardError;  end
       class NotImplementedError < StandardError;  end
 
-      attr_accessor :username, :password, :listing, :id
+      attr_accessor :username, :password
 
-      def initialize(username, password, listing, id=nil)
+      def initialize(username, password)
         @username = username
         @password = password
-        @listing = listing
-	@id = id
       end
 
       def logged_on?
@@ -33,16 +31,16 @@ module YachtTransfer
       def login
         raise NotImplementedError, "subclass should have overriden"
       end
-      def create
+      def create(listing)
         raise NotImplementedError, "subclass should have overriden"
       end
-      def read
+      def read(id)
         raise NotImplementedError, "subclass should have overriden"
       end
-      def update
+      def update(listing, id)
         raise NotImplementedError, "subclass should have overriden"
       end
-      def delete
+      def delete(id)
         raise NotImplementedError, "subclass should have overriden"
       end
 

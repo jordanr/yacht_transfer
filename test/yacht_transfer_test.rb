@@ -6,30 +6,30 @@ class TestYachtTransfer < Test::Unit::TestCase
   end
 
   def test_login_must_be_overridden
-    upper = DummyTransferer.new("a","b", nil)
+    upper = DummyTransferer.new("a","b")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.login }
   end
   def test_create_must_be_overridden
-    upper = DummyTransferer.new("a","b", nil)
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.create }
+    upper = DummyTransferer.new("a","b")
+    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.create(nil) }
   end
   def test_update_must_be_overridden
-    upper = DummyTransferer.new("a","b", nil)
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.update }
+    upper = DummyTransferer.new("a","b")
+    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.update(nil, nil) }
   end
   def test_delete_must_be_overridden
-    upper = DummyTransferer.new("a","b", nil)
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.delete }
+    upper = DummyTransferer.new("a","b")
+    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.delete(nil) }
   end
 end   
 
 class TestYachtWorldTransfer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
-    @id = "2011483" #"1711800"
+    @id = "2012331" #"1711800"
     @yw_username = "jordanyacht"
     @yw_password = "swel4roj"
-    @yw = YachtTransfer::Transferers::YachtWorldTransferer.new(@yw_username, @yw_password, @listing, @id)
+    @yw = YachtTransfer::Transferers::YachtWorldTransferer.new(@yw_username, @yw_password)
 
     @yw_start_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_start_page.html"))
     @yw_basic_page = WWW::Mechanize::Page.new(nil, { 'content-type'=>'text/html'}, fixture("yw_basic_page.html"))
@@ -47,43 +47,40 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
   ##  Don't test bcuz they take too long.
 
   def dont_test_delete
-    @yw.delete.inspect
+    @yw.delete(@id)
   end
 
   def dont_test_update
-    @yw.update
+    @yw.update(@listing, @id)
   end
 
   def dont_test_create
-    @yw.id = nil
-    @yw.create
+    @yw.create(@listing)
   end
 
   def dont_test_yw_basic_with_photo_submit_page
-    puts @yw.basic_with_photo.inspect
+    puts @yw.basic_with_photo(@listing, @id)
   end
 
   def dont_test_yw_photo_upload_page
-    (1..3).each { |p| @yw.delete_photo(p) }
-#    puts @yw.photo.inspect
+    (1..3).each { |p| @yw.delete_photo(@id, p) }
+#    puts @yw.photo(@listing, @id)
   end
 
   def dont_test_yw_submit_details_page
-    puts @yw.details.inspect
+    puts @yw.details(@listing, @id).inspect
   end
 
   def dont_test_yw_submit_add_accommodation_page
-    puts @yw.add_accommodation.inspect
+    puts @yw.add_accommodation(@listing, @id).inspect
   end
 
   def dont_test_yw_submit_start_page
-     puts @yw.start.inspect
+     puts @yw.start(@listing, @id).inspect
   end
 
   def dont_test_yw_submit_basic_page
-    puts @yw.basic.inspect # edit
-    @yw.id=nil
-    puts @yw.basic.inspect # new
+    puts @yw.basic(@listing, @id).inspect
   end
 
 
@@ -92,7 +89,7 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
   end
 
   def dont_test_yacht_world_logon_fails
-    yw = YachtTransfer::Transferers::YachtWorldTransferer.new("dkad", "dddd", nil)
+    yw = YachtTransfer::Transferers::YachtWorldTransferer.new("dkad", "dddd")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::LoginFailedError) { yw.login }
   end
 end
@@ -103,7 +100,7 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
 
     @yc_username = "jys"
     @yc_password = "yacht"
-    @yc = YachtTransfer::Transferers::YachtCouncilTransferer.new(@yc_username, @yc_password,@listing)
+    @yc = YachtTransfer::Transferers::YachtCouncilTransferer.new(@yc_username, @yc_password)
   end
   
   def test_it
@@ -117,7 +114,7 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
   end
 
   def dont_test_yacht_council_logon_fails
-    yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd", nil)
+    yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::LoginFailedError) { yc.login }
   end
 end

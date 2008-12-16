@@ -101,12 +101,8 @@ module YachtTransfer
       SPEED_UNITS = SPEED_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       FUELS = FUEL_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
 
-      def yacht
-	listing.yacht
-      end
-      def engine
-	yacht.engines.first
-      end
+#      def yacht; listing.yacht; end
+#      def engine; yacht.engines.first; end
 
       def yw_params
 	{
@@ -118,7 +114,8 @@ module YachtTransfer
 	}
       end	
 
-      def yw_start_params
+      def yw_start_params(listing)
+	yacht = listing.yacht
 	params = yw_params
 	params.merge!({
 	:action=>"Add",
@@ -131,7 +128,9 @@ module YachtTransfer
 	})
       end
 
-      def yw_basic_params
+      def yw_basic_params(listing, id)
+	yacht = listing.yacht
+	engine = yacht.engines.first
 	params = yw_params
 	params.merge!({
 	:boat_id=>id ? id : "New",
@@ -171,7 +170,7 @@ module YachtTransfer
 	})
       end
 
-      def yw_add_accommodation_params
+      def yw_add_accommodation_params(id)
 	params = yw_params
 	params.merge!({
           :boat_id=>id ? id : raise(StandardError, "need boat id"),
@@ -181,7 +180,9 @@ module YachtTransfer
 	})
       end
 
-      def yw_details_params(clob_ids=nil)
+      def yw_details_params(listing, id, clob_ids=nil)
+	yacht = listing.yacht
+	engine = yacht.engines.first
 	params = yw_params
 	params.merge!({
           :boat_id=>id ? id : raise(StandardError, "need boat id"),
@@ -229,7 +230,8 @@ module YachtTransfer
 	params
       end
 
-      def yw_photo_params(s)
+      def yw_photo_params(listing, id, s)
+	yacht = listing.yacht
         raise(StandardError, "need boat id") if !id
 	params = {:submit=>"Save Photo"}
 	p = yacht.pictures
@@ -241,9 +243,10 @@ module YachtTransfer
       end
 
       # Pre : Pictures are uploaded
-      def yw_basic_with_photo_params
+      def yw_basic_with_photo_params(listing, id)
+	yacht = listing.yacht	
         raise(StandardError, "need boat id") if !id
-	params = yw_basic_params
+	params = yw_basic_params(listing, id)
 	yacht.pictures.except(0).each_with_index { |p, n|
 	  real_index = n+2
   	  params.merge!({
