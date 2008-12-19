@@ -28,6 +28,7 @@ module YachtTransfer
 	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
 	details(listing, id)
 	photo(listing, id)
+	id
       end
 
       def base_url

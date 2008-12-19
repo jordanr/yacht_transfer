@@ -127,7 +127,8 @@ module YachtTransfer
     end
 
     def populated?
-      !@populated.nil?
+     # !@populated.nil?
+	true
     end
     
     ##
