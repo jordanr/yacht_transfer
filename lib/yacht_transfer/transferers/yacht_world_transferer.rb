@@ -151,7 +151,7 @@ class Array
   end
 
   def except(n)
-    slice(0...n)+slice((n+1)...length)
+    (length == 0) ? [] : slice(0...n)+slice((n+1)...length)
   end
 end
 	
