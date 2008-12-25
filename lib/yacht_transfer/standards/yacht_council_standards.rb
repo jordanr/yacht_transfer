@@ -1,5 +1,3 @@
-require 'yacht_transfer/models/state'
-require 'yacht_transfer/models/country'
 module YachtTransfer
   module Standards
     module YachtCouncilStandards
