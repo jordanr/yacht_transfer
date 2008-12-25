@@ -1,9 +1,8 @@
 require 'yacht_transfer/models/state'
 require 'yacht_transfer/models/country'
-require 'yacht_transfer/standards/yacht_council_standards'
 module YachtTransfer
   module Standards
-    include YachtCouncilStandards
+    module YachtWorldStandards
       YACHT_TYPE_TRANSFORM = {:power=>{:yw=>[ "(Power) Motoryacht with cockpit\n", 
 					"(Power) Motoryacht without cockpit\n", 
                                         "(Power) Motoryacht with flybridge\n"],

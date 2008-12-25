@@ -1,29 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
-class TestYachtTransfer < Test::Unit::TestCase
-  class DummyTransferer
-    include YachtTransfer::Transferers::AbstractTransferer
-  end
-
-  def test_login_must_be_overridden
-    upper = DummyTransferer.new("a","b")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.login }
-  end
-  def test_create_must_be_overridden
-    upper = DummyTransferer.new("a","b")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.create(nil) }
-  end
-  def test_update_must_be_overridden
-    upper = DummyTransferer.new("a","b")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.update(nil, nil) }
-  end
-  def test_delete_must_be_overridden
-    upper = DummyTransferer.new("a","b")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.delete(nil) }
-  end
-end   
-
-class TestYachtWorldTransfer < Test::Unit::TestCase
+class TestYachtWorldTransferer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
     @id = "2012331" #"1711800"
@@ -93,29 +70,3 @@ class TestYachtWorldTransfer < Test::Unit::TestCase
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::LoginFailedError) { yw.login }
   end
 end
-
-class TestYachtCouncilTransfer < Test::Unit::TestCase
-  def setup
-    @listing= sample_listing
-
-    @yc_username = "jys"
-    @yc_password = "yacht"
-    @yc = YachtTransfer::Transferers::YachtCouncilTransferer.new(@yc_username, @yc_password)
-  end
-  
-  def test_it
-    flunk
-  end
-
-  ################### 
-  ##  Don't test bcuz they take too long.  
-  def dont_test_yacht_council_logon
-    assert @yc.login
-  end
-
-  def dont_test_yacht_council_logon_fails
-    yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::LoginFailedError) { yc.login }
-  end
-end
-

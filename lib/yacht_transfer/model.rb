@@ -123,12 +123,12 @@ module YachtTransfer
     end
 
     def populate
-      raise NotImplementedError, "#{self.class} included me and should have overriden me"
+#      raise NotImplementedError, "#{self.class} included me and should have overriden me"
+       @populated = true
     end
 
     def populated?
-     # !@populated.nil?
-	true
+      !@populated.nil?
     end
     
     ##

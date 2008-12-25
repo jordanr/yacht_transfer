@@ -48,6 +48,7 @@ module YachtTransfer
       def sail
 	!@power
       end
+      alias :sail? :sail
     end
   end
 end
