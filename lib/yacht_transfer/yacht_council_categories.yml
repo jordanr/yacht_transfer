@@ -1,0 +1,436 @@
+---
+-
+:id: -11
+:category:---- Cruiser ----
+
+-
+:id: 1
+:category:Cabin Cruiser
+
+-
+:id: 2
+:category:with cockpit
+
+-
+:id: 3
+:category:without cockpit
+
+-
+:id: 4
+:category:Express
+
+-
+:id: 5
+:category:Flush Deck Pilothouse
+
+-
+:id: 6
+:category:Sedan Cruiser
+
+-
+:id: 7
+:category:Sport Cruiser
+
+-
+:id: 8
+:category:Long Range Cruiser
+
+-
+:id: 34
+:category:Downeast
+
+-
+:id: 35
+:category:High Performance
+
+-
+:id: 31
+:category:Double Cabin
+
+-
+:id: 39
+:category:Tender
+
+-
+:id: 48
+:category:open
+
+-
+:id: 57
+:category:Center Console
+
+-
+:id: 58
+:category:No Type
+
+-
+:id: 71
+:category:Trimaran
+
+-
+:id: 89
+:category:Jet Boat
+
+-
+:id: 94
+:category:Classic
+
+-
+:id: 96
+:category:Sovran
+
+-
+:id: -12
+:category:---- Motor Yacht ----
+
+-
+:id: 97
+:category:Launch
+
+-
+:id: 91
+:category:Sundeck
+
+-
+:id: 92
+:category:Liveaboard
+
+-
+:id: 93
+:category:Classic
+
+-
+:id: 75
+:category:Motorsailor
+
+-
+:id: 72
+:category:Fly Bridge with Cockpit
+
+-
+:id: 47
+:category:Long Range Cruiser
+
+-
+:id: 70
+:category:Jet Boat
+
+-
+:id: 77
+:category:Tri-Cabin
+
+-
+:id: 78
+:category:Flybridge with Euro Transom
+
+-
+:id: 54
+:category:Yacht Fisherman
+
+-
+:id: 49
+:category:Ocean Going
+
+-
+:id: 50
+:category:Convertible
+
+-
+:id: 51
+:category:Pilothouse
+
+-
+:id: 52
+:category:Expedition
+
+-
+:id: 60
+:category:Offshore
+
+-
+:id: 62
+:category:Flybridge
+
+-
+:id: 68
+:category:Sedan Cruiser
+
+-
+:id: 42
+:category:Aft Cabin
+
+-
+:id: 43
+:category:Raised Pilothouse
+
+-
+:id: 32
+:category:Tri-Deck
+
+-
+:id: 33
+:category:Double Cabin
+
+-
+:id: 30
+:category:Fast
+
+-
+:id: 38
+:category:No Type
+
+-
+:id: 36
+:category:Flushdeck
+
+-
+:id: 9
+:category:with cockpit
+
+-
+:id: 10
+:category:without cockpit
+
+-
+:id: 11
+:category:Displacement
+
+-
+:id: 12
+:category:Semi-Displacement
+
+-
+:id: 13
+:category:Adventure Vessel
+
+-
+:id: 14
+:category:Conversion
+
+-
+:id: 15
+:category:Vintage
+
+-
+:id: -13
+:category:---- Sport Fisherman ----
+
+-
+:id: 16
+:category:Convertible
+
+-
+:id: 17
+:category:Sedan
+
+-
+:id: 18
+:category:Express
+
+-
+:id: 19
+:category:Open
+
+-
+:id: 37
+:category:Center Console
+
+-
+:id: 46
+:category:Sport Fisherman
+
+-
+:id: 64
+:category:Dual Console
+
+-
+:id: 74
+:category:Chesapeake Deadrise
+
+-
+:id: -14
+:category:---- Trawler ----
+
+-
+:id: 63
+:category:Displacement
+
+-
+:id: 61
+:category:Aft Cabin
+
+-
+:id: 53
+:category:Europa
+
+-
+:id: 55
+:category:Tug
+
+-
+:id: 73
+:category:Fast
+
+-
+:id: 85
+:category:Whaleback
+
+-
+:id: 86
+:category:Double Cabin
+
+-
+:id: 25
+:category:Sedan
+
+-
+:id: 26
+:category:Sundeck
+
+-
+:id: 27
+:category:Trunk Cabin
+
+-
+:id: 28
+:category:Raised Pilothouse
+
+-
+:id: 29
+:category:Long Range Cruiser
+
+-
+:id: 20
+:category:No Type
+
+-
+:id: -15
+:category:---- Runabout ----
+
+-
+:id: 21
+:category:No Type
+
+-
+:id: 87
+:category:Bowrider
+
+-
+:id: 88
+:category:Cuddy
+
+-
+:id: 90
+:category:Jet Boat
+
+-
+:id: 95
+:category:Inflatable
+
+-
+:id: -16
+:category:---- Walk Around ----
+
+-
+:id: 22
+:category:No Type
+
+-
+:id: -17
+:category:---- Expedition Yacht ----
+
+-
+:id: 23
+:category:No Type
+
+-
+:id: -18
+:category:---- Commercial Vessel ----
+
+-
+:id: 24
+:category:No Type
+
+-
+:id: 56
+:category:Passenger
+
+-
+:id: 65
+:category:Dive Boat
+
+-
+:id: -19
+:category:---- Houseboat ----
+
+-
+:id: 69
+:category:River Yacht
+
+-
+:id: 40
+:category:No Type
+
+-
+:id: -20
+:category:---- High Performance ----
+
+-
+:id: 41
+:category:No Type
+
+-
+:id: -22
+:category:---- Submarine ----
+
+-
+:id: 59
+:category:No Type
+
+-
+:id: -23
+:category:---- Mega Yacht ----
+
+-
+:id: 67
+:category:No Type
+
+-
+:id: -25
+:category:---- Power Catamaran ----
+
+-
+:id: 79
+:category:Center Console
+
+-
+:id: 80
+:category:Sport Fisherman
+
+-
+:id: 81
+:category:Cruiser
+
+-
+:id: 82
+:category:Fly Bridge
+
+-
+:id: 76
+:category:No Type
+
+-
+:id: -28
+:category:---- Pontoon ----
+
+-
+:id: 83
+:category:N/A
+
+-
+:id: -29
+:category:---- Deck Boat ----
+
+-
+:id: 84
+:category:N/A
