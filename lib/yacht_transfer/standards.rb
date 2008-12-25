@@ -2,10 +2,10 @@ require 'yacht_transfer/models/state'
 require 'yacht_transfer/models/country'
 module YachtTransfer
   module Standards
+    include YachtCouncilStandards
       YACHT_TYPE_TRANSFORM = {:power=>{:yw=>[ "(Power) Motoryacht with cockpit\n", 
 					"(Power) Motoryacht without cockpit\n", 
-                                        "(Power) Motoryacht with flybridge\n"]
-
+                                        "(Power) Motoryacht with flybridge\n"],
 #                                       "(Power) Sedan/Convertible\n", 
 #                                       "(Power) Express\n", "(Power) High Performance\n",
 #                                       "(Power) Trawler\n", "(Power) Pilothouse\n", "(Power) Open Fisherman\n", 
@@ -17,14 +17,14 @@ module YachtTransfer
 #                                       "(Power) Bowrider\n", "(Power) Catamaran\n", 
 #                                       "(Power) Narrowboat\n", "(Power) Pontoon\n", 
 #                                       "(Power) Tender\n", "(Power) Superyacht\n"]
-                                 },
-                        :sail=>{:yw=>[  "(Sail) Cruiser\n", "(Sail) Racer\n", "(Sail) Cruiser/Racer\n"]
+                    		:yc=>2}
+                        :sail=>{:yw=>[  "(Sail) Cruiser\n", "(Sail) Racer\n", "(Sail) Cruiser/Racer\n"],
 #                                       "(Sail) Center Cockpit\n", "(Sail) Multi-hull\n", 
 #                                       "(Sail) Motorsailer/Pilothouse\n", 
 #                                       "(Sail) Deck Saloon\n", "(Sail) Daysailer/Weekender\n"]
-                                 },
+                               	:yc=>1}
                         :commercial=>{:yw=>["(Commercial) Barge\n", "(Commercial) Bristol Bay\n", 
-                                        "(Commercial) Bowpicker\n"]
+                                        "(Commercial) Bowpicker\n"],
 #                                       "(Commercial) Cargo\n", 
 #                                       "(Commercial) Charter\n", "(Commercial) Combination\n", 
 #                                       "(Commercial) Crabber\n", "(Commercial) Crew\n", "(Commercial) Dive\n", 
@@ -34,7 +34,7 @@ module YachtTransfer
 #                                       "(Commercial) Sternpicker\n", "(Commercial) Tender\n", 
 #                                       "(Commercial) Tuna\n", "(Commercial) Troller\n", 
 #                                       "(Commercial) Tug\n", "(Commercial) Utility/Supply\n"]
-                                 }
+                                 :yc=> 2}
 		}
       WEIGHT_UNITS_TRANSFORM = {:kilograms =>{}, 
 				:pounds => {},
@@ -47,44 +47,44 @@ module YachtTransfer
 			:mph => {}
                    	}
 
-      NEW_TRANSFORM = {true=>{:yw=>"New"},
-                       false=>{:yw=>"Used"}
+      NEW_TRANSFORM = {true=>{:yw=>"New", :yc=>0},
+                       false=>{:yw=>"Used", :yc=>1}
                         }
 
       PRICE_UNITS_TRANSFORM = {
-				:dollars=>{:yw=>"USD"},
-                         	:euros=>{:yw=>"EUR"}
+				:dollars=>{:yw=>"USD", :yc=>"US Dollar"},
+                         	:euros=>{:yw=>"EUR", :yc=>"Euro"}
 			}
       DISTANCE_UNITS_TRANSFORM = {
 	 			:meters=>{:yw=>"Meters"},
 	                         :feet=>{:yw=>"Feet"}
          	               }
-      MATERIAL_TRANSFORM = {    :fiberglass=>{:yw=>"FG"},
-                                :composite=>{:yw=>"CP"},
-                                :wood=>{:yw=>"W"},
-                                :steel=>{:yw=>"ST"},
-                                :cement=>{:yw=>"FC"},
-                                :other=>{:yw=>"O"}
+      MATERIAL_TRANSFORM = {    :fiberglass=>{:yw=>"FG",:yc=>1},
+                                :composite=>{:yw=>"CP", :yc=>5},
+                                :wood=>{:yw=>"W", :yc=>3},
+                                :steel=>{:yw=>"ST", :yc=>2},
+                                :cement=>{:yw=>"FC", :yc=>9},
+                                :other=>{:yw=>"O", :yc=>7}
 			}
-      FUEL_TRANSFORM = {:diesel=>{:yw=>"Diesel"},
-                        :gas=>{:yw=>"Gas"},
-                        :other=>{:yw=>"Other"}
+      FUEL_TRANSFORM = {:diesel=>{:yw=>"Diesel", :yc=>"Diesel"},
+                        :gas=>{:yw=>"Gas", :yc=>"Gas"},
+                        :other=>{:yw=>"Other", :yc=>"Other"}
                         }
 
-      LISTING_TYPE_TRANSFORM =  {:central=>{:yw=>"1"},
-                         :open=>{:yw=>"2"}
+      LISTING_TYPE_TRANSFORM =  {:central=>{:yw=>"1", :yc=>"1"},
+                         :open=>{:yw=>"2", :yc=>"3"}
                         }
-      CO_OP_TRANSFORM = { true=>{:yw=>"1"},
-                          false=>{:yw=>"2"}
+      CO_OP_TRANSFORM = { true=>{:yw=>"1", :yc=>"1"},
+                          false=>{:yw=>"2", :yc=>"0"}
                         }
-      STATUS_TRANSFORM ={:active=>{:yw=>nil},
-                         :inactive=>{:yw=>nil},
-                         :in_progress=>{:yw=>nil}
-#			 :sold=>{},
-#			 :sale_pending=>{}
+      STATUS_TRANSFORM ={:active=>{:yw=>nil, :yc=>"1"},
+                         :inactive=>{:yw=>nil, :yc=>"7"},
+                         :in_progress=>{:yw=>nil, :yc=> "6"}
+#			 :sold=>{:yc=>"5"},
+#			 :sale_pending=>{ :yc=>"2"}
                         }
 
-      COUNTRY_TRANSFORM = {:"United States of America"=>{:yw=>"United States"}
+      COUNTRY_TRANSFORM = {:"United States of America"=>{:yw=>"United States", :yc=>"48"}
 			  }	
 
       YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5

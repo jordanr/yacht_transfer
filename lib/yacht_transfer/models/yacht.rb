@@ -43,6 +43,7 @@ module YachtTransfer
       def used
 	!@new
       end
+      alias :used? :used
 
       def sail
 	!@power
