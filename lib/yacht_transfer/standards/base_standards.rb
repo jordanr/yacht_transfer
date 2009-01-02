@@ -117,6 +117,7 @@ module YachtTransfer
       STATUSES = STATUS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       CURRENCIES = PRICE_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       YACHT_TYPES = YACHT_TYPE_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
+      LISTING_TYPES = LISTING_TYPE_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       HULL_MATERIALS = MATERIAL_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       LENGTH_UNITS = DISTANCE_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       WEIGHT_UNITS = WEIGHT_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
@@ -130,6 +131,7 @@ module YachtTransfer
       def statuses; STATUSES; end
       def currencies; CURRENCIES; end
       def yacht_types; YACHT_TYPES; end
+      def listing_types; LISTING_TYPES; end
       def hull_materials; HULL_MATERIALS; end
       def length_units; LENGTH_UNITS; end
       def weight_units; WEIGHT_UNITS; end

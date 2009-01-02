@@ -5,7 +5,7 @@ require 'yacht_transfer/standards/base_standards'
 module YachtTransfer
   module Models
     class Listing
-      include Model, Std
+      include Model, YachtTransfer::Standards::BaseStandards
 
       FIELDS = [:broker, :type, :status, :co_op, :contact_info]
       populating_attr_reader *FIELDS

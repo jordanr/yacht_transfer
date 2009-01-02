@@ -6,11 +6,11 @@ require 'yacht_transfer/models/measurement'
 require 'yacht_transfer/models/picture' 
 require 'yacht_transfer/models/refit' 
 require 'yacht_transfer/models/tank'
-require 'yacht_transfer/standards'
+require 'yacht_transfer/standards/base_standards'
 module YachtTransfer
   module Models
     class Yacht
-      include Model, Std
+      include Model, YachtTransfer::Standards::BaseStandards
 
       FIELDS = [:name, :manufacturer, :model, :category, :rig, :cockpit, :flag, :new, :description]
       NUMERIC_FIELDS = [:number_of_staterooms, :number_of_heads]
@@ -20,7 +20,7 @@ module YachtTransfer
       type_checking_attr_writer *NUMERIC_FIELDS.push(Numeric)
       populating_attr_reader :year, :type
       option_checking_attr_writer :year, 1000..9999
-      option_checking_attr_writer :type, std::YACHT_TYPE_TRANSFORM.keys
+      option_checking_attr_writer :type, yacht_types
       DIMENSIONS = [:length, :lwl, :loa, :beam, :min_draft, :max_draft, :bridge_clearance]
       WEIGHTS= [:displacement, :ballast]
       RATES =  [:cruise_speed, :max_speed]     

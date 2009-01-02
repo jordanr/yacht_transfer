@@ -3,7 +3,7 @@ require 'yacht_transfer/standards/yacht_world_standards'
 module YachtTransfer
   module Transferers
     class YachtWorldTransferer
-      include AbstractTransferer, YachtWorldStandards
+      include AbstractTransferer, YachtTransfer::Standards::YachtWorldStandards
       def initialize(u, p)
 	super(u, p)
 	agent.auth(u, p)
