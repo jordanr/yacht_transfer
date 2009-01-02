@@ -19,19 +19,19 @@ module YachtTransfer
     end
 
     class Distance < Measurement
-      option_checking_attr_writer :units, length_units #std::DISTANCE_UNITS_TRANSFORM.keys
+      option_checking_attr_writer :units, length_unitses #std::DISTANCE_UNITS_TRANSFORM.keys
     end
 
     class Weight < Measurement
-      option_checking_attr_writer :units, weight_units
+      option_checking_attr_writer :units, weight_unitses
     end
 
     class Speed < Measurement
-      option_checking_attr_writer :units, speed_units
+      option_checking_attr_writer :units, speed_unitses
     end
 
     class Volume < Measurement
-      option_checking_attr_writer :units, volume_units
+      option_checking_attr_writer :units, volume_unitses
     end
   end
 end

@@ -125,6 +125,19 @@ module YachtTransfer
       SPEED_UNITS = SPEED_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       FUELS = FUEL_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
  
+      def states; STATES; end
+      def countries; COUNTRIES; end
+      def statuses; STATUSES; end
+      def currencies; CURRENCIES; end
+      def yacht_types; YACHT_TYPES; end
+      def listing_types; LISTING_TYPES; end
+      def hull_materials; HULL_MATERIALS; end
+      def length_unitses; LENGTH_UNITS; end
+      def weight_unitses; WEIGHT_UNITS; end
+      def volume_unitses; VOLUME_UNITS; end
+      def speed_unitses; SPEED_UNITS; end
+      def fuels; FUELS; end
+
       module ClassMethods
       def states; STATES; end
       def countries; COUNTRIES; end
@@ -133,29 +146,12 @@ module YachtTransfer
       def yacht_types; YACHT_TYPES; end
       def listing_types; LISTING_TYPES; end
       def hull_materials; HULL_MATERIALS; end
-      def length_units; LENGTH_UNITS; end
-      def weight_units; WEIGHT_UNITS; end
-      def volume_units; VOLUME_UNITS; end
-      def speed_units; SPEED_UNITS; end
+      def length_unitses; LENGTH_UNITS; end
+      def weight_unitses; WEIGHT_UNITS; end
+      def volume_unitses; VOLUME_UNITS; end
+      def speed_unitses; SPEED_UNITS; end
       def fuels; FUELS; end
       end
     end
   end
-
-  module Std
-      def self.included(model)
-        model.extend(ClassMethods)
-      end
-
-      def std
-        YachtTransfer::Standards
-      end
-
-      module ClassMethods
-        def std
-          YachtTransfer::Standards
-        end
-      end
-  end
 end
-
