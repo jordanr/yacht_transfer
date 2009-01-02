@@ -1,6 +1,5 @@
 require "rubygems"
 require "mechanize"
-require 'yacht_transfer/standards'
 module YachtTransfer
   module Transferers
     # An abstract transferer implements the functions:
@@ -11,7 +10,6 @@ module YachtTransfer
     #   * update - update an already created remote listing
     #   * delete - permanantly delete a created remote listing
     module AbstractTransferer
-	include YachtTransfer::Standards
       class LoginFailedError < StandardError;  end
       class BadIdError < StandardError;  end
       class NotReadyError < StandardError;  end

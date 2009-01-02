@@ -1,6 +1,8 @@
+require 'yacht_transfer/standards/base_standards'
 module YachtTransfer
   module Standards
     module YachtCouncilStandards
+	include BaseStandards
       YC_LENGTH_THRESHOLD = 70
 
       def below?(yacht)

@@ -1,8 +1,9 @@
 require 'yacht_transfer/transferers/abstract_transferer'
+require 'yacht_transfer/standards/yacht_world_standards'
 module YachtTransfer
   module Transferers
     class YachtWorldTransferer
-      include AbstractTransferer
+      include AbstractTransferer, YachtWorldStandards
       def initialize(u, p)
 	super(u, p)
 	agent.auth(u, p)

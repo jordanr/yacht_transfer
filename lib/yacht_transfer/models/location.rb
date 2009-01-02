@@ -1,7 +1,6 @@
 require 'yacht_transfer/model'
 require 'yacht_transfer/models/country'
 require 'yacht_transfer/models/state'
-require 'yacht_transfer/standards'
 module YachtTransfer
   module Models
     ##

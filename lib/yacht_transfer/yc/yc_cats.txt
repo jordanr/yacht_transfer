@@ -1,0 +1,110 @@
+<option style="background-color: rgb(222, 223, 223);" value="-11">---- Cruiser ----</option>
+<option value="1">Cabin Cruiser</option>
+<option value="2">with cockpit</option>
+<option value="3">without cockpit</option>
+<option value="4">Express</option>
+<option value="5">Flush Deck Pilothouse</option>
+<option value="6">Sedan Cruiser</option>
+<option value="7">Sport Cruiser</option>
+<option value="8">Long Range Cruiser</option>
+<option value="34">Downeast</option>
+<option value="35">High Performance</option>
+<option value="31">Double Cabin</option>
+<option value="39">Tender</option>
+<option value="48">open</option>
+<option value="57">Center Console</option>
+<option value="58">No Type</option>
+<option value="71">Trimaran</option>
+<option value="89">Jet Boat</option>
+<option value="94">Classic</option>
+<option value="96">Sovran</option>
+<option style="background-color: rgb(222, 223, 223);" value="-12">---- Motor Yacht ----</option>
+<option value="97">Launch</option>
+<option value="91">Sundeck</option>
+<option value="92">Liveaboard</option>
+<option value="93">Classic</option>
+<option value="75">Motorsailor</option>
+<option value="72">Fly Bridge with Cockpit</option>
+<option value="47">Long Range Cruiser</option>
+<option value="70">Jet Boat</option>
+<option value="77">Tri-Cabin</option>
+<option value="78">Flybridge with Euro Transom</option>
+<option value="54">Yacht Fisherman</option>
+<option value="49">Ocean Going</option>
+<option value="50">Convertible</option>
+<option value="51">Pilothouse</option>
+<option value="52">Expedition</option>
+<option value="60">Offshore</option>
+<option value="62">Flybridge</option>
+<option value="68">Sedan Cruiser</option>
+<option value="42">Aft Cabin</option>
+<option value="43">Raised Pilothouse</option>
+<option value="32">Tri-Deck</option>
+<option value="33">Double Cabin</option>
+<option value="30">Fast</option>
+<option value="38">No Type</option>
+<option value="36">Flushdeck</option>
+<option value="9">with cockpit</option>
+<option value="10">without cockpit</option>
+<option value="11">Displacement</option>
+<option value="12">Semi-Displacement</option>
+<option value="13">Adventure Vessel</option>
+<option value="14">Conversion</option>
+<option value="15">Vintage</option>
+<option style="background-color: rgb(222, 223, 223);" value="-13">---- Sport Fisherman ----</option>
+<option value="16">Convertible</option>
+<option value="17">Sedan</option>
+<option value="18">Express</option>
+<option value="19">Open</option>
+<option value="37">Center Console</option>
+<option value="46">Sport Fisherman</option>
+<option value="64">Dual Console</option>
+<option value="74">Chesapeake Deadrise</option>
+<option style="background-color: rgb(222, 223, 223);" value="-14">---- Trawler ----</option>
+<option value="63">Displacement</option>
+<option value="61">Aft Cabin</option>
+<option value="53">Europa</option>
+<option value="55">Tug</option>
+<option value="73">Fast</option>
+<option value="85">Whaleback</option>
+<option value="86">Double Cabin</option>
+<option value="25">Sedan</option>
+<option value="26">Sundeck</option>
+<option value="27">Trunk Cabin</option>
+<option value="28">Raised Pilothouse</option>
+<option value="29">Long Range Cruiser</option>
+<option value="20">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-15">---- Runabout ----</option>
+<option value="21">No Type</option>
+<option value="87">Bowrider</option>
+<option value="88">Cuddy</option>
+<option value="90">Jet Boat</option>
+<option value="95">Inflatable</option>
+<option style="background-color: rgb(222, 223, 223);" value="-16">---- Walk Around ----</option>
+<option value="22">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-17">---- Expedition Yacht ----</option>
+<option value="23">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-18">---- Commercial Vessel ----</option>
+<option value="24">No Type</option>
+<option value="56">Passenger</option>
+<option value="65">Dive Boat</option>
+<option style="background-color: rgb(222, 223, 223);" value="-19">---- Houseboat ----</option>
+<option value="69">River Yacht</option>
+<option value="40">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-20">---- High Performance ----</option>
+<option value="41">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-22">---- Submarine ----</option>
+<option value="59">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-23">---- Mega Yacht ----</option>
+<option value="67">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-25">---- Power Catamaran ----</option>
+<option value="79">Center Console</option>
+<option value="80">Sport Fisherman</option>
+<option value="81">Cruiser</option>
+<option value="82">Fly Bridge</option>
+<option value="76">No Type</option>
+<option style="background-color: rgb(222, 223, 223);" value="-28">---- Pontoon ----</option>
+<option value="83">N/A</option>
+<option style="background-color: rgb(222, 223, 223);" value="-29">---- Deck Boat ----</option>
+<option value="84">N/A</option>
+</select>

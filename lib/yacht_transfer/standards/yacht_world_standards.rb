@@ -1,6 +1,8 @@
+require 'yacht_transfer/standards/base_standards'
 module YachtTransfer
   module Standards
     module YachtWorldStandards
+	include BaseStandards
       YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5
 
       def yw_params

@@ -1,8 +1,9 @@
 require 'yacht_transfer/transferers/abstract_transferer'
+require 'yacht_transfer/standards/yacht_council_standards'
 module YachtTransfer
   module Transferers
     class YachtCouncilTransferer
-      include AbstractTransferer
+      include AbstractTransferer, YachtCouncilStandards
 
       def base_url; "http://www.yachtcouncil.org"; end
       

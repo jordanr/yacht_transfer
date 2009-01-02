@@ -1,7 +1,7 @@
 require 'yacht_transfer/model'
 require 'yacht_transfer/models/measurement'
 require 'yacht_transfer/models/yacht'
-require 'yacht_transfer/standards'
+require 'yacht_transfer/standards/base_standards'
 module YachtTransfer
   module Models
     class Listing
@@ -10,8 +10,8 @@ module YachtTransfer
       FIELDS = [:broker, :type, :status, :co_op, :contact_info]
       populating_attr_reader *FIELDS
       attr_writer :broker, :co_op, :contact_info
-      option_checking_attr_writer :type, std::LISTING_TYPE_TRANSFORM.keys
-      option_checking_attr_writer :status, std::STATUS_TRANSFORM.keys
+      option_checking_attr_writer :type, listing_types #std::LISTING_TYPE_TRANSFORM.keys
+      option_checking_attr_writer :status, statuses #std::STATUS_TRANSFORM.keys
 
       populating_hash_settable_accessor :price, Price
       populating_hash_settable_accessor :yacht, Yacht
