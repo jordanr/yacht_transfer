@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'rubygems'
-require 'flexmock/test_unit'
-require 'mocha'
+#require 'flexmock/test_unit'
+#require 'mocha'
 
 $: << File.join(File.dirname(__FILE__), '..', 'lib')
 

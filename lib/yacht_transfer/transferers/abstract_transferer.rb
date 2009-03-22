@@ -1,5 +1,5 @@
 require "rubygems"
-require "mechanize"
+#require "mechanize"
 module YachtTransfer
   module Transferers
     # An abstract transferer implements the functions:
