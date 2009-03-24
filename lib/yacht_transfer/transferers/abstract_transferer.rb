@@ -1,10 +1,11 @@
-require "rubygems"
-#require "mechanize"
+require 'net/http'
+require "net/https"
+require "multipart"
 module YachtTransfer
   module Transferers
     # An abstract transferer implements the functions:
-    #   * login - test a connection to remote host w/ the given 
-    #		  username + password
+    #   * authentic? - test a connection to remote host w/ the given 
+    #		      username + password
     #   * create - remotely create a local listing
     #   * read   - pull in a remote listing to this local client
     #   * update - update an already created remote listing
@@ -22,11 +23,7 @@ module YachtTransfer
         @password = password
       end
 
-      def logged_on?
-	@logged_on
-      end
-
-      def login
+      def authentic?
         raise NotImplementedError, "subclass should have overriden"
       end
       def create(listing)
@@ -42,9 +39,33 @@ module YachtTransfer
         raise NotImplementedError, "subclass should have overriden"
       end
 
-      def agent
-        @agent ||= WWW::Mechanize.new
+      def get(url)
+        urll = URI.parse(url)
+        http=Net::HTTP.new(urll.host, urll.port)
+        req = Net::HTTP::Get.new(urll.path)
+        res = http.request(req)
+	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        res.body
       end
+
+      def post(url, params)
+        res = Net::HTTP.post_form(URI.parse(url), params)
+	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        res.body
+      end
+
+      def multipart_post(url, params)
+	mp = Multipart::MultipartPost.new
+        query, headers = mp.prepare_query(params)
+        urll = URI.parse(url)
+	res = Net::HTTP.start(urll.host, urll.port) { |con|
+	  con.post(urll.path, query, headers)
+        }
+	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        res.body
+      end       
     end
   end
 end
+
+class RequestError < StandardError; end

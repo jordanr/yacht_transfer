@@ -2,7 +2,7 @@ YachtTransfer
 =============
   http://github.com/jordanr/yacht_transfer/tree/master
 
-  As a Rails plugin, this library will eventually allow you to upload 
+  As a Rails plugin, this library allows you to upload 
   yacht listings to the yacht MLS sites yachtworld and yachtcouncil
   With your own app, you can then centrally manage listings.  You can
   control them from a single source.  You will not have to upload a 
@@ -32,14 +32,6 @@ Picture
     \ | /
       0
 
-Example 
-=======
-  none
-
-Requirements
-============
-  * Mechanize (which requires Hpricot)
-
 Use Case
 ========
   * Primary Actor: Secretary
@@ -67,4 +59,3 @@ Features
   * Upload text/images by yacht id number to given MLS accounts
 
 Copyright (c) 2008 [name of plugin creator], released under the MIT license
-

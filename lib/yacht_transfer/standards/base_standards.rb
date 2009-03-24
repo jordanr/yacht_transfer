@@ -1,5 +1,3 @@
-require 'yacht_transfer/models/state'
-require 'yacht_transfer/models/country'
 module YachtTransfer
   module Standards
     module BaseStandards
@@ -112,8 +110,8 @@ module YachtTransfer
 			  }	
       def country_transform(key, site); COUNTRY_TRANSFORM[key.to_sym][site.to_sym]; end
 
-      STATES = YachtTransfer::Models::State.names.sort { |a,b| a.to_s <=> b.to_s }
-      COUNTRIES = YachtTransfer::Models::Country.names.sort { |a,b| a.to_s <=> b.to_s }
+#      STATES = YachtTransfer::Models::State.names.sort { |a,b| a.to_s <=> b.to_s }
+#      COUNTRIES = YachtTransfer::Models::Country.names.sort { |a,b| a.to_s <=> b.to_s }
       STATUSES = STATUS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       CURRENCIES = PRICE_UNITS_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }
       YACHT_TYPES = YACHT_TYPE_TRANSFORM.keys.sort { |a,b| a.to_s <=> b.to_s }

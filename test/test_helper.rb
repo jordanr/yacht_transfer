@@ -11,7 +11,8 @@ require 'yacht_transfer'
 class Test::Unit::TestCase
   private
   def picture_fixture(string)
-    ::File.open(File.dirname(__FILE__) + "/fixtures/#{string}", "rb") { |f| f.read }
+#    ::File.open(File.dirname(__FILE__) + "/fixtures/#{string}", "rb") { |f| f.read }
+    File.open(File.dirname(__FILE__) + "/fixtures/#{string}", "rb")
   end
   def fixture(string)
     File.open(File.dirname(__FILE__) + "/fixtures/#{string}").read
@@ -21,8 +22,29 @@ class Test::Unit::TestCase
   end
 
   def sample_accommodation
-    {:title=>"sample_title",:content=>"sample_content", :left=>"sameple_left", :right=>"sampel_reight"}
+    {:title=>"sample_title",:content=>"sample_content" }
   end
+  def sample_picture
+    {:label=>"sample picture", :src=>picture_fixture("rails.png")}
+  end
+
+  def sample_listing
+    {:price=>1223, :name=>"sample_name",:manufacturer=>"sample_manufacturer", 
+     :model=>"sample_model", :year=>9999,
+     :length=>sample_measurement, :material=>"wood",
+     :designer=>"sample_designer",
+     :fuel_tank=>"sample_ftank", :water_tank=>"sample_wtank", :holding_tank=>"sample_htank",
+     :location=>"sample_location", :number_of_engines=>23,
+     :engine_manufacturer=>"smaple_manufacturer", :engine_model=>"sample_emodel",
+     :fuel=>"gas",:horsepower=>1000, :engine_year=>1111, :hours=>100,
+     :accommodations=>[sample_accommodation, sample_accommodation],
+     :pictures=>[sample_picture ,sample_picture,sample_picture]
+    }
+  end 
+
+
+  #######################################################
+  #######################################################
   def sample_engine
     {:manufacturer=>"smaple_manufacturer", :model=>"sample_model",
      :fuel=>"gas",:horsepower=>1000, :year=>1111,
@@ -48,25 +70,16 @@ class Test::Unit::TestCase
   def sample_distance
     {:value=>200, :units=>"meters"}
   end
-####
   alias sample_measurement sample_distance
-
   def sample_weight
     {:value=>20, :units=>"tons"}
   end
   def sample_tank
     {:material=>"sample_material", :capacity=> { :value=>999, :units=>"liters"} }
   end
-  def sample_picture
-    {:label=>"sample picture", :src=>picture_fixture("rails.png")}
-  end
-
   def sample_yacht
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
-     :model=>"sample_model", :category=>"sample_category",
-     :description=>"sample_description",
-     :rig=>"smaple_rig", :cockpit=>"sample_cockpit", 
-     :flag=>"sample_flag",:number_of_staterooms=>4,
+     :model=>"sample_model", 
      :new=>"sample_new", :type=>"sail", :year=>9999,
      :length=>sample_measurement, :lwl=>sample_measurement, :loa=>sample_measurement,
      :beam=>sample_measurement, :min_draft=>sample_measurement, :max_draft=>sample_measurement,
@@ -80,10 +93,10 @@ class Test::Unit::TestCase
      :pictures=>[sample_picture ,sample_picture,sample_picture]
     }
   end
-  def sample_listing
-    YachtTransfer::Models::Listing.new({:yacht=>sample_yacht, :price=>sample_price, :broker=>"Dad",
-					:type=>"open", :status=>"in_progress", :co_op=>true,
-					:contact_info=>"sample_contact_info"})
+  def old_sample_listing
+    { :price=>sample_price, :broker=>"Dad", :type=>"open", 
+	:status=>"in_progress", :co_op=>true,
+ 	:contact_info=>"sample_contact_info"}
   end
 
 end

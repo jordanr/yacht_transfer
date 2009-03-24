@@ -4,9 +4,22 @@ module YachtTransfer
   module Transferers
     class YachtWorldTransferer
       include AbstractTransferer, YachtTransfer::Standards::YachtWorldStandards
-      def initialize(u, p)
-	super(u, p)
-	agent.auth(u, p)
+
+      def base_url; "www.boatwizard.com"; end
+
+      def authentic?
+        http=Net::HTTP.new(base_url, 443)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        req = Net::HTTP::Get.new('/')
+        req.basic_auth username, password
+        begin
+          response = http.request(req)
+        rescue
+	  return false
+        else
+	  return true
+        end
       end
 
       def create(listing)
@@ -20,106 +33,94 @@ module YachtTransfer
       
       def delete(id)
   	  raise BadIdError, "need an id" if(!id)	  
-	  agent.get(delete_url(id))
+	  get(delete_url(id))
       end
 
+      # private
+
       def post_it_all(listing, id)
+        listing = listing.to_yw
 	old_id = id
-	id = basic(listing, id)
+	id = basic(listing.basic, id)
 	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
-	details(listing, id)
-	photo(listing, id)
+	details(listing.details, id)
+#	photo(listing.photo, id)
 	id
       end
 
-      def base_url
-        "https://www.boatwizard.com"
-      end
-
-      def start_url; base_url+start_path; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
       def photo_url(id, n); base_url+photo_path+"?"+photo_params(id, n, "Add"); end
       def delete_photo_url(id, n); base_url+delete_photo_path+"?"+photo_params(id, n,"Delete"); end
       def delete_url(id); base_url+delete_path+"?"+delete_params(id); end
 
-      def start_path; "/boatwizard/listings/edit_listing.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
       def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
       def delete_photo_path; "/boatwizard/listings/photos.cgi"; end
       def delete_path; "/boatwizard/lib/delete_sql.cgi"; end
 
+      # Put these with params
       def photo_params(id, n, action)
 	"boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"
       end
-
       def delete_params(id)
 	"boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"
       end
 
-      def login
-        begin
-          agent.get(base_url)
- 	rescue WWW::Mechanize::ResponseCodeError
-	  raise LoginFailedError, "basic authentication failed"
-	end
-	@logged_on = true
-      end
-
-      def start(listing)
-	agent.post(start_url, yw_start_params(listing))	
-      end
       # returns id 
-      def basic(listing, id)
-	res = agent.post(basic_url, yw_basic_params(listing, id))	
+      def basic(params)
+	res = post(basic_url, params) #yw_basic_paramslisting, id))
 	old_id = id
-	id = res.form(:action=>details_path).boat_id
+	id = res
+#	id = res.form(:action=>details_path).boat_id
 	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
 	id
       end
 
-      def details(listing, id)
-	raise BadIdError, "need an id" if(!id)
-	yacht = listing.yacht
-	res = (res and res.form(:action=>details_path).boat_id) ? agent.current_page : add_accommodation(id)
-	clob_ids = get_clob_ids(res)
-	if(yacht.accommodations.length > clob_ids.length)
-	  add_accommodation(id)
-	  details(listing, id)
-	else
-  	  agent.post(details_url, yw_details_params(listing, id, clob_ids))
-	end
+      def details(params)
+#	raise BadIdError, "need an id" if(!id)
+#	yacht = listing.yacht
+#	res = (res and res.form(:action=>details_path).boat_id) ? current_page : add_accommodation(id)
+#	clob_ids = get_clob_ids(res)
+#        clob_ids =[]
+#	if(yacht.accommodations.length > clob_ids.length)
+#	  add_accommodation(id)
+#	  details(listing, id)
+#	else
+  	  post(details_url, params) #yw_details_params(listing, id, clob_ids))
+#	end
       end
 
-      def photo(listing, id)
-	raise BadIdError, "need an id" if(!id)
+      def photo(params)
+#	raise BadIdError, "need an id" if(!id)
 	n = 1
-	yacht = listing.yacht
+#	yacht = listing.yacht
 	# only can do some max photos at a time
-	yacht.pictures.each_slice(YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME) { |pics|
-   	  agent.post_files(photo_url(id, n), yw_photo_params(listing, id, n))
-	  n+=YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME
-	}
-	pics_num = get_photo_num(agent.current_page)
-	((yacht.pictures.length+1)..pics_num).each { |p| delete_photo(id, p) } # delete extra pics
-	basic_with_photo(listing, id)
+#	yacht.pictures.each_slice(YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME) { |pics|
+#   	  post_files(photo_url(id, n), yw_photo_params(listing, id, n))
+#	  n+=YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME
+#	}
+#	pics_num = get_photo_num(current_page)
+#	((yacht.pictures.length+1)..pics_num).each { |p| delete_photo(id, p) } # delete extra pics
+#	basic_with_photo(listing, id)
       end
 
-#      private
+      def delete_photo(id, n)
+        get(delete_photo_url(id, n))
+      end
+
+      def add_accommodation(params)
+  	  post(details_url, params) #yw_add_accommodation_params(id))
+      end 
+
+
         def basic_with_photo(listing, id)
   	  raise BadIdError, "need an id" if(!id)
           # puts yw_basic_with_photo_params
-	  agent.post(basic_url, yw_basic_with_photo_params(listing, id) )
+	  post(basic_url, yw_basic_with_photo_params(listing, id) )
         end	
 
-	def delete_photo(id, n)
-	  agent.get(delete_photo_url(id, n))
-	end
-
-        def add_accommodation(id)
-  	  agent.post(details_url, yw_add_accommodation_params(id))
-        end 
 
         # Pre : Parameter is response from calling basic()
         def get_clob_ids(details_page)
