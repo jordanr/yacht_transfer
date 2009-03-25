@@ -43,9 +43,9 @@ class Hash
    	:hin_unavail=>"on",
         :tax=>"",
 
-	:action=> "Add", # Edit
-	:boat_id=> "New", # id
-	:boats_clobs_id=> "New", # id
+	:action=> fetch(:id) == "New" ? "Add" : "Edit",
+	:boat_id=> fetch(:id) == "New" ? "New" : fetch(:id),
+	:boats_clobs_id=> fetch(:id) == "New" ? "New" : fetch(:id), 
  
         :central=>"1",
 	:co_op=>"1",

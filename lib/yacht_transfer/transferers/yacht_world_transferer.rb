@@ -77,7 +77,7 @@ module YachtTransfer
         listing.to_yw!
 	old_id = id
 	id = basic(listing.basic)
-	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
+	raise BadIdError, "id should be #{old_id} but was #{id}" if(old_id && id!=old_id)
         if !old_id
   	  listing.merge!(:id => id)
           listing.to_yw!
@@ -96,19 +96,21 @@ module YachtTransfer
       # returns id 
       def basic(params)
 	res = post(basic_url, params) #yw_basic_paramslisting, id))
-#	old_id = #
-	id = res
-#	id = res.form(:action=>details_path).boat_id
-#	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
-	id
+        #<INPUT type="hidden" name="boat_id" value="1966820">
+	id = res.slice(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, 0)
+	id.gsub!(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, '\1')
+
+	id.to_i
       end
 
 
       # update, destroy details
       # update listing
+      #
+      # Pre: id is included in params
       def details(params)
-#	raise BadIdError, "need an id" if(!id)
-#	yacht = listing.yacht
+	post(details_url, params) #yw_details_params(listing, id, clob_ids))
+
 #	res = (res and res.form(:action=>details_path).boat_id) ? current_page : add_accommodation(id)
 #	clob_ids = get_clob_ids(res)
 #        clob_ids =[]
@@ -116,7 +118,6 @@ module YachtTransfer
 #	  add_accommodation(id)
 #	  details(listing, id)
 #	else
-	post(details_url, params) #yw_details_params(listing, id, clob_ids))
 #	end
       end
 

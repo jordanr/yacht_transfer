@@ -2,6 +2,12 @@ class ParameterError < StandardError; end
 
 class MockYachtWorld
 
+  def initialize
+    @id_one = 1758881           
+    @id_two = 1711800 
+    @ids = [@id_one, @id_two]
+#    @boat_id = 1966820
+  end  
   ##################
   # Listings
   ######################
@@ -21,14 +27,24 @@ class MockYachtWorld
     raise ParameterError unless valid_keys?(params, local_required_keys)
 
     # all or none
-    raise ParameterError unless (params[:boat_id] == "New" and params[:action]=="Add" and params[:boats_clobs_id] == "New") or
-			        (params[:boat_id] != "New" and params[:action]!="Edit" and params[:boats_clobs_id] == "")
+    raise ParameterError, "something wrong with combo: #{params[:boat_id]}, #{params[:action]}, #{params[:boats_clobs_id]}" unless
+				(params[:boat_id] == "New" and params[:action]=="Add" and params[:boats_clobs_id] == "New") or
+			        (@ids.include?(params[:boat_id]) and params[:action]=="Edit" and @ids.include?(params[:boats_clobs_id]))
 
     raise ParameterError unless params[:hin_unavail] == "on"
     # submit
     raise ParameterError unless params[:full_specs] == "Full Specs"
 
-    return '<INPUT type="hidden" name="boat_id" value="1966820">'
+    id = params[:boat_id] == "New" ? @id_one : params[:boat_id]
+    return '<form name="fsform" id="fsform" method="post" action="/boatwizard/lib/edit2_sql.cgi">
+<INPUT type="hidden" name="boat_id" value="'+id.to_s+'">
+<INPUT type="hidden" name="url" value="jordanyacht">
+<INPUT type="hidden" name="lang" value="en">
+<INPUT type="hidden" name="revised_date" value="20080901">
+<INPUT type="hidden" name="action" value="Edit">
+<INPUT type="hidden" name="ops" id="ops" value="">
+<input type=hidden name=pass_office_id value="">
+<input type=hidden name=pass_broker_id value="">'
   end
 
   # GET "/boatwizard/lib/delete_sql.cgi"
@@ -36,6 +52,7 @@ class MockYachtWorld
   def delete_sql(params)
     local_required_keys = %w{ type min_length max_length units }
     raise ParameterError unless valid_keys?(params, local_required_keys)
+    raise ParameterError, "boat_id should be #{@ids.join(',')} not #{params[:boat_id]}" unless @ids.include?(params[:boat_id].to_i)
   end
 
   #################
@@ -65,6 +82,7 @@ class MockYachtWorld
     raise ParameterError unless valid_keys?(params, local_required_keys)
 
     raise ParameterError unless params[:action] == "Edit"
+    raise ParameterError, "boat_id should be #{@ids.join(',')} not #{params[:boat_id]}" unless @ids.include?(params[:boat_id].to_i)
 
     if valid_keys?(params, edit_listing_keys)
       raise(ParameterError, "expected to edit listing") unless (params[:name_access] == "PublicUsers" and params[:specs_access]== "PublicUsers")

@@ -31,7 +31,7 @@ class Test::Unit::TestCase
   def sample_listing
     {:price=>1223, :yacht_name=>"sample_name",:yacht_specification_manufacturer=>"sample_manufacturer", 
      :yacht_specification_model=>"sample_model", :yacht_specification_year=>9999,
-     :yacht_specification_length=>33, 
+     :yacht_specification_length=>1, 
      :yacht_location=>"sample_location"
 #     :details=>[sample_accommodation, sample_accommodation],
 #     :photoss=>[sample_picture ,sample_picture,sample_picture]

@@ -15,7 +15,6 @@ class YachtTransfer::Transferers::YachtWorldTransferer
 	pair = keyvalue.split('=')
 	params.merge!(pair.first.to_sym => pair.last)
     }
-    print params.inspect
     yw.send(method, params)
   end
 end
@@ -23,7 +22,8 @@ end
 class TestYachtWorldTransferer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
-    @id = "2012331" #"1711800"
+    @id_one = 1758881
+    @id_two = 1711800
     @yw_username = "jordanyacht"
     @yw_password = "swel4roj"
     @yw = YachtTransfer::Transferers::YachtWorldTransferer.new(@yw_username, @yw_password)
@@ -36,29 +36,26 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
 #								fixture("yw_basic_with_photos_page.html"))
   end
 
-  def test_delete_listing
-    ids = [-1, -2]
-    ids.each { |id| @yw.delete(id) }
-  end
-
   def test_create_listing
     @yw.create(@listing)
   end
 
+  def test_delete_listing
+    ids = [@id_one, @id_two]
+    ids.each { |id| @yw.delete(id) }
+  end
+
+  def test_update
+    @yw.update(@listing, @id_one)
+  end
+  
+
+  ################### 
+  ##  Don't test bcuz they take too long.
   def dont_test_authenticate
     assert @yw.authentic?
   end
 
-  ################### 
-  ##  Don't test bcuz they take too long.
-
-  def dont_test_delete
-    @yw.delete(@id)
-  end
-
-  def dont_test_update
-    @yw.update(@listing, @id)
-  end
 
   def dont_test_create
     @yw.create(@listing)
