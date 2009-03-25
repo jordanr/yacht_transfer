@@ -28,7 +28,7 @@ class MockYachtWorld
     # submit
     raise ParameterError unless params[:full_specs] == "Full Specs"
 
-    return 13
+    return '<INPUT type="hidden" name="boat_id" value="1966820">'
   end
 
   # GET "/boatwizard/lib/delete_sql.cgi"
@@ -102,7 +102,7 @@ class MockYachtWorld
 
     def valid_keys?(params, required_keys)
       required_keys += global_required_keys
-      return required_keys.all? { |key| params.has_key?(key.to_sym) }
+      return required_keys.all? { |key| print key; params.has_key?(key.to_sym) }
     end  
 end
 

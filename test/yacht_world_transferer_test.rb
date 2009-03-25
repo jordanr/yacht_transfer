@@ -6,6 +6,18 @@ class YachtTransfer::Transferers::YachtWorldTransferer
     yw = MockYachtWorld.new()
     yw.send(url.split('/').last.split('.').first.to_sym, params)
   end
+
+  def get(url)
+    yw = MockYachtWorld.new()
+    method = url.split('/').last.split('.').first.to_sym
+    params = {}
+    url.split('?').last.split('&').each { |keyvalue| 
+	pair = keyvalue.split('=')
+	params.merge!(pair.first.to_sym => pair.last)
+    }
+    print params.inspect
+    yw.send(method, params)
+  end
 end
 
 class TestYachtWorldTransferer < Test::Unit::TestCase
@@ -24,6 +36,11 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
 #								fixture("yw_basic_with_photos_page.html"))
   end
 
+  def test_delete_listing
+    ids = [-1, -2]
+    ids.each { |id| @yw.delete(id) }
+  end
+
   def test_create_listing
     @yw.create(@listing)
   end
@@ -31,9 +48,6 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
   def dont_test_authenticate
     assert @yw.authentic?
   end
-
-
-
 
   ################### 
   ##  Don't test bcuz they take too long.

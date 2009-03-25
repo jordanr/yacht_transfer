@@ -5,7 +5,9 @@ module YachtTransfer
     class YachtWorldTransferer
       include AbstractTransferer, YachtTransfer::Standards::YachtWorldStandards
 
-      def base_url; "www.boatwizard.com"; end
+      #################
+      # Public interface
+      ###############
 
       def authentic?
         http=Net::HTTP.new(base_url, 443)
@@ -36,48 +38,74 @@ module YachtTransfer
 	  get(delete_url(id))
       end
 
+
+      ##########################
       # private
+      #########################
 
-      def post_it_all(listing, id)
-        listing = listing.to_yw
-	old_id = id
-	id = basic(listing.basic, id)
-	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
-	details(listing.details, id)
-#	photo(listing.photo, id)
-	id
-      end
 
+       
+
+      ########################
+      # URI's 
+      ################
+      def base_url; "https://www.boatwizard.com"; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
       def photo_url(id, n); base_url+photo_path+"?"+photo_params(id, n, "Add"); end
       def delete_photo_url(id, n); base_url+delete_photo_path+"?"+photo_params(id, n,"Delete"); end
+
+      # listing
       def delete_url(id); base_url+delete_path+"?"+delete_params(id); end
+      def delete_params(id); "boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"; end
 
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
       def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
       def delete_photo_path; "/boatwizard/listings/photos.cgi"; end
       def delete_path; "/boatwizard/lib/delete_sql.cgi"; end
+      def photo_params(id, n, action); "boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"; end
 
-      # Put these with params
-      def photo_params(id, n, action)
-	"boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"
-      end
-      def delete_params(id)
-	"boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"
-      end
 
-      # returns id 
-      def basic(params)
-	res = post(basic_url, params) #yw_basic_paramslisting, id))
+      ######################
+      # Main
+      ##################
+      def post_it_all(listing, id)
+	listing.merge!(:username => username)
+	listing.merge!(:id => id ? id : "New")
+
+        listing.to_yw!
 	old_id = id
-	id = res
-#	id = res.form(:action=>details_path).boat_id
+	id = basic(listing.basic)
 	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
+        if !old_id
+  	  listing.merge!(:id => id)
+          listing.to_yw!
+        end
+
+	details(listing.details)
+#	photo(listing.photo)
 	id
       end
 
+      ###########################
+      # Listing, Details
+      ##############################
+
+      # Create Update listing
+      # returns id 
+      def basic(params)
+	res = post(basic_url, params) #yw_basic_paramslisting, id))
+#	old_id = #
+	id = res
+#	id = res.form(:action=>details_path).boat_id
+#	raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
+	id
+      end
+
+
+      # update, destroy details
+      # update listing
       def details(params)
 #	raise BadIdError, "need an id" if(!id)
 #	yacht = listing.yacht
@@ -88,10 +116,21 @@ module YachtTransfer
 #	  add_accommodation(id)
 #	  details(listing, id)
 #	else
-  	  post(details_url, params) #yw_details_params(listing, id, clob_ids))
+	post(details_url, params) #yw_details_params(listing, id, clob_ids))
 #	end
       end
 
+      # create detail
+      def add_accommodation(params)
+  	  post(details_url, params) #yw_add_accommodation_params(id))
+      end 
+
+
+      ############################
+      # Photos
+      #####################          
+
+      # create photos
       def photo(params)
 #	raise BadIdError, "need an id" if(!id)
 	n = 1
@@ -106,20 +145,42 @@ module YachtTransfer
 #	basic_with_photo(listing, id)
       end
 
+      # Delete photos
       def delete_photo(id, n)
         get(delete_photo_url(id, n))
       end
 
-      def add_accommodation(params)
-  	  post(details_url, params) #yw_add_accommodation_params(id))
-      end 
+      # Update photos
+      def basic_with_photo(listing, id)
+	raise BadIdError, "need an id" if(!id)
+        # puts yw_basic_with_photo_params
+	post(basic_url, yw_basic_with_photo_params(listing, id) )
+      end	
 
 
-        def basic_with_photo(listing, id)
-  	  raise BadIdError, "need an id" if(!id)
-          # puts yw_basic_with_photo_params
-	  post(basic_url, yw_basic_with_photo_params(listing, id) )
-        end	
+      ###################################33
+      # Helpers
+      ########################
+
+      def agent(host, port)
+        http = Net::HTTP.new(host, port)
+#        http.set_debug_output $stderr
+        http.use_ssl = true          
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        http
+      end
+
+      def request(path, method, initheader=nil)
+        if method == :get
+          req = Net::HTTP::Get.new(path, initheader)
+        elsif method == :post
+          req = Net::HTTP::Post.new(path, initheader)
+        else
+          raise ArgumentError "unknown method"
+        end
+        req.basic_auth username, password
+	req
+      end
 
 
         # Pre : Parameter is response from calling basic()

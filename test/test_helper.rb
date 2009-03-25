@@ -29,16 +29,12 @@ class Test::Unit::TestCase
   end
 
   def sample_listing
-    {:price=>1223, :name=>"sample_name",:manufacturer=>"sample_manufacturer", 
-     :model=>"sample_model", :year=>9999,
-     :length=>sample_measurement, :material=>"wood",
-     :designer=>"sample_designer",
-     :fuel_tank=>"sample_ftank", :water_tank=>"sample_wtank", :holding_tank=>"sample_htank",
-     :location=>"sample_location", :number_of_engines=>23,
-     :engine_manufacturer=>"smaple_manufacturer", :engine_model=>"sample_emodel",
-     :fuel=>"gas",:horsepower=>1000, :engine_year=>1111, :hours=>100,
-     :accommodations=>[sample_accommodation, sample_accommodation],
-     :pictures=>[sample_picture ,sample_picture,sample_picture]
+    {:price=>1223, :yacht_name=>"sample_name",:yacht_specification_manufacturer=>"sample_manufacturer", 
+     :yacht_specification_model=>"sample_model", :yacht_specification_year=>9999,
+     :yacht_specification_length=>33, 
+     :yacht_location=>"sample_location"
+#     :details=>[sample_accommodation, sample_accommodation],
+#     :photoss=>[sample_picture ,sample_picture,sample_picture]
     }
   end 
 

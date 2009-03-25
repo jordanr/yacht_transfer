@@ -23,6 +23,10 @@ module YachtTransfer
         @password = password
       end
 
+      ############
+      # Absracts
+      ##########
+
       def authentic?
         raise NotImplementedError, "subclass should have overriden"
       end
@@ -39,31 +43,62 @@ module YachtTransfer
         raise NotImplementedError, "subclass should have overriden"
       end
 
+      ##########
+      # HTTP requests
+      ##########
+
       def get(url)
-        urll = URI.parse(url)
-        http=Net::HTTP.new(urll.host, urll.port)
-        req = Net::HTTP::Get.new(urll.path)
+        url = URI.parse(url)
+        http= agent(url.host, url.port)
+        req = request("#{url.path.to_s}?#{url.query.to_s}", :get)
         res = http.request(req)
 	raise RequestError unless res.is_a?(Net::HTTPSuccess)
         res.body
       end
 
       def post(url, params)
-        res = Net::HTTP.post_form(URI.parse(url), params)
-	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        url = URI.parse(url)
+        http = agent(url.host, url.port)
+        req = request(url.path, :post)
+        req.set_form_data(params)
+
+        res = http.request(req)
+  	raise RequestError unless res.is_a?(Net::HTTPSuccess)
         res.body
       end
 
       def multipart_post(url, params)
 	mp = Multipart::MultipartPost.new
         query, headers = mp.prepare_query(params)
-        urll = URI.parse(url)
-	res = Net::HTTP.start(urll.host, urll.port) { |con|
-	  con.post(urll.path, query, headers)
-        }
+        url = URI.parse(url)
+        http = agent(url.host, url.port)
+        req = request(url.path, :post, headers)
+        req.set_form_data(query)
+	res = http.request(req)
+
 	raise RequestError unless res.is_a?(Net::HTTPSuccess)
         res.body
       end       
+
+     ##########
+     # Hooks 
+
+      def agent(host, port)
+        http = Net::HTTP.new(host, port)
+#        http.set_debug_output $stderr
+        http
+      end
+
+      def request(path, method, initheader=nil)
+        if method == :get
+          req = Net::HTTP::Get.new(path, initheader)
+        elsif method == :post
+          req = Net::HTTP::Post.new(path, initheader)
+	else
+	  raise ArgumentError "unknown method"
+        end
+      end
+
     end
   end
 end
