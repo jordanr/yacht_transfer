@@ -174,15 +174,26 @@ module YachtTransfer
         http
       end
 
-      def request(path, method, initheader=nil)
+      def request(path, method, headers=nil)
         if method == :get
-          req = Net::HTTP::Get.new(path, initheader)
+          req = Net::HTTP::Get.new(path)
         elsif method == :post
-          req = Net::HTTP::Post.new(path, initheader)
+          req = Net::HTTP::Post.new(path)
         else
           raise ArgumentError("unknown method")
         end
         req.basic_auth username, password
+        headers.each_pair { |k, v| req.add_field(k, v) } if headers
+        req.add_field('Accept-Encoding', 'gzip,identity')
+        req.add_field('Accept-Language', 'en-us,en;q=0.5')
+#        req.add_field('Host', uri.host)
+        req.add_field('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7')
+        req.add_field('Connection', 'keep-alive')
+        req.add_field('Keep-Alive', '300')
+
+
+#	req.each_header { |k, v| print k; print v; }
+#	raise
 	req
       end
 

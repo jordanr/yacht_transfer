@@ -66,13 +66,13 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
   end
 
   def test_create_photo
-    assert @yw.photo( {1 => {:fileName => picture_fixture("rails.png"), :submit => "Save Photo"} }, @id_one)
+    assert @real_yw.photo( {1 => {:fileName_1 => picture_fixture("rails.png"), :submit => "Save Photo"} }, @id_one)
   end
   
   def test_delete_photo
     id = @id_one 
-    ps = [1,2,3]
-    ps.each { |p| assert @real_yw.delete_photo(id,p) }
+    ps = [2,3]
+    ps.each { |p| assert @yw.delete_photo(id,p) }
   end
 
 

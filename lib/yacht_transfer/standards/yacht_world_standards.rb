@@ -28,7 +28,6 @@ class Hash
  
       begg = endd
     end
-    print @photo.inspect
   end
 
 

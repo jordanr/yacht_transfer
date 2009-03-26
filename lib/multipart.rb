@@ -21,7 +21,7 @@ module Multipart
     end
 
     def to_multipart
-      #return "Content-Disposition: form-data; name=\"#{CGI::escape(k)}\"\r\n\r\n#{v}\r\n"
+      #return "Content-Disposition: form-data; name=\"#{CGI::escape(k.to_s)}\"\r\n\r\n#{v}\r\n"
       # Don't escape mine...
       return "Content-Disposition: form-data; name=\"#{k}\"\r\n\r\n#{v}\r\n"
     end
@@ -36,14 +36,14 @@ module Multipart
     end
 
     def to_multipart
-      #return "Content-Disposition: form-data; name=\"#{CGI::escape(k)}\"; filename=\"#{filename}\"\r\n" + "Content-Transfer-Encoding: binary\r\n" + "Content-Type: #{MIME::Types.type_for(@filename)}\r\n\r\n" + content + "\r\n "
+      #return "Content-Disposition: form-data; name=\"#{CGI::escape(k.to_s)}\"; filename=\"#{filename}\"\r\n" + "Content-Transfer-Encoding: binary\r\n" + "Content-Type: #{MIME::Types.type_for(@filename)}\r\n\r\n" + content + "\r\n "
       # Don't escape mine
       return "Content-Disposition: form-data; name=\"#{k}\"; filename=\"#{filename}\"\r\n" + "Content-Transfer-Encoding: binary\r\n" + "Content-Type: #{MIME::Types.type_for(@filename)}\r\n\r\n" + content + "\r\n"
     end
   end
   class MultipartPost
-    BOUNDARY = '---------------------------265001916915724'
-    HEADER = {"Content-type" => "multipart/form-data, boundary=" + BOUNDARY + " "}
+    BOUNDARY = 'RBWBmMecKCHhGekgcbPw'
+    HEADER = {"Content-type" => "multipart/form-data, boundary=" + BOUNDARY}
 
     def prepare_query (params)
       fp = []
@@ -51,7 +51,7 @@ module Multipart
         if v.respond_to?(:read)
           fp.push(FileParam.new(k, v.path, v.read))
         else
-          fp.push(Param.new(k,v))
+          fp.unshift(Param.new(k,v))
         end
       }
       query = fp.collect {|p| "--" + BOUNDARY + "\r\n" + p.to_multipart }.join("") + "--" + BOUNDARY + "--"

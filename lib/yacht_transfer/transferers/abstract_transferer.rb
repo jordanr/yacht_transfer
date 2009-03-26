@@ -76,8 +76,8 @@ module YachtTransfer
         http = agent(url.host, url.port)
         req = request("#{url.path.to_s}?#{url.query.to_s}", :post, headers)
 #        req = request(url.path, :post, headers)
-        req.set_form_data(query)
-	res = http.request(req)
+#        req.set_form_data(query)
+	res = http.request(req, query)
 
         return res['location'] if res.is_a?(Net::HTTPRedirection)
 
@@ -94,28 +94,16 @@ module YachtTransfer
         http
       end
 
-      def request(path, method, initheader=nil)
+      def request(path, method, headers=nil)
         if method == :get
-          req = Net::HTTP::Get.new(path, initheader)
+          req = Net::HTTP::Get.new(path)
         elsif method == :post
-          req = Net::HTTP::Post.new(path, initheader)
+          req = Net::HTTP::Post.new(path)
 	else
 	  raise ArgumentError("unknown method")
-        end
+        end	
+#	headers.each_pair { |k, v| req.add_field(k, v) } if headers
       end
-
-      def fetch(uri_str, limit = 10)
-        # You should choose better exception.
-        raise ArgumentError, 'HTTP redirect too deep' if limit == 0
-
-        response = Net::HTTP.get_response(URI.parse(uri_str))
-        case response
-        when Net::HTTPSuccess     then response
-        when Net::HTTPRedirection then fetch(response['location'], limit - 1)
-        else
-          response.error!
-      end
-    end
 
 
     end
