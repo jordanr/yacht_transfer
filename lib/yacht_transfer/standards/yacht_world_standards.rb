@@ -1,7 +1,7 @@
 # Extend hash to handle yw + yc param transforms.
 class Hash
   include YachtTransfer::Standards::BaseStandards
-
+  
   attr_reader :basic, :details, :photo
 
   def to_yw!
@@ -13,6 +13,22 @@ class Hash
     @details.merge!(default_details_params)
     (required_details_params + required_params).each { |key| @details.merge!(key_transform(key, :yw).to_sym => fetch(key.to_sym) ) }
     @details.merge!(:builder=>fetch(:yacht_specification_manufacturer))
+
+    @photo = {}
+    begg = 1
+    fetch(:photos).each_slice(5) do |pics|
+      endd = begg + 5
+      @photo[begg] = default_photo_params
+
+      n = 0
+      while pics[n] do
+        @photo[begg].merge!({"fileName_#{begg + n}"=> pics[n][:src]})
+	n += 1
+      end
+ 
+      begg = endd
+    end
+    print @photo.inspect
   end
 
 
@@ -125,6 +141,10 @@ class Hash
 #	params
  #     end
 
+
+  def default_photo_params
+    { :submit => "Save Photo" }
+  end
 
 end
 

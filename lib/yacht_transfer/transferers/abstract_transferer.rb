@@ -59,7 +59,8 @@ module YachtTransfer
       def post(url, params)
         url = URI.parse(url)
         http = agent(url.host, url.port)
-        req = request(url.path, :post)
+        req = request("#{url.path.to_s}?#{url.query.to_s}", :post)
+#        req = request(url.path, :post)
         req.set_form_data(params)
 
         res = http.request(req)
@@ -67,17 +68,21 @@ module YachtTransfer
         res.body
       end
 
-      def multipart_post(url, params)
+      def multipart_post(url, params, initheaders=nil)
 	mp = Multipart::MultipartPost.new
         query, headers = mp.prepare_query(params)
+        headers.merge!(initheaders) if initheaders
         url = URI.parse(url)
         http = agent(url.host, url.port)
-        req = request(url.path, :post, headers)
+        req = request("#{url.path.to_s}?#{url.query.to_s}", :post, headers)
+#        req = request(url.path, :post, headers)
         req.set_form_data(query)
 	res = http.request(req)
 
-	raise RequestError unless res.is_a?(Net::HTTPSuccess)
-        res.body
+        return res['location'] if res.is_a?(Net::HTTPRedirection)
+
+       	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        return res.body
       end       
 
      ##########
@@ -95,9 +100,23 @@ module YachtTransfer
         elsif method == :post
           req = Net::HTTP::Post.new(path, initheader)
 	else
-	  raise ArgumentError "unknown method"
+	  raise ArgumentError("unknown method")
         end
       end
+
+      def fetch(uri_str, limit = 10)
+        # You should choose better exception.
+        raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+
+        response = Net::HTTP.get_response(URI.parse(uri_str))
+        case response
+        when Net::HTTPSuccess     then response
+        when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+        else
+          response.error!
+      end
+    end
+
 
     end
   end

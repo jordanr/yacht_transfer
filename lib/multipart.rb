@@ -42,7 +42,7 @@ module Multipart
     end
   end
   class MultipartPost
-    BOUNDARY = 'tarsiers-rule0000'
+    BOUNDARY = '---------------------------265001916915724'
     HEADER = {"Content-type" => "multipart/form-data, boundary=" + BOUNDARY + " "}
 
     def prepare_query (params)

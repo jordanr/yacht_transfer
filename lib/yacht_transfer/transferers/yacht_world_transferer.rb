@@ -36,6 +36,7 @@ module YachtTransfer
       def delete(id)
   	  raise BadIdError, "need an id" if(!id)	  
 	  get(delete_url(id))
+	  id
       end
 
 
@@ -52,6 +53,7 @@ module YachtTransfer
       def base_url; "https://www.boatwizard.com"; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
+      def upload_photo_url(id, n); base_url+upload_photo_path+"?"+photo_params(id, n, "Add"); end
       def photo_url(id, n); base_url+photo_path+"?"+photo_params(id, n, "Add"); end
       def delete_photo_url(id, n); base_url+delete_photo_path+"?"+photo_params(id, n,"Delete"); end
 
@@ -61,7 +63,8 @@ module YachtTransfer
 
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
-      def photo_path; "/boatwizard/listings/upload_photo.cgi"; end
+      def upload_photo_path; "/boatwizard/listings/upload_photo.cgi"; end
+      def photo_path; "/boatwizard/listings/photos.cgi"; end
       def delete_photo_path; "/boatwizard/listings/photos.cgi"; end
       def delete_path; "/boatwizard/lib/delete_sql.cgi"; end
       def photo_params(id, n, action); "boat_id=#{id}&photo=#{n}&url=#{username}&action=#{action}&pass_office_id=&pass_broker_id=&lang=en"; end
@@ -84,7 +87,7 @@ module YachtTransfer
         end
 
 	details(listing.details)
-#	photo(listing.photo)
+	photo(listing.photo, id)
 	id
       end
 
@@ -132,15 +135,14 @@ module YachtTransfer
       #####################          
 
       # create photos
-      def photo(params)
-#	raise BadIdError, "need an id" if(!id)
-	n = 1
-#	yacht = listing.yacht
-	# only can do some max photos at a time
-#	yacht.pictures.each_slice(YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME) { |pics|
-#   	  post_files(photo_url(id, n), yw_photo_params(listing, id, n))
-#	  n+=YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME
-#	}
+      def photo(params_list, id)
+	nums = params_list.keys.sort
+        nums.each do |n|
+          multipart_post(upload_photo_url(id, n), params_list[n])
+#          multipart_post(photo_url(id, n), params_list[n], { "referer" =>upload_photo_url(id, n) })
+#          get(photo_url(id, n))
+        end
+
 #	pics_num = get_photo_num(current_page)
 #	((yacht.pictures.length+1)..pics_num).each { |p| delete_photo(id, p) } # delete extra pics
 #	basic_with_photo(listing, id)
@@ -149,6 +151,7 @@ module YachtTransfer
       # Delete photos
       def delete_photo(id, n)
         get(delete_photo_url(id, n))
+	id
       end
 
       # Update photos
@@ -165,7 +168,7 @@ module YachtTransfer
 
       def agent(host, port)
         http = Net::HTTP.new(host, port)
-#        http.set_debug_output $stderr
+        http.set_debug_output $stderr
         http.use_ssl = true          
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http
@@ -177,7 +180,7 @@ module YachtTransfer
         elsif method == :post
           req = Net::HTTP::Post.new(path, initheader)
         else
-          raise ArgumentError "unknown method"
+          raise ArgumentError("unknown method")
         end
         req.basic_auth username, password
 	req

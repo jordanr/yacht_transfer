@@ -103,7 +103,9 @@ class MockYachtWorld
   # Create photo
   # Photo path
   def upload_photo(params)
-    local_required_keys = %w{ submit fileName_x photo action }
+    local_required_keys = %w{ submit photo action }
+
+#        fileName_x
     raise ParameterError unless valid_keys?(params, local_required_keys)
   end
 
@@ -120,7 +122,7 @@ class MockYachtWorld
 
     def valid_keys?(params, required_keys)
       required_keys += global_required_keys
-      return required_keys.all? { |key| print key; params.has_key?(key.to_sym) }
+      return required_keys.all? { |key| params.has_key?(key.to_sym) }
     end  
 end
 
