@@ -99,6 +99,7 @@ module YachtTransfer
       # returns id 
       def basic(params)
 	res = post(basic_url, params) #yw_basic_paramslisting, id))
+	res = res.body
         #<INPUT type="hidden" name="boat_id" value="1966820">
 	id = res.slice(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, 0)
 	id.gsub!(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, '\1')

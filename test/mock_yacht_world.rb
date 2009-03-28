@@ -1,5 +1,15 @@
 class ParameterError < StandardError; end
 
+class MockResponse
+  def initialize(body)
+    @body = body
+  end
+
+  def body
+    @body
+  end
+end
+
 class MockYachtWorld
 
   def initialize
@@ -36,7 +46,7 @@ class MockYachtWorld
     raise ParameterError unless params[:full_specs] == "Full Specs"
 
     id = params[:boat_id] == "New" ? @id_one : params[:boat_id]
-    return '<form name="fsform" id="fsform" method="post" action="/boatwizard/lib/edit2_sql.cgi">
+    return MockResponse.new('<form name="fsform" id="fsform" method="post" action="/boatwizard/lib/edit2_sql.cgi">
 <INPUT type="hidden" name="boat_id" value="'+id.to_s+'">
 <INPUT type="hidden" name="url" value="jordanyacht">
 <INPUT type="hidden" name="lang" value="en">
@@ -44,7 +54,7 @@ class MockYachtWorld
 <INPUT type="hidden" name="action" value="Edit">
 <INPUT type="hidden" name="ops" id="ops" value="">
 <input type=hidden name=pass_office_id value="">
-<input type=hidden name=pass_broker_id value="">'
+<input type=hidden name=pass_broker_id value="">')
   end
 
   # GET "/boatwizard/lib/delete_sql.cgi"

@@ -15,13 +15,14 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
 
   ################### 
   ##  Don't test bcuz they take too long.  
-  def dont_test_yacht_council_logon
-    assert @yc.login
+  def test_yacht_council_authentic
+    assert @yc.authentic?
   end
 
-  def dont_test_yacht_council_logon_fails
+  def test_yacht_council_not_authentic
     yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::LoginFailedError) { yc.login }
+    assert ! yc.authentic?
   end
+
 end
 

@@ -47,25 +47,33 @@ module YachtTransfer
       # HTTP requests
       ##########
 
-      def get(url)
+      def get(url, initheaders = nil)
         url = URI.parse(url)
         http= agent(url.host, url.port)
-        req = request("#{url.path.to_s}?#{url.query.to_s}", :get)
+	if url.query
+          req = request("#{url.path.to_s}?#{url.query.to_s}", :get, initheaders)
+	else
+          req = request("#{url.path.to_s}", :get, initheaders)
+	end
         res = http.request(req)
-	raise RequestError unless res.is_a?(Net::HTTPSuccess)
-        res.body
+#	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        res
       end
 
-      def post(url, params)
+      def post(url, params, initheaders = nil)
         url = URI.parse(url)
         http = agent(url.host, url.port)
-        req = request("#{url.path.to_s}?#{url.query.to_s}", :post)
+	if url.query
+          req = request("#{url.path.to_s}?#{url.query.to_s}", :post, initheaders)
+	else
+          req = request("#{url.path.to_s}", :post, initheaders)
+	end
 #        req = request(url.path, :post)
         req.set_form_data(params)
 
         res = http.request(req)
-  	raise RequestError unless res.is_a?(Net::HTTPSuccess)
-        res.body
+#  	raise RequestError unless res.is_a?(Net::HTTPSuccess)
+        res
       end
 
       def multipart_post(url, params, initheaders=nil)
@@ -74,15 +82,18 @@ module YachtTransfer
         headers.merge!(initheaders) if initheaders
         url = URI.parse(url)
         http = agent(url.host, url.port)
-        req = request("#{url.path.to_s}?#{url.query.to_s}", :post, headers)
+	if url.query
+          req = request("#{url.path.to_s}?#{url.query.to_s}", :post, headers)
+	else
+          req = request("#{url.path.to_s}", :post, headers)
+	end
+
 #        req = request(url.path, :post, headers)
 #        req.set_form_data(query)
 	res = http.request(req, query)
 
-        return res['location'] if res.is_a?(Net::HTTPRedirection)
-
-       	raise RequestError unless res.is_a?(Net::HTTPSuccess)
-        return res.body
+#       	raise RequestError unless res.is_a?(Net::HTTPSuccess ||)
+        return res
       end       
 
      ##########
@@ -90,7 +101,7 @@ module YachtTransfer
 
       def agent(host, port)
         http = Net::HTTP.new(host, port)
-#        http.set_debug_output $stderr
+        http.set_debug_output $stdout
         http
       end
 

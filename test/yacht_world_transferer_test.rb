@@ -66,7 +66,7 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
   end
 
   def test_create_photo
-    assert @real_yw.photo( {1 => {:fileName_1 => picture_fixture("rails.png"), :submit => "Save Photo"} }, @id_one)
+    assert @yw.photo( {1 => {:fileName_1 => picture_fixture("rails.png"), :submit => "Save Photo"} }, @id_one)
   end
   
   def test_delete_photo
