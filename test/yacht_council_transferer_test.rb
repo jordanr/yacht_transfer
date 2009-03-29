@@ -38,7 +38,8 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
 
-    @id = 12
+    @broker_id = "3910"
+    @id = "86580"
     @yc_username = "jys"
     @yc_password = "yacht"
     @yc = YachtCouncil.new(@yc_username, @yc_password)

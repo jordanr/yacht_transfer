@@ -8,7 +8,7 @@ class MockYachtCouncilResponse
   end
 
   def [](method)
-    self.send(method.gsub("-", "_") )
+    self.send(method.gsub("-", "_").to_sym )
   end
 
   def set_cookie
@@ -70,26 +70,30 @@ class MockYachtCouncil
       #Update.x Update.y Update
 
       # Pre validate
-      raise YachtCouncilError, "Broker name must not be empty" if params[:salesmans_id] == -1
-      raise YachtCouncilError, "Boat Name is a required field, please enter a value" unless params[:name]
-      raise YachtCouncilError, "Manufacturer/builder is a required field, please enter a value" unless params[:vessel_manufacturer_name]
-      raise YachtCouncilError, "Year Built (YYYY) is a required field, please enter a value" unless params[:built_in_year]
-      raise YachtCouncilError, "Model Year (yyyy) is a required field, please enter a value" unless params[:model_year]
-      raise YachtCouncilError, "Category Type is a required field, please enter a value" unless params[:vessels_categories_id]
-      raise YachtCouncilError, "Length is a required field, please enter a value" unless params[:length]
-      raise YachtCouncilError, "Hull Material is a required field, please enter a value" unless params[:hull_materials_id]
-      raise YachtCouniclError, "Flag is a required field, please enter a value" unless params[:flag]
-      raise YachtCouncilError, "Vessel Region is a required field, please enter a value" unless params[:regions_id]
-      raise YachtCouncilError, "Asking Price (no commas) is a required field, please enter a value" unless params[:ask_price]
-      raise YachtCouncilError, "You can only select multiple subcategories on one Category." unless
-      raise YachtCouncilError, "BUC Disclaimer Agreement is a required field. You must agree to the BUC disclaimer before adding this vessel. Sorry for the inconvenience." unless params[:vessels_entry_agreement]
+      raise YachtCouncilError, "Broker name must not be empty" if params[:salesmans_id] == -1 or params[:salesmans_id].to_s.empty?
+      raise YachtCouncilError, "Boat Name is a required field, please enter a value"  if params[:name].empty?
+      raise YachtCouncilError, "Manufacturer/builder is a required field, please enter a value" if params[:vessel_manufacturer_name].empty?
+      raise YachtCouncilError, "Year Built (YYYY) is a required field, please enter a value" if params[:built_in_year].empty?
+      raise YachtCouncilError, "Model Year (yyyy) is a required field, please enter a value" if params[:model_year].empty?
+      raise YachtCouncilError, "Category Type is a required field, please enter a value" if params[:vessels_categories_id].empty?
+      raise YachtCouncilError, "Length is a required field, please enter a value" if params[:length].empty?
+      raise YachtCouncilError, "Hull Material is a required field, please enter a value" if params[:hull_materials_id].empty?
+      raise YachtCouniclError, "Flag is a required field, please enter a value" if params[:flag].empty?
+      raise YachtCouncilError, "Vessel Region is a required field, please enter a value" if params[:regions_id].empty?
+      raise YachtCouncilError, "Asking Price (no commas) is a required field, please enter a value" if params[:ask_price].empty?
+#      raise YachtCouncilError, "You can only select multiple subcategories on one Category." if params[:
+      raise YachtCouncilError, "BUC Disclaimer Agreement is a required field. You must agree to the BUC disclaimer before adding this vessel. Sorry for the inconvenience." if params[:vessels_entry_agreement].empty?
 
       # Post validate
       errors = ""
       errors += "Please select a valid vessel manufacturer from our list" unless params[:vessel_manufacturer_name] == "Custom"
-      errors += "Please select a valid engine manufacturer from our list" unless params[:engines_manufacturers_id] # and params[:engines_manufacturers_id] == "Custom"
+      errors += "Please select a valid engine manufacturer from our list" unless params[:engines_manufacturers_name] == "Upon Request"
 
-      return MockYachtCouncilResponse.new(errors)
+      if errors.empty?
+	return MockYachtCouncilResponse.new("", "vessel-section-editor.aspx?vessel=86580")
+      else
+        return MockYachtCouncilResponse.new(errors)
+      end
   end
 
 

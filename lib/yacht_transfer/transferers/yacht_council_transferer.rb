@@ -93,10 +93,7 @@ module YachtTransfer
       # returns id
       def basic(params)
         res = post(basic_url, params)
-#        old_id = id
- #       id = res.form(:action=>details_path).boat_id
-  #      raise BadIdError, "edited listing has different id than expected!" if(old_id && id!=old_id)
-   #     id
+        res['location'].split("vessel=").last
       end
 
 

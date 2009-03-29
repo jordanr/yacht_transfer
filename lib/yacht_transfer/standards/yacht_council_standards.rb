@@ -18,7 +18,9 @@ class YachtCouncilHash < Hash
     @basic = default_params
     @basic.merge!(default_basic_params)
     (required_basic_params + required_params).each { |key| @basic.merge!(key_transform(key, :yc).to_sym => fetch(key.to_sym) ) }
-
+    @basic.merge!(:model_year=>fetch(:yacht_specification_year))
+    @basic.merge!(:model => "#{fetch(:yacht_specification_manufacturer)} #{fetch(:yacht_specification_model)}" )
+    
 #    @details = default_params
 #    @details.merge!(default_details_params)
 #    (required_details_params + required_params).each { |key| @details.merge!(key_transform(key, :yc).to_sym => fetch(key.to_sym) ) }
@@ -64,6 +66,7 @@ class YachtCouncilHash < Hash
   	  :member_company_id=>"", #company_id,
   	  :login_id=>"", #login_id,
 	  :vessels_id=>has_key?(:id) ? fetch(:id) : "0",
+  	  :salesmans_id =>"0",# listing.broker, # cache ids-- how?
 
 	  # used/new
 	  :used => "", #??
@@ -122,7 +125,7 @@ class YachtCouncilHash < Hash
           :displacement=>"", #yacht.displacement.value,
 
 	  :hull_configurations_id=>"",
-  	  :hull_materials_id=>"", #MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yc],
+  	  :hull_materials_id=>"7", #MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yc],
 	  :deck_materials_id=>"",
 	  :hull_color=>"",
 	  :hull_finished=>"",
@@ -175,7 +178,6 @@ class YachtCouncilHash < Hash
   	  :ask_price_currency_id => "", # PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yc],
 	  :poa_price=>"",
 	  :tax=>"0",
-  	  :salesmans_id =>"",# listing.broker, # cache ids-- how?
 	  :owner_name=>"",
 	  :showing_instructions=>"", #listing.contact_info,
 	  :info=>"",
@@ -186,7 +188,8 @@ class YachtCouncilHash < Hash
 	  :gross_tonnage=>"",
 	  :ballase_type=>"",
 	  :engines_types_id=>"",
-	  :engines_manufacturers_name=>"",
+	  :engines_manufacturers_name=>"Upon Request",
+	  :vessel_manufacturer_name=>"Custom",
 	  :engine_model=>"",
   	  :vessels_entry_agreement => "1"
   	  }
@@ -206,8 +209,7 @@ class YachtCouncilHash < Hash
   end
 
   def required_basic_params
-	%w{ yacht_specification_length yacht_specification_manufacturer
-	    yacht_specification_model yacht_specification_year
+	%w{ yacht_specification_length yacht_specification_year
 	    price yacht_location yacht_name
 	  }
   end
