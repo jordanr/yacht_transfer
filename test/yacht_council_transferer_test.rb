@@ -38,20 +38,24 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
   def setup
     @listing= sample_listing
 
+    @id = 12
     @yc_username = "jys"
     @yc_password = "yacht"
     @yc = YachtCouncil.new(@yc_username, @yc_password)
     @real_yc = YachtTransfer::Transferers::YachtCouncilTransferer.new(@yc_username, @yc_password)
   end
 
-  def test_yacht_council_authentic
+  def test_authentic
     assert @yc.authentic?
   end
 
-  def test_yacht_council_not_authentic
+  def test_not_authentic
     yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
     assert ! yc.authentic?
   end
 
+  def test_create
+    assert_equal @id, @yc.create(@listing)
+  end
 end
 

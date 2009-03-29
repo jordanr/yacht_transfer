@@ -2,12 +2,10 @@ require 'yacht_transfer/transferers/abstract_transferer'
 require 'yacht_transfer/standards/yacht_council_standards'
 module YachtTransfer
   module Transferers
-
-
     class UnauthorizedError < StandardError; end
 
     class YachtCouncilTransferer
-      include AbstractTransferer, YachtTransfer::Standards::YachtCouncilStandards
+      include AbstractTransferer
 
       def initialize(uname, pass)
 	@username = uname
@@ -26,11 +24,13 @@ module YachtTransfer
       end
 
       def create(listing)
+        listing = YachtTransfer::Standards::YachtCouncilHash.new(listing)
         post_it_all(listing, nil)
       end
 
       def update(listing, id)
         raise BadIdError, "need an id" if(!id)
+        listing = YachtTransfer::Standards::YachtCouncilHash.new(listing)
         post_it_all(listing, id)
       end
 
@@ -47,6 +47,7 @@ module YachtTransfer
       def login_url; base_url+login_path; end
       def home_url; base_url+home_path; end
       def basic_url; base_url+basic_path; end
+
       def login_path; "/login.asp?login=#{username}&password=#{password}"; end
       def home_path; "/company_home.asp"; end
       def basic_path; "/vessel_entry_step1.asp"; end

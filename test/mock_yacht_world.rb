@@ -53,6 +53,9 @@ class MockYachtWorld
     raise ParameterError unless params[:full_specs] == "Full Specs"
 
     id = params[:boat_id] == "New" ? @id_one : params[:boat_id]
+
+    # year must be 4 digits 
+ 
     return MockResponse.new('<form name="fsform" id="fsform" method="post" action="/boatwizard/lib/edit2_sql.cgi">
 <INPUT type="hidden" name="boat_id" value="'+id.to_s+'">
 <INPUT type="hidden" name="url" value="jordanyacht">

@@ -1,10 +1,17 @@
 # Extend hash to handle yw + yc param transforms.
-class Hash
+module YachtTransfer
+  module Standards
+
+class YachtWorldHash < Hash
   include YachtTransfer::Standards::BaseStandards
   
   YW_MAX_PHOTOS = 5
   
   attr_reader :basic, :details, :photo
+
+  def initialize(hash)
+    hash.each_pair { |k, v| store(k,v) }
+  end
 
   def to_yw!
     @basic = default_params
@@ -147,6 +154,8 @@ class Hash
     { :submit => "Save Photo" }
   end
 
+end 
+end
 end
 
 module YachtTransfer

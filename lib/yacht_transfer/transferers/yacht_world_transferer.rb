@@ -3,7 +3,7 @@ require 'yacht_transfer/standards/yacht_world_standards'
 module YachtTransfer
   module Transferers
     class YachtWorldTransferer
-      include AbstractTransferer, YachtTransfer::Standards::YachtWorldStandards
+      include AbstractTransferer
 
       #################
       # Public interface
@@ -15,11 +15,13 @@ module YachtTransfer
       end
 
       def create(listing)
+	  listing = YachtTransfer::Standards::YachtWorldHash.new(listing)
 	  post_it_all(listing, nil)
       end
 
       def update(listing, id)
   	  raise BadIdError, "need an id" if(!id)	  
+	  listing = YachtTransfer::Standards::YachtWorldHash.new(listing)
 	  post_it_all(listing, id)
       end
       
@@ -28,7 +30,6 @@ module YachtTransfer
 	  get(delete_url(id))
 	  id
       end
-
 
       ########################
       # URI's 

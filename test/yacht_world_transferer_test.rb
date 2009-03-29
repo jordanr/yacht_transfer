@@ -86,6 +86,7 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
   end
 
   def test_basic
+    @listing = YachtTransfer::Standards::YachtWorldHash.new(@listing)
     @listing.merge!(:id=>@id_one)
     @listing.merge!(:username=>@yw_username)
     @listing.to_yw!
