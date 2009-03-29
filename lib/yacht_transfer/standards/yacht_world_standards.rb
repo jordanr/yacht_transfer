@@ -2,6 +2,8 @@
 class Hash
   include YachtTransfer::Standards::BaseStandards
   
+  YW_MAX_PHOTOS = 5
+  
   attr_reader :basic, :details, :photo
 
   def to_yw!
@@ -16,8 +18,8 @@ class Hash
 
     @photo = {}
     begg = 1
-    fetch(:photos).each_slice(5) do |pics|
-      endd = begg + 5
+    fetch(:photos).each_slice(YW_MAX_PHOTOS) do |pics|
+      endd = begg + YW_MAX_PHOTOS
       @photo[begg] = default_photo_params
 
       n = 0
@@ -151,9 +153,6 @@ module YachtTransfer
   module Standards
     module YachtWorldStandards
 	include BaseStandards
-      YW_MAX_PHOTOS_TO_UPLOAD_AT_A_TIME = 5
-
-
       def yw_add_accommodation_params(id)
 	params = yw_params
 	params.merge!({

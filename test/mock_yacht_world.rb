@@ -17,7 +17,14 @@ class MockYachtWorld
     @id_two = 1711800 
     @ids = [@id_one, @id_two]
 #    @boat_id = 1966820
+    @users = {'test'=>'test'}
   end  
+
+  def index(params)
+    return Net::HTTPSuccess.new('a', 'b', 'c')
+  end  
+
+
   ##################
   # Listings
   ######################
@@ -34,7 +41,7 @@ class MockYachtWorld
     
     # in addition to Edit photos
     # edit_photos_keys = %w{ photo_description_order_x photo_sort_order_x }
-    raise ParameterError unless valid_keys?(params, local_required_keys)
+    raise ParameterError, "bad local keys" unless valid_keys?(params, local_required_keys)
 
     # all or none
     raise ParameterError, "something wrong with combo: #{params[:boat_id]}, #{params[:action]}, #{params[:boats_clobs_id]}" unless
@@ -132,6 +139,7 @@ class MockYachtWorld
 
     def valid_keys?(params, required_keys)
       required_keys += global_required_keys
+      required_keys.each { |key| print key unless params.has_key?(key.to_sym) }
       return required_keys.all? { |key| params.has_key?(key.to_sym) }
     end  
 end

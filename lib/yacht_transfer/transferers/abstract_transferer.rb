@@ -21,6 +21,7 @@ module YachtTransfer
       def initialize(username, password)
         @username = username
         @password = password
+	@agent = nil
       end
 
       ############
@@ -100,8 +101,9 @@ module YachtTransfer
      # Hooks 
 
       def agent(host, port)
+	return @agent if @agent
         http = Net::HTTP.new(host, port)
-        http.set_debug_output $stdout
+#        http.set_debug_output $stdout
         http
       end
 

@@ -10,18 +10,8 @@ module YachtTransfer
       ###############
 
       def authentic?
-        http=Net::HTTP.new(base_url, 443)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        req = Net::HTTP::Get.new('/')
-        req.basic_auth username, password
-        begin
-          response = http.request(req)
-        rescue
-	  return false
-        else
-	  return true
-        end
+  	 res = get(login_url)
+         res.is_a?(Net::HTTPSuccess)
       end
 
       def create(listing)
@@ -40,16 +30,10 @@ module YachtTransfer
       end
 
 
-      ##########################
-      # private
-      #########################
-
-
-       
-
       ########################
       # URI's 
       ################
+      def login_url; base_url + login_path; end
       def base_url; "https://www.boatwizard.com"; end
       def basic_url; base_url+basic_path; end
       def details_url; base_url+details_path; end
@@ -61,6 +45,7 @@ module YachtTransfer
       def delete_url(id); base_url+delete_path+"?"+delete_params(id); end
       def delete_params(id); "boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"; end
 
+      def login_path; "/index.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end
       def upload_photo_path; "/boatwizard/listings/upload_photo.cgi"; end
@@ -102,7 +87,7 @@ module YachtTransfer
 	res = res.body
         #<INPUT type="hidden" name="boat_id" value="1966820">
 	id = res.slice(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, 0)
-	id.gsub!(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, '\1')
+	id.gsub!(/.*<INPUT type="hidden" name="boat_id" value="([0-9]+)">.*/, '\1') if id
 
 	id.to_i
       end
@@ -168,8 +153,9 @@ module YachtTransfer
       ########################
 
       def agent(host, port)
+	return @agent if @agent
         http = Net::HTTP.new(host, port)
-        http.set_debug_output $stderr
+#        http.set_debug_output $stderr
         http.use_ssl = true          
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http
@@ -185,7 +171,7 @@ module YachtTransfer
         end
         req.basic_auth username, password
         headers.each_pair { |k, v| req.add_field(k, v) } if headers
-        req.add_field('Accept-Encoding', 'gzip,identity')
+#        req.add_field('Accept-Encoding', 'gzip,identity')
         req.add_field('Accept-Language', 'en-us,en;q=0.5')
 #        req.add_field('Host', uri.host)
         req.add_field('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7')

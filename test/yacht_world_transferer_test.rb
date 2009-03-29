@@ -58,6 +58,7 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
 
   def test_delete_listing
     ids = [@id_one, @id_two]
+#    ids = [2050224,2050223,2050222,2050219,2050221,2050229]
     ids.each { |id| assert @yw.delete(id) }
   end
 
@@ -75,22 +76,27 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
     ps.each { |p| assert @yw.delete_photo(id,p) }
   end
 
-
-  ################### 
-  ##  Don't test bcuz they take too long.
-  def dont_test_authentic
+  def test_authentic
     assert @yw.authentic?
   end
 
-  def dont_test_not_authentic
+  def test_not_authentic
     yw = YachtTransfer::Transferers::YachtWorldTransferer.new("dkad", "dddd")
     assert ! yw.authentic?
   end
 
+  def test_basic
+    @listing.merge!(:id=>@id_one)
+    @listing.merge!(:username=>@yw_username)
+    @listing.to_yw!
+    assert_equal @id_one, @yw.basic(@listing.basic)
+  end
+
+  ################### 
+
   def dont_test_yw_basic_with_photo_submit_page
     puts @yw.basic_with_photo(@listing, @id)
   end
-
 
   def dont_test_yw_submit_details_page
     puts @yw.details(@listing, @id).inspect
@@ -100,8 +106,5 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
     puts @yw.add_accommodation(@listing, @id).inspect
   end
 
-  def dont_test_yw_submit_basic_page
-    puts @yw.basic(@listing, @id).inspect
-  end
 
 end
