@@ -24,7 +24,11 @@ class MockYachtCouncil
 
   # POST "/login.asp?login=#{username}&password=#{password}"
   def login(params)
-    MockYachtCouncilResponse.new("object moved", "company_home.asp", "session=session")
+    if params[:login]=="jys" and params[:password]=="yacht"
+      MockYachtCouncilResponse.new("object moved", "company_home.asp", "session=session")
+    else
+      raise YachtCouncilError, "bad login"
+    end  
   end
 
   # GET "/company_home.asp"
@@ -63,12 +67,21 @@ class MockYachtCouncil
       # included ??
       # categories_types_id
 
-      # for creation
-      # x y
+      create_required_params = %w{ x y }
+      update_required_params = %w{ Update.x Update.y Update }
+      if params[:vessels_id] == "0"      # for creation
+        raise YachtCouncilError, "expected to create with #{create_required_params}" unless valid_keys?(params, create_required_params)
+      else      # for updates
+        raise YachtCouncilError, "expected to update with #{update_required_params}" unless valid_keys?(params, update_required_params)
+      end
 
-      # for updates
-      #Update.x Update.y Update
-
+      # 500 
+      raise YachtCouncilError, "Microsoft VBScript runtime  error '800a01a8' Object required: 'Field_' /include/form/Utils.asp, line 73" if params[:vessels_types_id].to_s.empty?
+      raise YachtCouncilError, "Microsoft VBScript runtime error '800a000d' Type mismatch: '[string: '']'" if params[:member_company_id].to_s.empty? or params[:login_id].to_s.empty?
+      raise YachtCouncilError, "Microsoft VBScript runtime error '800a000d' Type mismatch: '[string: '']'" if params[:length_sys_id].to_s.empty? or 
+													      params[:weight_sys_id].to_s.empty? or
+													      params[:speed_sys_id].to_s.empty? or
+													      params[:volume_sys_id].to_s.empty?
       # Pre validate
       raise YachtCouncilError, "Broker name must not be empty" if params[:salesmans_id] == -1 or params[:salesmans_id].to_s.empty?
       raise YachtCouncilError, "Boat Name is a required field, please enter a value"  if params[:name].empty?

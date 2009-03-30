@@ -39,6 +39,9 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     @listing= sample_listing
 
     @broker_id = "3910"
+    @LoginID = "1919"
+    @MemberID= "411"
+
     @id = "86580"
     @yc_username = "jys"
     @yc_password = "yacht"
@@ -51,12 +54,16 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
   end
 
   def test_not_authentic
-    yc = YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
+    yc = YachtCouncil.new("dkad", "ddd") #YachtTransfer::Transferers::YachtCouncilTransferer.new("dkad", "dddd")
     assert ! yc.authentic?
   end
 
-  def test_create
-    assert_equal @id, @yc.create(@listing)
+  def test_basic
+    listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
+
+    listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
+    listing.to_yc!
+    assert_equal @id, @yc.basic(listing.basic) #@listing)
   end
 end
 

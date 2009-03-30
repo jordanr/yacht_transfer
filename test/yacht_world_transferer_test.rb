@@ -81,7 +81,7 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
   end
 
   def test_not_authentic
-    yw = YachtTransfer::Transferers::YachtWorldTransferer.new("dkad", "dddd")
+    yw = YachtWorld.new("ddd", "dsa") #YachtTransfer::Transferers::YachtWorldTransferer.new("dkad", "dddd")
     assert ! yw.authentic?
   end
 

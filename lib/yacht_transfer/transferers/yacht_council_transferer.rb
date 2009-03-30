@@ -60,6 +60,10 @@ module YachtTransfer
 #        listing.merge!(:username => username)
 #        listing.merge!(:id => id ? id : "New")
 
+        authenticate if @cookie_jar.nil?
+
+	listing.merge!({:login_id=>@cookie_jar[:LoginID].first, :member_company_id=>@cookie_jar[:MemberID].first})
+
         listing.to_yc! 
         old_id = id     
         id = basic(listing.basic)              
@@ -84,18 +88,26 @@ module YachtTransfer
         res = get(login_url)
 	raise UnauthorizedError unless res['location']
 
-	#  otherwise follow the redirect	
 	@cookie_jar = CGI::Cookie::parse(res['set-cookie'])
-	res = get(home_url, {'Referer' => login_url} )
-	res.body.match(/Logoff/)
+
+#  otherwise follow the redirect	
+#	res = get(home_url, {'Referer' => login_url} )
+#	@cookie_jar = CGI::Cookie::parse(res['set-cookie'])
+#	res.body.match(/Logoff/)
       end
 
       # returns id
       def basic(params)
         res = post(basic_url, params)
-        res['location'].split("vessel=").last
+        res['location'].split("vessel=").last if res['location']
       end
 
+      def agent(host, port)
+        return @agent if @agent
+        http = Net::HTTP.new(host, port)
+        http.set_debug_output $stdout
+        http
+      end
 
       def request(path, method, headers=nil)
         if method == :get

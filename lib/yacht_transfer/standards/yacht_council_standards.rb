@@ -20,6 +20,14 @@ class YachtCouncilHash < Hash
     (required_basic_params + required_params).each { |key| @basic.merge!(key_transform(key, :yc).to_sym => fetch(key.to_sym) ) }
     @basic.merge!(:model_year=>fetch(:yacht_specification_year))
     @basic.merge!(:model => "#{fetch(:yacht_specification_manufacturer)} #{fetch(:yacht_specification_model)}" )
+
+    # create
+    if has_key?(:id)
+      @basic.merge!({:Update => "Update", "Update.x".to_sym => "1", "Update.y".to_sym =>"1"})
+    else
+      @basic.merge!({:x => "1", :y=>"1"})
+    end
+
     
 #    @details = default_params
 #    @details.merge!(default_details_params)
@@ -60,13 +68,16 @@ class YachtCouncilHash < Hash
   # Basic
   ####################
 
+
+  # sail, used
   def default_basic_params
     res = { 	
 
-  	  :member_company_id=>"", #company_id,
-  	  :login_id=>"", #login_id,
+  	  :member_company_id=>fetch(:member_company_id), #company_id,
+  	  :login_id=>fetch(:login_id), #login_id
+  	  :salesmans_id =>"3910",# listing.broker, # cache ids-- how?
+
 	  :vessels_id=>has_key?(:id) ? fetch(:id) : "0",
-  	  :salesmans_id =>"0",# listing.broker, # cache ids-- how?
 
 	  # used/new
 	  :used => "", #??
@@ -82,8 +93,10 @@ class YachtCouncilHash < Hash
 	  # power
 #	  :categories_types_id=>"1", 
 #	  :vessels_categories_id=>"", 
+#  	  :vessels_types_id=>"2", # YACHT_TYPE_TRANSFORM[yacht.type.to_sym][:yc],
 
 	  # sail
+  	  :vessels_types_id=>"1", # YACHT_TYPE_TRANSFORM[yacht.type.to_sym][:yc],
 	  :vessels_categories_id => "1", 
 	  :rigs_id=> "",
           :ballase_weight=>"", # spec
@@ -97,15 +110,17 @@ class YachtCouncilHash < Hash
 	  :vessel_entry_step_frm_auto=>"1",
 	  :shared=>"0",
   	  :IsSharedVessel=>"0",
-  	  :vessels_types_id=>"", # YACHT_TYPE_TRANSFORM[yacht.type.to_sym][:yc],
-	  :vessels_manufacturers_id => "",
 	  :garbage=>"",
-  	  :engines_manufacturers_id => "",
 	  :owner_id_id => "",
 	  :is_pending => "0",
 	  :hlt => "1",
 
-	  :length_sys_id => "", # DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yc],
+	  :length_sys_id => "0", # DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yc],
+	  :speed_sys_id =>"1", # SPEED_UNITS_TRANSFORM[yacht.max_speed.units.to_sym][:yc],
+   	  :weight_sys_id =>"0", # WEIGHT_UNITS_TRANSFORM[yacht.ballast.units.to_sym][:yc],
+	  :volume_sys_id => "0", #VOLUME_UNITS_TRANSFORM[yacht.holding_tank.capacity.units.to_sym][:yc],
+
+
   	  :man_length=>"",#yacht.length.value,
 	  :lwl=>"", # yacht.lwl.to_s,
 	  :lod=>"", #yacht.loa.to_s,
@@ -115,13 +130,11 @@ class YachtCouncilHash < Hash
           :bridge_clearance=> "", #yacht.bridge_clearance.to_s,
 	  :refit_year=>"",
 	  :refit_type=>"",
-	  :speed_sys_id =>"", # SPEED_UNITS_TRANSFORM[yacht.max_speed.units.to_sym][:yc],
           :cruise_speed=>"", #yacht.cruise_speed.value,
 	  :rmp_speed => "",
           :max_speed=>"", #yacht.max_speed.value,
 	  :max_rmp_speed => "",
 	  :range=>"",
-   	  :weight_sys_id =>"", # WEIGHT_UNITS_TRANSFORM[yacht.ballast.units.to_sym][:yc],
           :displacement=>"", #yacht.displacement.value,
 
 	  :hull_configurations_id=>"",
@@ -133,7 +146,6 @@ class YachtCouncilHash < Hash
 	  :hull_id=>"",
 	  :fuel_tank_materials_id =>"",
 	  :water_tank_materials_id =>"",
-	  :volume_sys_id => "", #VOLUME_UNITS_TRANSFORM[yacht.holding_tank.capacity.units.to_sym][:yc],
   	  :fuel_capacity=>"", #yacht.fuel_tank.capacity.value,
 	  :fuel_consumption=>"",
 	  :fuel_consumption_rpm=>"",
@@ -141,7 +153,7 @@ class YachtCouncilHash < Hash
           :water_capacity=>"", #yacht.water_tank.capacity.value,
           :holding_tank=>"", #yacht.holding_tank.capacity.value,
 
-          :number_of_engines=>"", #(0..4).include?(yacht.engines.length) ? yacht.engines.length : 1,
+          :number_of_engines=>"1", #(0..4).include?(yacht.engines.length) ? yacht.engines.length : 1,
 	  :engine_types_id=>"",
 	  :propulsion_types_id=>"",
   	  :fuel_types_id=>"",#FUEL_TRANSFORM[engine.fuel.to_sym][:yc],
@@ -168,14 +180,14 @@ class YachtCouncilHash < Hash
 	  :n_of_crew_sleeps=>"",
 	  :n_of_crew_heads=>"",
 	
-	  :listing_date=>"", # ex. 12/25/2008
+	  :listing_date=>Time.now.strftime("%m%d%Y"), # ex. 12/25/2008
 	  :exp_date=>"",
-  	  :listing_types_id =>"", # LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yc],
- 	  :listing_statuses_id =>"",# STATUS_TRANSFORM[listing.status.to_sym][:yc],
+  	  :listing_types_id =>"10", # LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yc],
+ 	  :listing_statuses_id =>"7",# STATUS_TRANSFORM[listing.status.to_sym][:yc],
 	  :alt_listing_number=>"",
 	  :isFractional=>"0",
 	  :FracAmount=>"",
-  	  :ask_price_currency_id => "", # PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yc],
+  	  :ask_price_currency_id => "7", # PRICE_UNITS_TRANSFORM[listing.price.units.to_sym][:yc],
 	  :poa_price=>"",
 	  :tax=>"0",
 	  :owner_name=>"",
@@ -188,8 +200,10 @@ class YachtCouncilHash < Hash
 	  :gross_tonnage=>"",
 	  :ballase_type=>"",
 	  :engines_types_id=>"",
-	  :engines_manufacturers_name=>"Upon Request",
 	  :vessel_manufacturer_name=>"Custom",
+	  :vessels_manufacturers_id => "641",
+	  :engines_manufacturers_name=>"Upon Request",
+  	  :engines_manufacturers_id => "245",
 	  :engine_model=>"",
   	  :vessels_entry_agreement => "1"
   	  }
