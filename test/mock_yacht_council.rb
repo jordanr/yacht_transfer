@@ -102,8 +102,11 @@ class MockYachtCouncil
       errors += "Please select a valid vessel manufacturer from our list" unless params[:vessel_manufacturer_name] == "Custom"
       errors += "Please select a valid engine manufacturer from our list" unless params[:engines_manufacturers_name] == "Upon Request"
 
-      if errors.empty?
-	return MockYachtCouncilResponse.new("", "vessel-section-editor.aspx?vessel=86580")
+      if errors.empty? and params[:vessels_id]== "0" 
+	#create new
+	return MockYachtCouncilResponse.new("", "vessel-section-editor.aspx?vessel=11111")
+      elsif errors.empty?
+	return MockYachtCouncilResponse.new("", "vessel_basic_info.asp?vessels_id=86580")
       else
         return MockYachtCouncilResponse.new(errors)
       end

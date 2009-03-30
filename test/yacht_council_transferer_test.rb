@@ -43,6 +43,8 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     @MemberID= "411"
 
     @id = "86580"
+    @id_two = "86579"
+
     @yc_username = "jys"
     @yc_password = "yacht"
     @yc = YachtCouncil.new(@yc_username, @yc_password)
@@ -63,7 +65,17 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
 
     listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
     listing.to_yc!
-    assert_equal @id, @yc.basic(listing.basic) #@listing)
+    assert_equal '11111', @yc.basic(listing.basic) #@listing)
   end
+
+  def test_basic_update
+    listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
+
+    listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
+    listing.merge!(:id =>@id_two)
+    listing.to_yc!
+    assert_equal @id, @yc.basic(listing.basic)
+  end
+
 end
 

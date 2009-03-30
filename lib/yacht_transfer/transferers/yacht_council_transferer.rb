@@ -7,6 +7,8 @@ module YachtTransfer
     class YachtCouncilTransferer
       include AbstractTransferer
 
+#      attr_accessor :cookie_jar
+
       def initialize(uname, pass)
 	@username = uname
 	@password = pass
@@ -99,7 +101,7 @@ module YachtTransfer
       # returns id
       def basic(params)
         res = post(basic_url, params)
-        res['location'].split("vessel=").last if res['location']
+        res['location'].split("=").last if res['location']
       end
 
       def agent(host, port)

@@ -23,7 +23,8 @@ class YachtCouncilHash < Hash
 
     # create
     if has_key?(:id)
-      @basic.merge!({:Update => "Update", "Update.x".to_sym => "1", "Update.y".to_sym =>"1"})
+      @basic.merge!({:Update => "Update", "Update.x".to_sym => "23", "Update.y".to_sym =>"10"})
+      @basic.merge!({:MCA_compliant=> "False", :ISM_compliant=> "False" })
     else
       @basic.merge!({:x => "1", :y=>"1"})
     end
@@ -80,14 +81,14 @@ class YachtCouncilHash < Hash
 	  :vessels_id=>has_key?(:id) ? fetch(:id) : "0",
 
 	  # used/new
-	  :used => "", #??
+	  :used => "0", #??
 
 	  :inter_designer=>"",
 	  :exter_designer=>"",
 	  :proj_manager=>"",
 	  :class_type=>"",
 	  :class_expiry=>"",
-	  :cockpit=>"",
+	  :cockpit=>"0",
 	  :vessels_tops_id=>"",
 
 	  # power
@@ -103,8 +104,8 @@ class YachtCouncilHash < Hash
 
 	  # length
 	  :lt_80 => below? ? "0" : "1",
-	  :MCA_compliant=> below? ? "" : "0",
-	  :ISM_compliant=> below? ? "" : "0",
+	  :MCA_compliant=> below? ? "" : "0", #False?
+	  :ISM_compliant=> below? ? "" : "0", # False?
 	  :classification=>below? ? "" : "7",
 
 	  :vessel_entry_step_frm_auto=>"1",
@@ -113,7 +114,7 @@ class YachtCouncilHash < Hash
 	  :garbage=>"",
 	  :owner_id_id => "",
 	  :is_pending => "0",
-	  :hlt => "1",
+	  :hlt => "1", # 7 ??
 
 	  :length_sys_id => "0", # DISTANCE_UNITS_TRANSFORM[yacht.length.units.to_sym][:yc],
 	  :speed_sys_id =>"1", # SPEED_UNITS_TRANSFORM[yacht.max_speed.units.to_sym][:yc],
@@ -141,7 +142,7 @@ class YachtCouncilHash < Hash
   	  :hull_materials_id=>"7", #MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yc],
 	  :deck_materials_id=>"",
 	  :hull_color=>"",
-	  :hull_finished=>"",
+	  :hull_finished=>" ",
   	  :hull_designer=>"", #yacht.hull.designer,
 	  :hull_id=>"",
 	  :fuel_tank_materials_id =>"",
@@ -159,28 +160,28 @@ class YachtCouncilHash < Hash
   	  :fuel_types_id=>"",#FUEL_TRANSFORM[engine.fuel.to_sym][:yc],
 
 	  :flag => "none",
-  	  :states_id=>"", #YachtTransfer::Models::State.abbreviation(yacht.location.state),
+  	  :states_id=>"61", #YachtTransfer::Models::State.abbreviation(yacht.location.state),
 	  :zip=>"",
           :countries_id=>"", #COUNTRY_TRANSFORM.keys.include?(yacht.location.country.to_sym) ? COUNTRY_TRANSFORM[yacht.location.country.to_sym][:yc] : yacht.location.country,
   	  :regions_id=>"70", #other,other
-	  :captain_on_board=>"",
+	  :captain_on_board=>"False",
 	  :captain_name=>"",
 	  :captain_phone=>"",
 	  :dock_master_name=>"",
 	  :dock_master_phone=>"",
 	  :CG_doc_number=>"",
 	  :state_reg_number=>"",
-	  :n_of_staterooms=>"",
-	  :n_of_berths=>"",
-	  :n_of_sleeps=>"",
-	  :n_of_heads=>"",
-	  :n_of_crew_quarters=>"",
+	  :n_of_staterooms=>" ",#0
+	  :n_of_berths=>"0",
+	  :n_of_sleeps=>"0",
+	  :n_of_heads=>"0",
+	  :n_of_crew_quarters=>" ", #0
 	  :captain_quarters=>"",
-	  :n_of_crew_berths=>"",
-	  :n_of_crew_sleeps=>"",
-	  :n_of_crew_heads=>"",
+	  :n_of_crew_berths=>"0",
+	  :n_of_crew_sleeps=>"0",
+	  :n_of_crew_heads=>"0",
 	
-	  :listing_date=>Time.now.strftime("%m%d%Y"), # ex. 12/25/2008
+	  :listing_date=>Time.now.strftime("%m/%d/%Y"), # ex. 12/25/2008
 	  :exp_date=>"",
   	  :listing_types_id =>"10", # LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yc],
  	  :listing_statuses_id =>"7",# STATUS_TRANSFORM[listing.status.to_sym][:yc],
@@ -198,7 +199,7 @@ class YachtCouncilHash < Hash
 	  :AvailableFrac=>"",
 	  :model_year=>"",
 	  :gross_tonnage=>"",
-	  :ballase_type=>"",
+	  :ballase_type=>"0",
 	  :engines_types_id=>"",
 	  :vessel_manufacturer_name=>"Custom",
 	  :vessels_manufacturers_id => "641",
@@ -208,7 +209,7 @@ class YachtCouncilHash < Hash
   	  :vessels_entry_agreement => "1"
   	  }
 
-    (0..YC_ENGINES).each do |i|
+    (0...YC_ENGINES).each do |i|
       res.merge!({
               "horse_power#{i+1}".to_sym => "", #e.horsepower.to_s,
               "eng_year#{i+1}".to_sym => "",
