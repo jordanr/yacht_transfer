@@ -29,12 +29,12 @@ class Test::Unit::TestCase
   end
 
   def sample_listing
-    {:price=>"1223", :yacht_name=>"sample_name",:yacht_specification_manufacturer=>"sample_manufacturer", 
-     :yacht_specification_model=>"sample_model", :yacht_specification_year=>"9999",
+    {:price=>"1224", :yacht_name=>"sample_name",:yacht_specification_manufacturer=>"sample_manufacturer", 
+     :yacht_specification_model=>"sample_model", :yacht_specification_year=>"9998",
      :yacht_specification_length=>"1", 
      :yacht_location=>"sample_location",
 #     :details=>[sample_accommodation, sample_accommodation],
-     :photos=>[sample_picture ,sample_picture,sample_picture, sample_picture ,sample_picture,sample_picture]
+     :photos=>[sample_picture ] #,sample_picture,sample_picture, sample_picture ,sample_picture,sample_picture]
     }
   end 
 
@@ -76,7 +76,7 @@ class Test::Unit::TestCase
   def sample_yacht
     {:name=>"sample_name",:manufacturer=>"sample_manufacturer", 
      :model=>"sample_model", 
-     :new=>"sample_new", :type=>"sail", :year=>9999,
+     :new=>"sample_new", :type=>"sail", :year=>9998,
      :length=>sample_measurement, :lwl=>sample_measurement, :loa=>sample_measurement,
      :beam=>sample_measurement, :min_draft=>sample_measurement, :max_draft=>sample_measurement,
      :bridge_clearance=>sample_measurement, :displacement=>sample_weight,

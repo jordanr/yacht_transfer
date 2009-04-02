@@ -156,7 +156,7 @@ module YachtTransfer
       def agent(host, port)
 	return @agent if @agent
         http = Net::HTTP.new(host, port)
-#        http.set_debug_output $stderr
+        http.set_debug_output $stderr
         http.use_ssl = true          
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http

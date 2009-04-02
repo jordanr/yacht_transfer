@@ -64,6 +64,8 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
 
     listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
+    listing.merge!(:broker_id => "3910")
+
     listing.to_yc!
     assert_equal '11111', @yc.basic(listing.basic) #@listing)
   end
@@ -72,10 +74,29 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
 
     listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
+    listing.merge!(:broker_id => "3910")
     listing.merge!(:id =>@id_two)
     listing.to_yc!
-    assert_equal @id, @yc.basic(listing.basic)
+    assert_equal @id_two, @yc.basic(listing.basic)
   end
+
+  def test_create_photo
+    listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
+    listing.merge!({:member_company_id =>@MemberID, :login_id=>@LoginID } )
+    listing.merge!(:broker_id => "3910")
+
+    listing.merge!(:id =>@id_two)
+    listing.to_yc!
+      
+    assert @real_yc.photo(listing.photo)
+  end                             
+
+  def test_delete_photo         
+#    id = @id_one             
+#    ps = [2,3]
+#    ps.each { |p| assert @yw.delete_photo(id,p) }
+  end
+
 
 end
 

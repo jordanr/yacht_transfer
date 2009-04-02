@@ -49,42 +49,44 @@ module YachtTransfer
       def login_url; base_url+login_path; end
       def home_url; base_url+home_path; end
       def basic_url; base_url+basic_path; end
+      def photo_url; base_url+photo_path; end
 
       def login_path; "/login.asp?login=#{username}&password=#{password}"; end
       def home_path; "/company_home.asp"; end
       def basic_path; "/vessel_entry_step1.asp"; end
-
+      def photo_path; "/media-uploader.aspx"; end
 
       ######################
       # Main                 
       ##################
       def post_it_all(listing, id)
-#        listing.merge!(:username => username)
-#        listing.merge!(:id => id ? id : "New")
-
+#        listing.merge!(:id => id ? id : "0")
         authenticate if @cookie_jar.nil?
 
 	listing.merge!({:login_id=>@cookie_jar[:LoginID].first, :member_company_id=>@cookie_jar[:MemberID].first})
+	listing.merge!(:broker_id => "3910")
 
         listing.to_yc! 
         old_id = id     
         id = basic(listing.basic)              
         raise BadIdError, "id should be #{old_id} but was #{id}" if(old_id && id!=old_id)
-#        if !old_id
-#          listing.merge!(:id => id)              
-#          listing.to_yc!
-#        end
-
+        if !old_id
+          listing.merge!(:id => id)              
+          listing.to_yc!
+        end
 #        details(listing.details)
- #       photo(listing.photo, id)
+        photo(listing.photo)
         id
       end
-
-
       #################
       # Helpers
       #################
-	
+
+      # create photos
+      def photo(params)
+        multipart_post(photo_url, params)
+      end
+
       def authenticate 
         @cookie_jar = {}
         res = get(login_url)

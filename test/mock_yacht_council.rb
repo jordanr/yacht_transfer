@@ -106,7 +106,7 @@ class MockYachtCouncil
 	#create new
 	return MockYachtCouncilResponse.new("", "vessel-section-editor.aspx?vessel=11111")
       elsif errors.empty?
-	return MockYachtCouncilResponse.new("", "vessel_basic_info.asp?vessels_id=86580")
+	return MockYachtCouncilResponse.new("", "vessel_basic_info.asp?vessels_id=#{params[:vessels_id]}")
       else
         return MockYachtCouncilResponse.new(errors)
       end
@@ -145,21 +145,21 @@ class MockYachtCouncil
 
   # Create, Update, Delete
   # POST "/media-uploader.aspx"
-  def media_uploader
-    local_params = %w{  displayMode form_media-uploader-form vessel video-editorid
+  def media_uploader(params)
+    local_required_params = %w{  displayMode form_media-uploader-form vessel video-editorid
 			videos_count videos videosTableRowToMove virtual-tour-editorid
 			vrtours_count vrtours vrtoursTableRowToMove sound-editorid
 			sounds_count sounds switch vessel-picture-editorid 
 			existing-file-names newMsgText show vesselMenuVesselOwner
 			vesselMenuVesselName vesselMenuVesselForCharter vesselMenuVesselSalesman
 			vesselMenuVesselCompany vesselMenuVesselCharterAgent backurl
-			more-upload-picture section 
+			more-upload-picture section images-upload-button
 		     }
 
      # Create
 #    (0..4).each do |i|
 #		  {
- 			# upload-pictureX upload-pictureX_fake descriptionX
+# 			upload-pictureX upload-pictureX_fake descriptionX
 #      			upload-picture0-brightness upload-picture0-contrast 
 #			upload-picture0-saturation upload-picture0-rotate
 #			upload-picture0-ctx upload-picture0-cty
@@ -172,6 +172,9 @@ class MockYachtCouncil
 #    pictures-2editorXremove
 #    pictures-2_remove
 
+     raise YachtCouncilError, "bad params #{params.inspect}" unless valid_keys?(params, local_required_params)
+
+     return MockYachtCouncilResponse.new("")
   end
 
 
