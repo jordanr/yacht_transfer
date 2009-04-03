@@ -9,7 +9,7 @@ module YachtTransfer
     #   * create - remotely create a local listing
     #   * read   - pull in a remote listing to this local client
     #   * update - update an already created remote listing
-    #   * delete - permanantly delete a created remote listing
+    #   * destroy - permanantly delete a created remote listing
     module AbstractTransferer
       class LoginFailedError < StandardError;  end
       class BadIdError < StandardError;  end
@@ -40,7 +40,7 @@ module YachtTransfer
       def update(listing, id)
         raise NotImplementedError, "subclass should have overriden"
       end
-      def delete(id)
+      def destroy(id)
         raise NotImplementedError, "subclass should have overriden"
       end
 

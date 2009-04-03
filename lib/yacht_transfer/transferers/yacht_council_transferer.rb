@@ -37,10 +37,10 @@ module YachtTransfer
         post_it_all(listing, id)
       end
 
-      def delete(id)
+      def destroy(id)
         raise BadIdError, "need an id" if(!id)
         #get(delete_url(id))
-        id
+        nil
       end
 
       ########################
@@ -78,7 +78,7 @@ module YachtTransfer
           listing.to_yc!
         end
 #        details(listing.details)
-        photo(listing.photo)
+#        photo(listing.photo)
         id
       end
       #################
@@ -101,7 +101,7 @@ module YachtTransfer
       # returns id
       def basic(params)
         res = post(basic_url, params)
-        res['location'].split("=").last if res['location']
+        res['location'].split("=").last if res['location'].to_i
       end
 
       def agent(host, port)

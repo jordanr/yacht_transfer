@@ -25,10 +25,10 @@ module YachtTransfer
 	  post_it_all(listing, id)
       end
       
-      def delete(id)
+      def destroy(id)
   	  raise BadIdError, "need an id" if(!id)	  
 	  get(delete_url(id))
-	  id
+	  nil
       end
 
       ########################

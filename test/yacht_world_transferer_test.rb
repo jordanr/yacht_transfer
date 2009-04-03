@@ -56,10 +56,10 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
     assert @yw.create(@listing) == @id_one
   end
 
-  def test_delete_listing
+  def test_destroy_listing
     ids = [@id_one, @id_two]
 #    ids = [2050224,2050223,2050222,2050219,2050221,2050229]
-    ids.each { |id| assert @yw.delete(id) }
+    ids.each { |id| assert_nil @yw.destroy(id) }
   end
 
   def test_update_listing

@@ -17,9 +17,9 @@ class TestAbstractTransferer < Test::Unit::TestCase
     upper = DummyTransferer.new("a","b")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.update(nil, nil) }
   end
-  def test_delete_must_be_overridden
+  def test_destroy_must_be_overridden
     upper = DummyTransferer.new("a","b")
-    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.delete(nil) }
+    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.destroy(nil) }
   end
 
   def dtest_post
