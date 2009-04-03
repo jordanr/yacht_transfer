@@ -1,3 +1,4 @@
+require 'cookie'
 require 'yacht_transfer/transferers/abstract_transferer'
 require 'yacht_transfer/standards/yacht_council_standards'
 module YachtTransfer
@@ -61,9 +62,11 @@ module YachtTransfer
       ##################
       def post_it_all(listing, id)
 #        listing.merge!(:id => id ? id : "0")
+        listing.merge!(:id => id) if ! id.nil?
+
         authenticate if @cookie_jar.nil?
 
-	listing.merge!({:login_id=>@cookie_jar[:LoginID].first, :member_company_id=>@cookie_jar[:MemberID].first})
+	listing.merge!({:login_id=>@cookie_jar[:LoginID], :member_company_id=>@cookie_jar[:MemberID]})
 	listing.merge!(:broker_id => "3910")
 
         listing.to_yc! 
@@ -92,12 +95,7 @@ module YachtTransfer
         res = get(login_url)
 	raise UnauthorizedError unless res['location']
 
-	@cookie_jar = CGI::Cookie::parse(res['set-cookie'])
-
-#  otherwise follow the redirect	
-#	res = get(home_url, {'Referer' => login_url} )
-#	@cookie_jar = CGI::Cookie::parse(res['set-cookie'])
-#	res.body.match(/Logoff/)
+	@cookie_jar = Cookie::parse(res['set-cookie'])
       end
 
       # returns id
@@ -131,7 +129,7 @@ module YachtTransfer
 
 	cookies = []
 	@cookie_jar.each_pair { |key, value|
-	  cookies += ["#{key}=#{value.first}"]
+	  cookies += ["#{key}=#{value}"]
 	}
   	req.add_field('Cookie', cookies.join(";"))
 

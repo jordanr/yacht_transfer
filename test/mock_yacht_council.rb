@@ -25,7 +25,7 @@ class MockYachtCouncil
   # POST "/login.asp?login=#{username}&password=#{password}"
   def login(params)
     if params[:login]=="jys" and params[:password]=="yacht"
-      MockYachtCouncilResponse.new("object moved", "company_home.asp", "session=session")
+      MockYachtCouncilResponse.new("object moved", "company_home.asp", "LoginID=123; MemberID=456;session=session_abcd; ")
     else
       raise YachtCouncilError, "bad login"
     end  
@@ -77,7 +77,7 @@ class MockYachtCouncil
 
       # 500 
       raise YachtCouncilError, "Microsoft VBScript runtime  error '800a01a8' Object required: 'Field_' /include/form/Utils.asp, line 73" if params[:vessels_types_id].to_s.empty?
-      raise YachtCouncilError, "Microsoft VBScript runtime error '800a000d' Type mismatch: '[string: '']'" if params[:member_company_id].to_s.empty? or params[:login_id].to_s.empty?
+      raise YachtCouncilError, "Microsoft VBScript runtime error '800a000d' Type mismatch: '[string: '']' for #{params[:member_company_id]} or #{params[:login_id]}" if params[:member_company_id].to_s.empty? or params[:login_id].to_s.empty?
       raise YachtCouncilError, "Microsoft VBScript runtime error '800a000d' Type mismatch: '[string: '']'" if params[:length_sys_id].to_s.empty? or 
 													      params[:weight_sys_id].to_s.empty? or
 													      params[:speed_sys_id].to_s.empty? or

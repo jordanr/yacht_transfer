@@ -60,6 +60,14 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     assert ! yc.authentic?
   end
 
+  def test_create
+    assert_equal '11111', @yc.create(@listing)
+  end
+
+  def test_update
+    assert_equal @id_two, @yc.update(@listing, @id_two)
+  end
+
   def test_basic
     listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
 
@@ -88,7 +96,7 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     listing.merge!(:id =>@id_two)
     listing.to_yc!
       
-    assert @real_yc.photo(listing.photo)
+    assert @yc.photo(listing.photo)
   end                             
 
   def test_delete_photo         
