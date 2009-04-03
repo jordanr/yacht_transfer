@@ -39,7 +39,17 @@ module YachtTransfer
 
       def destroy(id)
         raise BadIdError, "need an id" if(!id)
-        #get(delete_url(id))
+        old_id = id.to_i
+        listing = YachtTransfer::Standards::YachtCouncilHash.new(empty_listing)
+        listing.merge!(:id => id)
+
+        authenticate if @cookie_jar.nil?
+	listing.merge!({:login_id=>@cookie_jar[:LoginID], :member_company_id=>@cookie_jar[:MemberID]})
+	listing.merge!(:broker_id => "0") # zero means deleted
+
+        listing.to_yc! 
+        id = basic(listing.basic)
+        raise BadIdError, "id should be #{old_id} but was #{id}" if(old_id && id.to_i != old_id.to_i)
         nil
       end
 
@@ -84,6 +94,13 @@ module YachtTransfer
       #################
       # Helpers
       #################
+
+      def empty_listing
+        {:price=>"1", :yacht_name=>"none",:yacht_specification_manufacturer=>"none",
+         :yacht_specification_model=>"none", :yacht_specification_year=>"9999",
+         :yacht_specification_length=>"1", :yacht_location=>"none", :photos=>[], :details=>[]
+        }
+      end  
 
       # create photos
       def photo(params)

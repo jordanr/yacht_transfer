@@ -68,6 +68,12 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     assert_equal @id_two, @yc.update(@listing, @id_two)
   end
 
+  def test_destroy
+    ids = [@id, @id_two]
+#    ids = [72947, 65621,65622,65623,65624,65625,65628,66092,66962,66964,86744,63112, 66872, 66876,66877, 86711, 86712,86739]
+    ids.each { |id| assert_nil @yc.destroy(id) }
+  end
+
   def test_basic
     listing = YachtTransfer::Standards::YachtCouncilHash.new(@listing)
 
