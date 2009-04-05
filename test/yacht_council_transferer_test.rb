@@ -42,8 +42,9 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     @LoginID = "1919"
     @MemberID= "411"
 
-    @id = "86580"
-    @id_two = "86579"
+    @id = 86580
+    @id_two = 86579
+    @new_id = 11111
 
     @yc_username = "jys"
     @yc_password = "yacht"
@@ -65,7 +66,7 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
   end
 
   def test_create
-    assert_equal '11111', @yc.create(@listing)
+    assert_equal @new_id, @yc.create(@listing)
   end
 
   def test_update
@@ -85,7 +86,7 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     listing.merge!(:broker_id => "3910")
 
     listing.to_yc!
-    assert_equal '11111', @yc.basic(listing.basic) #@listing)
+    assert_equal @new_id, @yc.basic(listing.basic) #@listing)
   end
 
   def test_basic_update

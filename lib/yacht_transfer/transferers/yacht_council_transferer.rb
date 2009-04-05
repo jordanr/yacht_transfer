@@ -1,3 +1,4 @@
+require 'iconv'
 require 'cookie'
 require 'yacht_transfer/transferers/abstract_transferer'
 require 'yacht_transfer/standards/yacht_council_standards'
@@ -35,7 +36,7 @@ module YachtTransfer
         raise BadIdError, "need an id" if(!id)
         authenticate if @cookie_jar.nil?
 	res = get(read_url(id))
-	res.body
+	Iconv.conv('UTF-8', 'windows-1252', res.body)
       end
 
       def update(listing, id)
@@ -129,7 +130,7 @@ module YachtTransfer
       # returns id
       def basic(params)
         res = post(basic_url, params)
-        res['location'].split("=").last if res['location'].to_i
+        res['location'].split("=").last.to_i if res['location']
       end
 
       def agent(host, port)
