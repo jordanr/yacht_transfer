@@ -153,7 +153,7 @@ class YachtCouncilHash < Hash
           :water_capacity=>"", #yacht.water_tank.capacity.value,
           :holding_tank=>"", #yacht.holding_tank.capacity.value,
 
-          :number_of_engines=>"1", #(0..4).include?(yacht.engines.length) ? yacht.engines.length : 1,
+          :number_of_engines=>(0..4).include?(fetch(:yacht_specification_number_of_engines)) ? fetch(:yacht_specification_number_of_engines) : 1,
 	  :engine_types_id=>"",
 	  :propulsion_types_id=>"",
   	  :fuel_types_id=>"",#FUEL_TRANSFORM[engine.fuel.to_sym][:yc],

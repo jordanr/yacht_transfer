@@ -112,7 +112,9 @@ module YachtTransfer
       def empty_listing
         {:price=>"1", :yacht_name=>"none",:yacht_specification_manufacturer=>"none",
          :yacht_specification_model=>"none", :yacht_specification_year=>"9999",
-         :yacht_specification_length=>"1", :yacht_location=>"none", :photos=>[], :details=>[]
+         :yacht_specification_length=>"1", :yacht_location=>"none", :photos=>[], :details=>[],
+	 :yacht_specification_number_of_engines => "1", :yacht_specification_fuel=>"",
+	 :yacht_specification_material=>""
         }
       end  
 

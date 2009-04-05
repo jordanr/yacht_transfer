@@ -33,10 +33,10 @@ class Test::Unit::TestCase
   def sample_listing
     {:price=>"1234", :yacht_name=>"sample_name",:yacht_specification_manufacturer=>"sample_manufacturer", 
      :yacht_specification_model=>"sample_model", :yacht_specification_year=>"9999",
-     :yacht_specification_length=>"1", 
-     :yacht_location=>"sample_location",
-#     :details=>[sample_accommodation, sample_accommodation],
+     :yacht_specification_length=>"1", :yacht_specification_number_of_engines => "1", :yacht_specification_fuel=>"blas",
+     :yacht_location=>"sample_location", :yacht_specification_material=>"dfs",
      :photos=>[sample_picture, sample_picture,sample_picture, sample_picture ,sample_picture,sample_picture]
+#     :details=>[sample_accommodation, sample_accommodation],
     }
   end 
 
