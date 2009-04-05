@@ -75,8 +75,7 @@ module YachtTransfer
       def photo_url; base_url+photo_path; end
 
 #      def read_path(id); "/vessel_basic_info.asp?vessels_id=#{id}"; end
-      def read_path(id); "/media/brochure_generate_1.asp?vessel_id=#{id}&CompanyID=#{@cookie_jar[:MemberID]}&int_login_id=#{@cookie_jar[:LoginID]}";end
-
+      def read_path(id); "/media/brochure_generate_1.asp?vessel_id=#{id}&CompanyID=#{@cookie_jar[:MemberID]}&int_login_id=#{@cookie_jar[:LoginID]}&ph=0&full_listing_flag=1&blnPrintPageNumbers=1&blnCoverInlude=0&blnPhotos=0&blnPicInlude=1&blnQuality=1&blnIncludeLogo=1&blnIncludeContact=1&blnUseHFSpace=0&blnOnePage=0&blnLayout=1&blnNoImage=0&MainProfilePhotoOnly=0"; end
       def login_path; "/login.asp?login=#{username}&password=#{password}"; end
       def home_path; "/company_home.asp"; end
       def basic_path; "/vessel_entry_step1.asp"; end
