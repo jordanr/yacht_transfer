@@ -245,10 +245,14 @@ class YachtCouncilHash < Hash
 		"sound-editorid".to_sym =>fetch(:id),
                 :sounds_count =>"0",
 		:sounds =>"1",
-#		:switch =>"main-profile-photo-editor", #
+
+#		:switch =>"main-profile-photo-editor", 
+#		"main-profile-photo-editorid".to_sym =>"",
+
 		:switch => "vessel-picture-editor",
 		"vessel-picture-editorid".to_sym =>fetch(:id),
                 "existing-file-names".to_sym =>"",
+
 		:newMsgText =>"New message",
 		:show =>"",
 		:vesselMenuVesselOwner=>"",
@@ -257,36 +261,26 @@ class YachtCouncilHash < Hash
 		:vesselMenuVesselSalesman => fetch(:broker_id), 
                 :vesselMenuVesselCompany => fetch(:member_company_id),
 		:vesselMenuVesselCharterAgent =>"",
-		:backurl=>"",
+		:backurl=>"vessel_list.asp",
+
                 "more-upload-picture".to_sym => "1",
 		:section => "-2",
 		"images-upload-button".to_sym => "Upload"
+
 #		"main-profile-photo".to_sym => fetch(:photos)[0][:src],
-#		"main-profile-photo-editordimensions".to_sym => "1"
+#		"main-profile-photo_fake".to_sym => fetch(:photos)[0][:src],
+#		"main-profile-photo-editordimensions".to_sym => "",
 #		"savemain-profile-photo-editor".to_sym=>"Submit"
     }
+
+#    not_params = {}
     params["pictures-2".to_sym] = (0...fetch(:photos).size).to_a.join(",")
      # Create
-#    not_params = {}
     (0..4).each do |i|
       params.merge!({
                         "upload-picture#{i}".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
                         "upload-picture#{i}_fake".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
-			"description#{i}" => fetch(:photos)[i] ? fetch(:photos)[i][:label] : "",
-                        "upload-picture#{i}-brightness".to_sym=> "50",
-			"upload-picture#{i}-contrast".to_sym => "50",
-                        "upload-picture#{i}-saturation".to_sym => "50",
-			"upload-picture#{i}-rotate".to_sym => "0",
-                        "upload-picture#{i}-ctx".to_sym => "0",
-			"upload-picture#{i}-cty".to_sym => "0",
-                        "upload-picture#{i}-cbx".to_sym => "100",
-			"upload-picture#{i}-cby".to_sym => "100",
-			"upload-picture#{i}-file-dbcode".to_sym => "1",
-			"upload-picture#{i}-file-id".to_sym => "1",
-			"upload-picture#{i}-file-name".to_sym => "1",
-			"upload-picture#{i}-file-length".to_sym => "1",
-			"upload-picture#{i}-content-type".to_sym => "1",
-			"upload-picture#{i}-temp-subfolder".to_sym => "1"
+			"description#{i}" => fetch(:photos)[i] ? fetch(:photos)[i][:label] : ""
                   })
     end
     # picturesX_count, picturesX

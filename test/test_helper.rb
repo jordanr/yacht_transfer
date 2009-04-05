@@ -25,7 +25,7 @@ class Test::Unit::TestCase
     {:title=>"sample_title",:content=>"sample_content" }
   end
   def sample_picture
-    {:label=>"sample picture", :src=>picture_fixture("rails.png")}
+    {:label=>"sample picture", :src=>picture_fixture("jordan_logo.jpg")}
   end
 
   def sample_listing

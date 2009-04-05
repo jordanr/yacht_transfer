@@ -99,7 +99,7 @@ module YachtTransfer
           listing.to_yc!
         end
 #        details(listing.details)
-#        photo(listing.photo)
+        photo(listing.photo)
         id
       end
       #################

@@ -8,7 +8,8 @@ YachtTransfer
   control them from a single source.  You will not have to upload a 
   listing multiple times or have disparities between listings.
 
-  It does not directly access an MLS server.
+  It does not have special access an MLS server.  Instead of using
+  XML RPC, it uses straight HTTP as neccessary.
 
 Picture
 =======
@@ -56,6 +57,9 @@ Use Case
 
 Features
 ========
-  * Upload text/images by yacht id number to given MLS accounts
+  * Create text/images of yacht on an MLS account
+  * Read info by id number from account
+  * Update text/images of id number
+  * Destroy info of yacht id number
 
 Copyright (c) 2008 [name of plugin creator], released under the MIT license
