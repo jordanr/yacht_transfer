@@ -36,6 +36,12 @@ class MockYachtCouncil
     MockYachtCouncilResponse.new("abc Logoff efg")
   end  
 
+  # GET "/vessel_basic_info.asp?vessels_id=86579"
+  def vessel_basic_info(params)
+    raise YachtCouncilError, "no id" unless params[:vessels_id]
+    MockYachtCouncilResponse.new("nice yacht abc Logoff efg")
+  end
+
   ################
   # Listings
   #################

@@ -31,6 +31,13 @@ module YachtTransfer
         post_it_all(listing, nil)
       end
 
+      def read(id)
+        raise BadIdError, "need an id" if(!id)
+        authenticate if @cookie_jar.nil?
+	res = get(read_url(id))
+	res.body
+      end
+
       def update(listing, id)
         raise BadIdError, "need an id" if(!id)
         listing = YachtTransfer::Standards::YachtCouncilHash.new(listing)
@@ -57,11 +64,15 @@ module YachtTransfer
       # URI's
       ################
       def base_url; "http://www.yachtcouncil.org"; end
+
+	
+      def read_url(id); base_url+read_path(id); end
       def login_url; base_url+login_path; end
       def home_url; base_url+home_path; end
       def basic_url; base_url+basic_path; end
       def photo_url; base_url+photo_path; end
 
+      def read_path(id); "/vessel_basic_info.asp?vessels_id=#{id}"; end
       def login_path; "/login.asp?login=#{username}&password=#{password}"; end
       def home_path; "/company_home.asp"; end
       def basic_path; "/vessel_entry_step1.asp"; end

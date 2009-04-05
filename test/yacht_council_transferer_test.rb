@@ -60,6 +60,10 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
     assert ! yc.authentic?
   end
 
+  def test_read
+    assert @yc.read(@id_two)
+  end
+
   def test_create
     assert_equal '11111', @yc.create(@listing)
   end
