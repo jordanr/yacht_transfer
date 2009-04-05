@@ -25,6 +25,14 @@ class MockYachtWorld
   end  
 
 
+  # GET "/boatwizard/listings/view_more_boat.cgi?boat_id=1758881
+  # Read listing
+  def view_more_boat(params)
+    local_required_keys = %w{ boat_id }
+    raise ParameterError, "bad local keys" unless valid_keys?(params, local_required_keys)
+
+    return MockResponse.new("all about boat #{params[:boat_id]}")
+  end    
   ##################
   # Listings
   ######################

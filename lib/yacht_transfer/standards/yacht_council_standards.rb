@@ -245,7 +245,8 @@ class YachtCouncilHash < Hash
 		"sound-editorid".to_sym =>fetch(:id),
                 :sounds_count =>"0",
 		:sounds =>"1",
-		:switch =>"vessel-picture-editor",
+#		:switch =>"main-profile-photo-editor", #
+		:switch => "vessel-picture-editor",
 		"vessel-picture-editorid".to_sym =>fetch(:id),
                 "existing-file-names".to_sym =>"",
 		:newMsgText =>"New message",
@@ -257,15 +258,20 @@ class YachtCouncilHash < Hash
                 :vesselMenuVesselCompany => fetch(:member_company_id),
 		:vesselMenuVesselCharterAgent =>"",
 		:backurl=>"",
-                "more-upload-picture".to_sym => "",
+                "more-upload-picture".to_sym => "1",
 		:section => "-2",
 		"images-upload-button".to_sym => "Upload"
+#		"main-profile-photo".to_sym => fetch(:photos)[0][:src],
+#		"main-profile-photo-editordimensions".to_sym => "1"
+#		"savemain-profile-photo-editor".to_sym=>"Submit"
     }
+    params["pictures-2".to_sym] = (0...fetch(:photos).size).to_a.join(",")
      # Create
+#    not_params = {}
     (0..4).each do |i|
       params.merge!({
                         "upload-picture#{i}".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
-			"upload-picture#{i}_fake" => "",
+                        "upload-picture#{i}_fake".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
 			"description#{i}" => fetch(:photos)[i] ? fetch(:photos)[i][:label] : "",
                         "upload-picture#{i}-brightness".to_sym=> "50",
 			"upload-picture#{i}-contrast".to_sym => "50",
@@ -274,7 +280,13 @@ class YachtCouncilHash < Hash
                         "upload-picture#{i}-ctx".to_sym => "0",
 			"upload-picture#{i}-cty".to_sym => "0",
                         "upload-picture#{i}-cbx".to_sym => "100",
-			"upload-picture#{i}-cby".to_sym => "100"
+			"upload-picture#{i}-cby".to_sym => "100",
+			"upload-picture#{i}-file-dbcode".to_sym => "1",
+			"upload-picture#{i}-file-id".to_sym => "1",
+			"upload-picture#{i}-file-name".to_sym => "1",
+			"upload-picture#{i}-file-length".to_sym => "1",
+			"upload-picture#{i}-content-type".to_sym => "1",
+			"upload-picture#{i}-temp-subfolder".to_sym => "1"
                   })
     end
     # picturesX_count, picturesX

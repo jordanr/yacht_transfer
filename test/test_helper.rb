@@ -34,7 +34,7 @@ class Test::Unit::TestCase
      :yacht_specification_length=>"1", 
      :yacht_location=>"sample_location",
 #     :details=>[sample_accommodation, sample_accommodation],
-     :photos=>[sample_picture ] #,sample_picture,sample_picture, sample_picture ,sample_picture,sample_picture]
+     :photos=>[sample_picture, sample_picture] #,sample_picture, sample_picture ,sample_picture,sample_picture]
     }
   end 
 

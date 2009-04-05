@@ -52,6 +52,10 @@ class TestYachtWorldTransferer < Test::Unit::TestCase
 #								fixture("yw_basic_with_photos_page.html"))
   end
 
+  def test_read_listing
+    assert @yw.read(@id_one)
+  end
+
   def test_create_listing
     assert @yw.create(@listing) == @id_one
   end

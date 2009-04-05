@@ -19,6 +19,12 @@ module YachtTransfer
 	  post_it_all(listing, nil)
       end
 
+      def read(id)
+  	  raise BadIdError, "need an id" if(!id)	  
+	  res = get(read_url(id))
+	  res.body
+      end 
+
       def update(listing, id)
   	  raise BadIdError, "need an id" if(!id)	  
 	  listing = YachtTransfer::Standards::YachtWorldHash.new(listing)
@@ -34,6 +40,7 @@ module YachtTransfer
       ########################
       # URI's 
       ################
+      def read_url(id); base_url + read_path + "?" + delete_params(id); end
       def login_url; base_url + login_path; end
       def base_url; "https://www.boatwizard.com"; end
       def basic_url; base_url+basic_path; end
@@ -42,10 +49,12 @@ module YachtTransfer
       def photo_url(id, n); base_url+photo_path+"?"+photo_params(id, n, "Add"); end
       def delete_photo_url(id, n); base_url+delete_photo_path+"?"+photo_params(id, n,"Delete"); end
 
+
       # listing
       def delete_url(id); base_url+delete_path+"?"+delete_params(id); end
       def delete_params(id); "boat_id=#{id}&url=#{username}&lang=en&pass_office_id=&pass_broker_id=&type=All&min_length=&max_length=&units=Feet"; end
 
+      def read_path; "/boatwizard/listings/view_more_boat.cgi"; end
       def login_path; "/index.cgi"; end
       def basic_path; "/boatwizard/lib/edit_sql.cgi"; end
       def details_path; "/boatwizard/lib/edit2_sql.cgi"; end

@@ -13,6 +13,10 @@ class TestAbstractTransferer < Test::Unit::TestCase
     upper = DummyTransferer.new("a","b")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.create(nil) }
   end
+  def test_read_must_be_overridden
+    upper = DummyTransferer.new("a","b")
+    assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.read(nil) }
+  end
   def test_update_must_be_overridden
     upper = DummyTransferer.new("a","b")
     assert_raises(YachtTransfer::Transferers::AbstractTransferer::NotImplementedError) { upper.update(nil, nil) }
