@@ -76,9 +76,9 @@ class YachtWorldHash < Hash
 	:units=>"Feet",
         :currency=>"USD",
         :boat_type=>"", # ?
-	:engine_num=>"1",
-	:hull_material=>"O",
-        :fuel=>"Other",
+	:engine_num=> fetch(: #"1",
+	:hull_material=> material_transform(fetch(:yacht_specification_material), :yw), #"O",
+	:fuel=> fuel_transform(fetch(:yacht_specification_fuel), :yw), #"Other",
 	:boat_new=>"Used",
 	:boat_state=>"",
 	:boat_country=>"",
