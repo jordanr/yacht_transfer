@@ -66,15 +66,16 @@ module YachtTransfer
       ################
       def base_url; "http://www.yachtcouncil.org"; end
 
+      def public_base_url; "http://www.yachtcouncil.com";end
 	
-      def read_url(id); base_url+read_path(id); end
+      def read_url(id); public_base_url+read_path(id); end
       def login_url; base_url+login_path; end
       def home_url; base_url+home_path; end
       def basic_url; base_url+basic_path; end
       def photo_url; base_url+photo_path; end
 
 #      def read_path(id); "/vessel_basic_info.asp?vessels_id=#{id}"; end
-      def read_path(id); "http://65.249.65.166/media/brochure_generate_1.asp?vessel_id=#{id}&CompanyID=#{@cookie_jar[:MemberID]}&int_login_id=#{@cookie_jar[:LoginID]}";end
+      def read_path(id); "/media/brochure_generate_1.asp?vessel_id=#{id}&CompanyID=#{@cookie_jar[:MemberID]}&int_login_id=#{@cookie_jar[:LoginID]}";end
 
       def login_path; "/login.asp?login=#{username}&password=#{password}"; end
       def home_path; "/company_home.asp"; end
@@ -117,8 +118,10 @@ module YachtTransfer
       end  
 
       # create photos
-      def photo(params)
-        multipart_post(photo_url, params)
+      def photo(param_list)
+	param_list.each do |params|
+          multipart_post(photo_url, params)
+        end
       end
 
       def authenticate 

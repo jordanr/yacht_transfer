@@ -37,9 +37,16 @@ class YachtCouncilHash < Hash
 #    @details.merge!(:builder=>fetch(:yacht_specification_manufacturer))
 
 
-    if has_key?(:id) and fetch(:id) != "0"
-       @photo = default_params
-       @photo.merge!(default_photo_params)
+    @photo = []
+    if has_key?(:id) and fetch(:id) != "0" and fetch(:photos).size > 0
+       main = default_params
+       main.merge!(main_photo_params)
+       @photo = [main]
+    end
+    if has_key?(:id) and fetch(:id) != "0" and fetch(:photos).size > 1
+       others = default_params
+       others.merge!(default_photo_params(1)) # start from 1
+       @photo += [others]
     end
   end
 
@@ -230,8 +237,9 @@ class YachtCouncilHash < Hash
     }
   end
 
-  def default_photo_params
-    params = {  :displayMode=>"",
+  def main_photo_params
+    {  
+		:displayMode=>"",
 		"form_media-uploader-form".to_sym=>"1",
 		:vessel=>fetch(:id),
 		"video-editorid".to_sym=>fetch(:id),
@@ -246,8 +254,42 @@ class YachtCouncilHash < Hash
                 :sounds_count =>"0",
 		:sounds =>"1",
 
-#		:switch =>"main-profile-photo-editor", 
-#		"main-profile-photo-editorid".to_sym =>"",
+		:switch =>"main-profile-photo-editor", 
+		"main-profile-photo-editorid".to_sym =>"",
+
+		:newMsgText =>"New message",
+		:show =>"",
+		:vesselMenuVesselOwner=>"",
+                :vesselMenuVesselName => fetch(:yacht_name),
+		:vesselMenuVesselForCharter => "",
+		:vesselMenuVesselSalesman => fetch(:broker_id), 
+                :vesselMenuVesselCompany => fetch(:member_company_id),
+		:vesselMenuVesselCharterAgent =>"",
+		:backurl=>"vessel_list.asp",
+
+		"main-profile-photo".to_sym => fetch(:photos)[0][:src],
+		"main-profile-photo_fake".to_sym => fetch(:photos)[0][:src],
+		"main-profile-photo-editordimensions".to_sym => "",
+		"savemain-profile-photo-editor".to_sym=>"Submit"
+#		"deletemain-profile-photo-editor".to_sym=>"Delete"
+    }
+  end
+
+  def default_photo_params(start = 1)
+    params = {  :displayMode=>"",
+		"form_media-uploader-form".to_sym=>"1",
+		:vessel=>fetch(:id),
+		"video-editorid".to_sym=>fetch(:id),
+                :videos_count=>"0",
+		:videos =>"1",
+		:videosTableRowToMove =>"",
+		"virtual-tour-editorid".to_sym=>fetch(:id),
+                :vrtours_count =>"0",
+		:vrtours =>"1",
+		:vrtoursTableRowToMove=>"",
+		"sound-editorid".to_sym =>fetch(:id),
+                :sounds_count =>"0",
+		:sounds =>"1",
 
 		:switch => "vessel-picture-editor",
 		"vessel-picture-editorid".to_sym =>fetch(:id),
@@ -266,21 +308,15 @@ class YachtCouncilHash < Hash
                 "more-upload-picture".to_sym => "1",
 		:section => "-2",
 		"images-upload-button".to_sym => "Upload"
-
-#		"main-profile-photo".to_sym => fetch(:photos)[0][:src],
-#		"main-profile-photo_fake".to_sym => fetch(:photos)[0][:src],
-#		"main-profile-photo-editordimensions".to_sym => "",
-#		"savemain-profile-photo-editor".to_sym=>"Submit"
     }
-
-#    not_params = {}
-    params["pictures-2".to_sym] = (0...fetch(:photos).size).to_a.join(",")
+    photos = fetch(:photos)[start...(start+YC_MAX_PHOTOS)]
+    params["pictures-2".to_sym] = (0...photos.size).to_a.join(",")
      # Create
-    (0..4).each do |i|
+    photos.each_with_index do |p, i|
       params.merge!({
-                        "upload-picture#{i}".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
-                        "upload-picture#{i}_fake".to_sym => fetch(:photos)[i] ? fetch(:photos)[i][:src] : "",
-			"description#{i}" => fetch(:photos)[i] ? fetch(:photos)[i][:label] : ""
+                        "upload-picture#{i}".to_sym => p[:src],
+                        "upload-picture#{i}_fake".to_sym => p[:src],
+			"description#{i}" => p[:label]
                   })
     end
     # picturesX_count, picturesX

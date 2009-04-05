@@ -25,7 +25,9 @@ class Test::Unit::TestCase
     {:title=>"sample_title",:content=>"sample_content" }
   end
   def sample_picture
-    {:label=>"sample picture", :src=>picture_fixture("jordan_logo.jpg")}
+#    {:label=>"rsample picture", :src=>picture_fixture("rails.png")}
+#    {:label=>"sample picture", :src=>picture_fixture("main_silhouette.jpg")}
+    {:label=>"jsample picture", :src=>picture_fixture("jordan_logo.jpg")}
   end
 
   def sample_listing
@@ -34,7 +36,7 @@ class Test::Unit::TestCase
      :yacht_specification_length=>"1", 
      :yacht_location=>"sample_location",
 #     :details=>[sample_accommodation, sample_accommodation],
-     :photos=>[sample_picture, sample_picture] #,sample_picture, sample_picture ,sample_picture,sample_picture]
+     :photos=>[sample_picture, sample_picture,sample_picture, sample_picture ,sample_picture,sample_picture]
     }
   end 
 

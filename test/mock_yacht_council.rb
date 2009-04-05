@@ -161,12 +161,15 @@ class MockYachtCouncil
     local_required_params = %w{  displayMode form_media-uploader-form vessel video-editorid
 			videos_count videos videosTableRowToMove virtual-tour-editorid
 			vrtours_count vrtours vrtoursTableRowToMove sound-editorid
-			sounds_count sounds switch vessel-picture-editorid 
-			existing-file-names newMsgText show vesselMenuVesselOwner
+			sounds_count sounds switch newMsgText show vesselMenuVesselOwner
 			vesselMenuVesselName vesselMenuVesselForCharter vesselMenuVesselSalesman
 			vesselMenuVesselCompany vesselMenuVesselCharterAgent backurl
-			more-upload-picture section images-upload-button
 		     }
+
+    main_required_params = %w{ main-profile-photo-editorid main-profile-photo main-profile-photo_fake 
+				main-profile-photo-editordimensions savemain-profile-photo-editor }
+
+    other_required_params = %w{ more-upload-picture section images-upload-button	vessel-picture-editorid existing-file-names }
 
      # Create
 #    (0..4).each do |i|
@@ -185,6 +188,14 @@ class MockYachtCouncil
 #    pictures-2_remove
 
      raise YachtCouncilError, "bad params #{params.inspect}" unless valid_keys?(params, local_required_params)
+
+     if params[:switch] == "main-profile-photo-editor"
+       raise YachtCouncilError, "bad params #{params.inspect}" unless valid_keys?(params, main_required_params)
+     elsif params[:switch] == "vessel-picture-editor"
+       raise YachtCouncilError, "bad params #{params.inspect}" unless valid_keys?(params, other_required_params)
+     else
+       raise YachtCouncilError, "unknown switch #{params[:switch]}"
+     end  
 
      return MockYachtCouncilResponse.new("")
   end
