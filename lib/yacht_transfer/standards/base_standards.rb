@@ -21,6 +21,7 @@ module YachtTransfer
 				:yacht_specification_material=> {:yw=>:hull_material, :yc=>:hull_materials_id},
 				:yacht_specification_fuel=> {:yw=>:fuel, :yc=> :fuel_types_id},
 				:yacht_specification_number_of_engines => {:yw=>:engine_num, :yc=>:number_of_engines },
+				:yacht_specification_designer => { :yw=> :designer, :yc=>:hull_designer}
 			}
       def key_transform(key, site); KEY_TRANSFORM[key.to_sym][site.to_sym]; end
 
@@ -29,15 +30,18 @@ module YachtTransfer
       # Value Transforms
       ######################
 
-      MATERIAL_TRANSFORM = {    :fiberglass=>{:yw=>"FG",:yc=>1},
-                                :composite=>{:yw=>"CP", :yc=>5},
-                                :wood=>{:yw=>"W", :yc=>3},
-                                :steel=>{:yw=>"ST", :yc=>2},
-                                :cement=>{:yw=>"FC", :yc=>9},
-                                :other=>{:yw=>"O", :yc=>7}
+      MATERIAL_TRANSFORM = {    :fiberglass=>{:yw=>"FG",:yc=>"1"},
+                                :composite=>{:yw=>"CP", :yc=>"5"},
+                                :wood=>{:yw=>"W", :yc=>"3"},
+                                :steel=>{:yw=>"ST", :yc=>"2"},
+                                :cement=>{:yw=>"FC", :yc=>"9"},
+                                :other=>{:yw=>"O", :yc=>"7"}
                         }
       MATERIAL_TRANSFORM.default = {:yw=>"O", :yc=>"7"}
-      def material_transform(key, site); MATERIAL_TRANSFORM[key.to_sym][site.to_sym]; end        
+      def material_transform(key, site)
+        key = :other if key == ""
+        MATERIAL_TRANSFORM[key.to_sym][site.to_sym]
+      end        
 
 
       FUEL_TRANSFORM = {:diesel=>{:yw=>"Diesel", :yc=>"Diesel"},
@@ -45,8 +49,10 @@ module YachtTransfer
                         :other=>{:yw=>"Other", :yc=>"Other"}
                         }
       FUEL_TRANSFORM.default = {:yw=>"Other", :yc=>"Other"}
-      def fuel_transform(key, site); FUEL_TRANSFORM[key.to_sym][site.to_sym]; end
-
+      def fuel_transform(key, site)
+        key = :other if key == ""
+        FUEL_TRANSFORM[key.to_sym][site.to_sym]
+      end
     end
   end
 end

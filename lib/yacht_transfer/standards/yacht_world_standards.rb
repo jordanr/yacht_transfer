@@ -99,7 +99,7 @@ class YachtWorldHash < Hash
   end
 
   def required_details_params
-        %w{ id yacht_name }
+        %w{ id yacht_name yacht_specification_designer }
   end
 
   def default_details_params

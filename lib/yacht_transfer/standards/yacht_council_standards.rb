@@ -80,7 +80,7 @@ class YachtCouncilHash < Hash
 	  :vessels_id=>has_key?(:id) ? fetch(:id) : "0",
 
 	  # used/new
-	  :used => "0", #??
+	  :used => "1", #??
 
 	  :inter_designer=>"",
 	  :exter_designer=>"",
@@ -138,7 +138,7 @@ class YachtCouncilHash < Hash
           :displacement=>"", #yacht.displacement.value,
 
 	  :hull_configurations_id=>"",
-  	  :hull_materials_id=>"7", #MATERIAL_TRANSFORM[yacht.hull.material.to_sym][:yc],
+  	  :hull_materials_id=>material_transform(fetch(:yacht_specification_material),:yc),
 	  :deck_materials_id=>"",
 	  :hull_color=>"",
 	  :hull_finished=>" ",
@@ -183,7 +183,7 @@ class YachtCouncilHash < Hash
 	  :listing_date=>Time.now.strftime("%m/%d/%Y"), # ex. 12/25/2008
 	  :exp_date=>"",
   	  :listing_types_id =>"10", # LISTING_TYPE_TRANSFORM[listing.type.to_sym][:yc],
- 	  :listing_statuses_id =>"7",# STATUS_TRANSFORM[listing.status.to_sym][:yc],
+ 	  :listing_statuses_id =>"6",# STATUS_TRANSFORM[listing.status.to_sym][:yc],
 	  :alt_listing_number=>"",
 	  :isFractional=>"0",
 	  :FracAmount=>"",
@@ -224,7 +224,7 @@ class YachtCouncilHash < Hash
 
   def required_basic_params
 	%w{ yacht_specification_length yacht_specification_year
-	    price yacht_location yacht_name
+	    price yacht_location yacht_name yacht_specification_designer
 	  }
   end
 
