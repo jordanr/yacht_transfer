@@ -197,7 +197,7 @@ class MockYachtCouncil
        raise YachtCouncilError, "unknown switch #{params[:switch]}"
      end  
 
-     return MockYachtCouncilResponse.new("")
+     return MockYachtCouncilResponse.new(fixture("yc_photos_page.html"))
   end
 
 
@@ -210,6 +210,10 @@ class MockYachtCouncil
       return required_keys.all? { |key| params.has_key?(key.to_sym) }
     end
 
+
+    def fixture(string)
+      File.open(File.dirname(__FILE__) + "/fixtures/#{string}").read
+    end
 end
 
 class YachtCouncilError < StandardError; end

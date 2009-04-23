@@ -106,6 +106,8 @@ class TestYachtCouncilTransfer < Test::Unit::TestCase
 
     listing.merge!(:id =>@id_two)
     listing.to_yc!
+    #puts listing.photo.inspect
+
     assert @yc.photo(listing.photo)
   end                             
 

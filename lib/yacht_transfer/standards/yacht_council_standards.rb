@@ -42,11 +42,13 @@ class YachtCouncilHash < Hash
        main = default_params
        main.merge!(main_photo_params)
        @photo = [main]
-    end
-    if has_key?(:id) and fetch(:id) != "0" and fetch(:photos).size > 1
-       others = default_params
-       others.merge!(default_photo_params(1)) # start from 1
-       @photo += [others]
+       start = 1 # the next photo we expect
+       while fetch(:photos).size > start
+         others = default_params
+         others.merge!(default_photo_params(start)) # start from next photo index
+         @photo += [others]
+	 start += YC_MAX_PHOTOS
+       end
     end
   end
 
@@ -268,7 +270,7 @@ class YachtCouncilHash < Hash
 		:backurl=>"vessel_list.asp",
 
 		"main-profile-photo".to_sym => fetch(:photos)[0][:src],
-		"main-profile-photo_fake".to_sym => fetch(:photos)[0][:src],
+		"main-profile-photo_fake".to_sym => "", #fetch(:photos)[0][:src],
 		"main-profile-photo-editordimensions".to_sym => "",
 		"savemain-profile-photo-editor".to_sym=>"Submit"
 #		"deletemain-profile-photo-editor".to_sym=>"Delete"
@@ -293,7 +295,7 @@ class YachtCouncilHash < Hash
 
 		:switch => "vessel-picture-editor",
 		"vessel-picture-editorid".to_sym =>fetch(:id),
-                "existing-file-names".to_sym =>"",
+                "existing-file-names".to_sym => fetch(:photos)[1...start].collect { |p| "Cruising-Sailboat-Other-#{fetch(:id)}-#{p[:src].path.split("/").last}" }.join(","),
 
 		:newMsgText =>"New message",
 		:show =>"",
@@ -311,22 +313,38 @@ class YachtCouncilHash < Hash
     }
     photos = fetch(:photos)[start...(start+YC_MAX_PHOTOS)]
     params["pictures-2".to_sym] = (0...photos.size).to_a.join(",")
+    params["pictures-2_count".to_sym] = start-1 # minus main photo
      # Create
     photos.each_with_index do |p, i|
       params.merge!({
                         "upload-picture#{i}".to_sym => p[:src],
-                        "upload-picture#{i}_fake".to_sym => p[:src],
+                        "upload-picture#{i}_fake".to_sym => "",#p[:src],
 			"description#{i}" => p[:label]
                   })
     end
+
+    old = 1
+    while old < start
+      params.merge!({
+			"pictures-2editor#{old-1}IsFreeOfSection".to_sym => "1",
+			"pictures-2editor#{old-1}picture".to_sym => "1",
+			"pictures-2editor#{old-1}DisplayForSale".to_sym => "1",
+			"pictures-2editor#{old-1}DisplayForCharter".to_sym => "1",
+#			"pictures-2editor#{old-1}description".to_sym => fetch(:photos)[old][:label] + " old number #{old}",
+#			"pictures-2editor#{old-1}width".to_sym => "100",
+#			"pictures-2editor#{old-1}height".to_sym => "100",
+			"pictures-2editor#{old-1}contentType".to_sym => "image/jpeg",
+#			"pictures-2editor#{old-1}FileName".to_sym => "Cruising-Sailboat-Other-#{fetch(:id)}-#{fetch(:photos)[old][:src].path.split("/").last}",
+		   })
+      old +=1
+    end			
+
     # picturesX_count, picturesX
     # Delete
     #    pictures-2editorXremove
     #    pictures-2_remove
     params
   end
-
-
 
 end
 end

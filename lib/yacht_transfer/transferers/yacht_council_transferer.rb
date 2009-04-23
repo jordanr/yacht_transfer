@@ -120,8 +120,15 @@ module YachtTransfer
 
       # create photos
       def photo(param_list)
+	ids = nil
+	i = 0 
 	param_list.each do |params|
-          multipart_post(photo_url, params)
+	  params.merge!(saved_photos(ids)) if ids
+
+          res = multipart_post(photo_url, params)
+          ids = scrape_photos(res.body)
+
+	  i += 1
         end
       end
 
@@ -142,7 +149,7 @@ module YachtTransfer
       def agent(host, port)
         return @agent if @agent
         http = Net::HTTP.new(host, port)
-        http.set_debug_output $stdout
+#        http.set_debug_output $stdout
         http
       end
 
@@ -181,6 +188,51 @@ module YachtTransfer
         req                
       end
 
+
+      private
+        def saved_photos(p_hash)
+          ans = {}         
+          p_hash.each_pair do |n, hassh| 
+			ans.merge!({
+			"pictures-2editor#{n}id".to_sym => hassh[0],
+                        "pictures-2editor#{n}width".to_sym => hassh[1],
+                        "pictures-2editor#{n}height".to_sym => hassh[2],
+                        "pictures-2editor#{n}description".to_sym => hassh[3],
+                        "pictures-2editor#{n}FileName".to_sym => hassh[4]
+			})
+  	  end
+          ans
+        end
+
+        def scrape_photos(res)
+	  # need to keep track of the old photo info...
+	  #<input type="hidden" id="pictures-2editor0id" name="pictures-2editor0id" value="729592">
+	  id_needle = /pictures-2editor([0-9]+)id\"[^>]*value=\"([0-9]+)\">/m
+	  width_needle = /pictures-2editor([0-9]+)width\"[^>]*value=\"([0-9]+)\">/m
+	  height_needle = /pictures-2editor([0-9]+)height\"[^>]*value=\"([0-9]+)\">/m
+	  descr_needle = /pictures-2editor([0-9]+)description\"[^>]*value=\"([^\"]*)\">/m
+	  fn_needle = /pictures-2editor([0-9]+)FileName\"[^>]*value=\"([^\"]*)\">/m
+
+	  ids = res.scan(id_needle)
+	  return nil if ! ids
+
+	  # otherwise get the rest
+	  widths = res.scan(width_needle)
+	  heights = res.scan(height_needle)
+	  descrs = res.scan(descr_needle)
+	  fns = res.scan(fn_needle)
+
+	  ans = {}
+	  ids.each { |n, id| ans.merge!(n => [id]) }
+	
+	  # fold in the rest
+	  widths.each { |n, w| ans[n] += [w] }
+	  heights.each { |n, w| ans[n] += [w] }
+	  descrs.each { |n, w| ans[n] += [w] }
+	  fns.each { |n, w| ans[n] += [w] }
+	  
+	  ans
+	end
     end
   end
 end
